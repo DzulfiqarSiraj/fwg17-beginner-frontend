@@ -1,31 +1,23 @@
 import React from 'react'
+import { createBrowserRouter,RouterProvider } from 'react-router-dom'
+// import Home from './pages/Home'
+import Login from './pages/Login'
 
-
+const router = createBrowserRouter([
+    // {
+    //     path: '/',
+    //     element: <Home />
+    // },
+    {
+        path: '/login',
+        element: <Login />
+    }
+])
 
 const App = ()=>{
-    let [greetings, setGreetings] = React.useState('Greetings')
 
-    const morningButton = ()=> {
-        setGreetings(
-            'Good Morning'
-        )
-    }
-
-    const nightButton = ()=> {
-        setGreetings(
-            'Good Night'
-        )
-    }
     return (
-        <>
-            <div className='wrapper'>
-                <div className='text-lg font-semibold'>{greetings}</div>
-                <div className='flex gap-5'>
-                    <button className='border border-red-500 rounded-lg p-5' onClick={morningButton}>Morning</button>
-                    <button className='border border-blue-500 rounded-md p-5' onClick={nightButton}>Night</button>
-                </div>
-            </div>
-        </>
+        <RouterProvider router = {router} />
     )
 }
 
