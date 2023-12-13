@@ -1,4 +1,5 @@
 import * as Icon from 'react-feather'
+import coffeeShopLogo from '../assets/icon/coffee-shop-icon.svg'
 
 const Login = () => {
     return(
@@ -8,7 +9,7 @@ const Login = () => {
             <section className="flex flex-col flex-1 bg-white justify-center items-center px-10">
                 <div className="flex flex-col max-w-3xl w-full bg-white h3/6 mt-16 mb-16">
                     <figure className="flex flex-row gap-2 mb-8">
-                        <img src="./assets/icon/coffee-shop-icon.svg" alt="" />
+                        <img src={coffeeShopLogo} alt="" />
                         <figcaption  className="text-yellow-900 text-lg">Coffee Shop</figcaption>
                     </figure>
                     <h1 className="font-semibold text-2xl text-yellow-800 tracking-wide mb-5">Login</h1>
