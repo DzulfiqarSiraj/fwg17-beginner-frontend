@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.wrapper {
+    @apply flex flex-col justify-center items-center h-screen w-screen gap-5;
+}
