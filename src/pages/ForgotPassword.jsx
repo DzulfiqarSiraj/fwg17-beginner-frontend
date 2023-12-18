@@ -1,4 +1,6 @@
 import coffeeShopLogo from '../assets/icon/coffee-shop-icon.svg';
+import Button from '../components/Button';
+import EmailInput from '../components/EmailInput';
 
 const ForgotPassword = () => {
     return (
@@ -14,18 +16,8 @@ const ForgotPassword = () => {
                 <h1 className="font-semibold text-2xl text-yellow-800 tracking-wide mb-5">Fill out the form correctly</h1>
                 <span className="text-neutral-600 text-sm mb-5">We will send new password to your email</span>
                 <form action="" className="flex flex-col gap-6">
-
-                    <label htmlFor="email" className="flex flex-col gap-2">
-                        <span className="font-semibold text-lg">Email</span>
-                        <div className="flex flex-row items-center border h-14 border-gray-300 rounded-lg px-4 gap-4">
-                            <div>
-                                <i data-feather="mail" className="text-gray-500"></i>
-                            </div>
-                            <input className="flex-1 outline-none placeholder:text-sm placeholder:text-gray-500" id="email" type="email" name="email" placeholder="Enter Your Email" />
-                        </div>
-                    </label>
-
-                    <button type="submit" className="border rounded-lg h-11 bg-orange-500 font-normal tracking-wide mb-5 hover:opacity-90 active:scale-95 transition:all duration-300">Submit</button>
+                    <EmailInput />
+                    <Button type='submit' className="bg-orange-500 py-3">Submit</Button>
                 </form>
             </div>
         </section>
