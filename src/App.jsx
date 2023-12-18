@@ -1,15 +1,11 @@
-import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
+import Product from './pages/Product';
 
 const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <Home />,
-    },
     {
         path: '/register',
         element: <Register />,
@@ -21,6 +17,14 @@ const router = createBrowserRouter([
     {
         path: '/forgot-password',
         element: <ForgotPassword />,
+    },
+    {
+        path: '/',
+        element: <Home />,
+    },
+    {
+        path: '/product',
+        element: <Product />
     },
 ]);
 
