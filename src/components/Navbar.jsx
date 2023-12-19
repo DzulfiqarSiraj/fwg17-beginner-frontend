@@ -1,30 +1,48 @@
-
+import React from 'react';
+import {Link} from 'react-router-dom'
 import CoffeeShopLogo from '../assets/icon/coffee-white-icon.svg';
 import {FiSearch,FiShoppingCart} from 'react-icons/fi'
+import Button from './Button';
+import { TbMenu2 } from "react-icons/tb";
 
+// eslint-disable-next-line react/prop-types
 function Navbar (props) {
 
     // eslint-disable-next-line react/prop-types
     const {className} = props;
+    const [top, setTop] = React.useState('-top-[500px]')
+
+    const menuToggling = () => {
+        if(top === '-top-[500px]'){
+            setTop('top-[4.7rem]')
+        } else {
+            setTop('-top-[500px]')
+        }
+    }
 
     return (
-        <nav className={`${className} flex flex-col md:flex-row w-screen h-fit md:h-16 z-50`}>
-            <div className="flex flex-row flex-1 items-center justify-start ml-28">
-                <ul className="flex flex-row gap-16">
-                    <li className="flex flex-row"><a className="flex flex-row gap-3" href="">
-                        <div><img src={CoffeeShopLogo} alt="" /></div>
-                        <span className="font-sacramento text-white text-lg">Coffee Shop</span>
-                    </a></li>
-                    <li className="flex text-white text-sm items-center hover:border-b-2 hover:border-b-orange-500"><a href="home.html">Home</a></li>
-                    <li className="flex text-white text-sm items-center hover:border-b-2 hover:border-b-orange-500"><a href="product.html">Product</a></li>
+        <nav className={`${className} top- fixed flex flex-col md:flex-row w-screen h-fit md:h-16 z-50`}>
+            <div className={`${className} flex flex-row items-center flex-1 md:justify-start md:pl-28 py-5 px-8 z-50`}>
+                <ul className="flex flex-1 justify-between md:justify-start md:gap-16">
+                    <li className="flex flex-row items-center">
+                        <Link to='/' className='flex flex-row gap-3'>
+                            <div><img src={CoffeeShopLogo} alt="" /></div>
+                            <span className="font-sacramento text-white text-lg">Coffee Shop</span>
+                        </Link>
+                    </li>
+                    <li className="hidden md:flex text-white text-sm items-center hover:border-b-2 hover:border-b-orange-500"><Link to='/'>Home</Link></li>
+                    <li className=" hidden md:flex text-white text-sm items-center hover:border-b-2 hover:border-b-orange-500"><Link to='/product'>Product</Link></li>
+                    <li className='flex items-center md:hidden'><TbMenu2 onClick={menuToggling} className='text-4xl text-white'/></li>
                 </ul>
             </div>
-            <div className="flex flex-row flex-1 items-center justify-end mr-28">
-                <ul className="flex flex-row gap-6 items-center">
+            <div className={`absolute ${className} ${top} right-0 left-0 transition-all duration-300 md:static flex flex-row flex-1 items-center justify-center md:justify-end md:pr-28`}>
+                <ul className={`flex flex-col-reverse md:static md:flex-row gap-6 items-center py-5 md:py-0`}>
                     <li className="hover:border-b-2 hover:border-b-orange-500 hover:pb-1.5"><a href=""><FiSearch className='text-lg text-white'/></a></li>
                     <li className="hover:border-b-2 hover:border-b-orange-500 hover:pb-1.5"><a href=""><FiShoppingCart className='text-lg text-white'/></a></li>
-                    <li className="text-white text-xs px-5 py-2 box-border border border-white rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><a href="login.html">Sign In</a></li>
-                    <li className="text-black text-xs px-5 py-2 box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><a href="register.html">Sign Up</a></li>
+                    <li className="text-white text-xs px-5 py-2 box-border border border-white rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Link to={'/login'}><Button text='Sign In' /></Link></li>
+                    <li className="text-black text-xs px-5 py-2 box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Link to={'/register'}><Button text='Sign Up' /></Link></li>
+                    <li className="md:hidden md:flex text-white text-sm items-center hover:border-b-2 hover:border-b-orange-500"><Link to='/product'>Product</Link></li>
+                    <li className="md:hidden md:flex text-white text-sm items-center hover:border-b-2 hover:border-b-orange-500"><Link to='/'>Home</Link></li>
                 </ul>
             </div>
         </nav>
