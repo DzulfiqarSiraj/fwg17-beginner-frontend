@@ -1,27 +1,95 @@
+import React from 'react';
 import { Link } from 'react-router-dom'
-import coffeeShopLogo from '../assets/icon/coffee-shop-icon.svg';
+import axios from 'axios';
 import EmailInput from '../components/EmailInput.jsx';
 import PasswordInput from '../components/PasswordInput.jsx';
 import Button from '../components/Button.jsx'
 import { FaFacebook } from "react-icons/fa6";
+import BrandLogo from '../components/BrandLogo.jsx';
 
 const Login = () => {
+    
+    const [loginInfo, setLoginInfo] = React.useState('')
+    const [emailInfo, setEmailInfo] = React.useState('')
+    const [passwordInfo, setPasswordInfo] = React.useState('')
+
+    const LoginProcess = async (e) => {
+        e.preventDefault()
+        const {value: email} = e.target.email
+        const {value: password} = e.target.password
+        const form = new URLSearchParams()
+        form.append('email', email)
+        form.append('password', password)
+        
+        try{
+            if(!email && !password) {
+                throw new Error('input empty')
+            }
+            if(!email){
+                throw new Error('email undefined')
+            }
+            if(!password){
+                throw new Error('password undefined')
+            }
+
+            const {data} = await axios.post('http://localhost:8888/auth/login', form.toString())
+
+
+            if(email && password){
+                if(data.success === true){
+                    setLoginInfo(<div className='flex flex-1 text-green-700'>Login Success</div>)
+                    setTimeout(()=>{
+                        window.location = '/'
+                    },2000)
+                }
+            }
+        }catch(err){
+            if(err.message === 'input empty') {
+                setEmailInfo(<div className='text-red-800 text-sm'>Email must not be empty!</div>)
+                setPasswordInfo(<div className='text-red-800 text-sm'>Password must not be empty!</div>)
+                setTimeout(()=>{
+                    setEmailInfo('')
+                    setPasswordInfo('')
+                },2000)
+            }
+            if(err.message === 'email undefined'){
+                setEmailInfo(<div className='text-red-800 text-sm'>Email must not be empty!</div>)
+                setTimeout(()=>{
+                    setEmailInfo('')
+                },2000)
+            }
+            if(err.message === 'password undefined'){
+                setPasswordInfo(<div className='text-red-800 text-sm'>Password must not be empty!</div>)
+                setTimeout(()=>{
+                    setPasswordInfo('')
+                },2000)
+            }
+            if(err.response.status == 401){
+                setLoginInfo(<div className='text-red-800 text-sm'>{err.response.data.message}</div>)
+                setTimeout(()=>{
+                    setLoginInfo('')
+                },2000)
+            }
+        }
+    }
+
+
+
     return (
-        <>
             <main className="flex flex-col w-screen h-fit md:flex-row">
                 <section className="hidden md:flex w-4/12 bg-[url('../assets/bg-login.png')] bg-cover bg-center">
                 </section>
                 <section className="flex flex-col flex-1 bg-white justify-center items-center px-10">
                     <div className="flex flex-col max-w-3xl w-full bg-white h3/6 mt-16 mb-16">
-                        <figure className="flex flex-row gap-2 mb-8">
-                            <img src={coffeeShopLogo} alt="" />
-                            <figcaption  className="text-yellow-900 text-lg font-sacramento-sacramento">Coffee Shop</figcaption>
-                        </figure>
+                        <BrandLogo />
                         <h1 className="font-semibold text-2xl text-yellow-800 tracking-wide mb-5">Login</h1>
                         <span className="text-neutral-600 text-sm mb-5">Fill out the form correctly</span>
-                        <form action="" method='post' className="flex flex-col gap-6">
+                        <form onSubmit={LoginProcess} className="flex flex-col gap-6">
                             <EmailInput />
-                            <PasswordInput text="Password" placeholder="Enter Your Password"/>
+                            {emailInfo}
+                            <PasswordInput text="Password" name="password" placeholder="Enter Your Password"/>
+                            {passwordInfo}
+                            {loginInfo}
                             <span className='text-slate-400 self-end'><Link to='/forgot-password'>Forgot Password?</Link></span>
                             <Button type='submit' className="bg-orange-500 py-3">Login</Button>
                         </form>
@@ -50,7 +118,6 @@ const Login = () => {
                     </div>
                 </section>
             </main>
-        </>
     );
 };
 

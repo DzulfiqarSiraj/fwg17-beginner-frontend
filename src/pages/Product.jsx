@@ -1,9 +1,17 @@
+import { Link } from 'react-router-dom'
 import motherImage from '../assets/icon/mother-fig.svg'
 import manImage from '../assets/icon/man-fig.svg'
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
+import { FaCircleChevronLeft } from "react-icons/fa6"
+import { FaCircleChevronRight } from "react-icons/fa6"
+import { FiShoppingCart } from "react-icons/fi"
+
 
 const Product = () => {
     return (
         <>        
+            <Navbar className="bg-black"/>
             {/* main */}
             <main className="flex flex-col w-screen h-fit overflow-hidden justify-center items-center">
                 <header className="flex items-center w-screen h-72 bg-[url('../assets/bg-product-1.jpg')] bg-cover bg-center">
@@ -16,8 +24,8 @@ const Product = () => {
                         <div className="flex flex-row items-center justify-between">
                             <h1 className="text-4xl font-medium text-gray-900 tracking-wide">Today <span className="text-yellow-900">Promo</span></h1>
                             <div className="flex flex-row items-center justify-center gap-2">
-                                <i className="fa-solid fa-circle-chevron-left text-3xl text-gray-300 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer hover:text-orange-500"></i>
-                                <i className="fa-solid fa-circle-chevron-right text-3xl text-gray-300 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer hover:text-orange-500"></i>
+                                <FaCircleChevronLeft className="fa-solid fa-circle-chevron-left text-3xl text-gray-300 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer hover:text-orange-500"/>
+                                <FaCircleChevronRight className="fa-solid fa-circle-chevron-right text-3xl text-gray-300 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer hover:text-orange-500"/>
                             </div>
                         </div>
                         <div className="flex flex-row gap-10 w-max overflow-hidden relative left-1/2 -translate-x-1/2">
@@ -78,7 +86,7 @@ const Product = () => {
                                 <form action="" className="flex flex-col w-full gap-6">
                                     <div className="flex justify-between">
                                         <span className="text-white font-bold tracking-wide">Filter</span>
-                                        <span className="text-white font-bold tracking-wide text-sm"><a href="">Reset Filter</a></span>
+                                        <span className="text-white font-bold tracking-wide text-sm"><button type='reset'>Reset Filter</button></span>
                                     </div>
         
                                     <div className="flex flex-col gap-2">
@@ -144,112 +152,113 @@ const Product = () => {
                                     {/* product-card-1 */}
                                     <div id="product-card" className="flex flex-col bg-white w-full h-[31rem] relative">
                                         <span className=" text-white font-semibold absolute top-4 left-4 bg-red-700 px-4 py-2 rounded-full">FLASH SALE!</span>
-                                        <div className="bg-[url(assets/fav-img-1.jpg)] bg-no-repeat bg-contain bg-top h-3/4"></div>
+                                        <div className="bg-[url('../assets/fav-img-3.jpg')] bg-no-repeat bg-contain bg-top h-3/4"></div>
                                         <div className="flex flex-col self-center flex-1 bg-white w-11/12 absolute bottom-0 box-border p-3 gap-3 shadow-md">
-                                            <h2 className="text-xl">Hazelnut Latte</h2>
+                                            <h2 className="text-xl">Fish and Cheaps</h2>
                                             <p className="text-gray-600 text-xs tracking-wide">You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
                                             <div className="flex flex-row gap-4 items-center">
-                                                <span className="text-red-600 text-xs"><del>IDR 20.000</del></span>
+                                                <span className="text-red-600 text-xs"><del>IDR 35.000,-</del></span>
                                                 <span className="text-orange-500 text-xl">IDR 10.000</span>
                                             </div>
                                             <div className="flex flex-row h-10 gap-3">
-                                                <button type="button" className="flex-1 text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">Buy</button>
-                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><i className="w-5" data-feather="shopping-cart"></i></button>
+                                                <Link to={'/detail-product'} className="flex flex-1 justify-center text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><button type="button" className='flex-1'>Buy</button></Link>
+                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><FiShoppingCart className="w-5"/></button>
                                             </div>
                                         </div>
                                     </div>
                                     {/* product-card-2 */}
                                     <div className="flex flex-col bg-white w-full h-[31rem] relative">
                                         <span className=" text-white font-semibold absolute top-4 left-4 bg-red-700 px-4 py-2 rounded-full">FLASH SALE!</span>
-                                        <div className="bg-[url(assets/fav-img-1.jpg)] bg-no-repeat bg-contain bg-top h-3/4"></div>
+                                        <div className="bg-[url('../assets/fav-img-1.jpg')] bg-no-repeat bg-contain bg-top h-3/4"></div>
                                         <div className="flex flex-col self-center flex-1 bg-white w-11/12 absolute bottom-0 box-border p-3 gap-3 shadow-md">
-                                            <h2 className="text-xl">Hazelnut Latte</h2>
+                                            <h2 className="text-xl">Coffee Parfaits</h2>
                                             <p className="text-gray-600 text-xs tracking-wide">You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
                                             <div className="flex flex-row gap-4 items-center">
-                                                <span className="text-red-600 text-xs"><del>IDR 20.000</del></span>
+                                                <span className="text-red-600 text-xs"><del>IDR 30.000,-</del></span>
                                                 <span className="text-orange-500 text-xl">IDR 10.000</span>
                                             </div>
                                             <div className="flex flex-row h-10 gap-3">
-                                                <button type="button" className="flex-1 text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">Buy</button>
-                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><i className="w-5" data-feather="shopping-cart"></i></button>
+                                            <Link to={'/detail-product'} className="flex flex-1 justify-center text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><button type="button" className='flex-1'>Buy</button></Link>
+                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><FiShoppingCart className="w-5"/></button>
                                             </div>
                                         </div>
                                     </div>
                                     {/* product-card-3 */}
-                                    <div className="flex flex-col bg-white w-full h-[31rem] relative">
+                                    <div id="product-card" className="flex flex-col bg-white w-full h-[31rem] relative">
                                         <span className=" text-white font-semibold absolute top-4 left-4 bg-red-700 px-4 py-2 rounded-full">FLASH SALE!</span>
-                                        <div className="bg-[url(assets/fav-img-1.jpg)] bg-no-repeat bg-contain bg-top h-3/4"></div>
+                                        <div className="bg-[url('../assets/fav-img-2.jpg')] bg-no-repeat bg-contain bg-top h-3/4"></div>
                                         <div className="flex flex-col self-center flex-1 bg-white w-11/12 absolute bottom-0 box-border p-3 gap-3 shadow-md">
-                                            <h2 className="text-xl">Hazelnut Latte</h2>
+                                            <h2 className="text-xl">Affogato</h2>
                                             <p className="text-gray-600 text-xs tracking-wide">You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
                                             <div className="flex flex-row gap-4 items-center">
                                                 <span className="text-red-600 text-xs"><del>IDR 20.000</del></span>
-                                                <span className="text-orange-500 text-xl">IDR 10.000</span>
+                                                <span className="text-orange-500 text-xl">IDR 40.000,-</span>
                                             </div>
                                             <div className="flex flex-row h-10 gap-3">
-                                                <button type="button" className="flex-1 text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">Buy</button>
-                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><i className="w-5" data-feather="shopping-cart"></i></button>
+                                            <Link to={'/detail-product'} className="flex flex-1 justify-center text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><button type="button" className='flex-1'>Buy</button></Link>
+                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><FiShoppingCart className="w-5"/></button>
                                             </div>
                                         </div>
                                     </div>
                                     {/* product-card-4 */}
                                     <div className="flex flex-col bg-white w-full h-[31rem] relative">
                                         <span className=" text-white font-semibold absolute top-4 left-4 bg-red-700 px-4 py-2 rounded-full">FLASH SALE!</span>
-                                        <div className="bg-[url(assets/fav-img-1.jpg)] bg-no-repeat bg-contain bg-top h-3/4"></div>
+                                        <div className="bg-[url('../assets/fav-img-4.jpg')] bg-no-repeat bg-contain bg-top h-3/4"></div>
                                         <div className="flex flex-col self-center flex-1 bg-white w-11/12 absolute bottom-0 box-border p-3 gap-3 shadow-md">
-                                            <h2 className="text-xl">Hazelnut Latte</h2>
+                                            <h2 className="text-xl">Cappuccino</h2>
                                             <p className="text-gray-600 text-xs tracking-wide">You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
                                             <div className="flex flex-row gap-4 items-center">
-                                                <span className="text-red-600 text-xs"><del>IDR 20.000</del></span>
+                                                <span className="text-red-600 text-xs"><del>IDR 25.000,-</del></span>
                                                 <span className="text-orange-500 text-xl">IDR 10.000</span>
                                             </div>
                                             <div className="flex flex-row h-10 gap-3">
-                                                <button type="button" className="flex-1 text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">Buy</button>
-                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><i className="w-5" data-feather="shopping-cart"></i></button>
+                                            <Link to={'/detail-product'} className="flex flex-1 justify-center text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><button type="button" className='flex-1'>Buy</button></Link>
+                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><FiShoppingCart className="w-5"/></button>
                                             </div>
                                         </div>
                                     </div>
                                     {/* product-card-5 */}
-                                    <div className="flex flex-col bg-white w-full h-[31rem] relative">
+                                    <div id="product-card" className="flex flex-col bg-white w-full h-[31rem] relative">
                                         <span className=" text-white font-semibold absolute top-4 left-4 bg-red-700 px-4 py-2 rounded-full">FLASH SALE!</span>
-                                        <div className="bg-[url(assets/fav-img-1.jpg)] bg-no-repeat bg-contain bg-top h-3/4"></div>
+                                        <div className="bg-[url('../assets/fav-img-5.jpg')] bg-no-repeat bg-contain bg-top h-3/4"></div>
                                         <div className="flex flex-col self-center flex-1 bg-white w-11/12 absolute bottom-0 box-border p-3 gap-3 shadow-md">
-                                            <h2 className="text-xl">Hazelnut Latte</h2>
+                                            <h2 className="text-xl">Espresso</h2>
                                             <p className="text-gray-600 text-xs tracking-wide">You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
                                             <div className="flex flex-row gap-4 items-center">
-                                                <span className="text-red-600 text-xs"><del>IDR 20.000</del></span>
+                                                <span className="text-red-600 text-xs"><del>IDR 25.000,-</del></span>
                                                 <span className="text-orange-500 text-xl">IDR 10.000</span>
                                             </div>
                                             <div className="flex flex-row h-10 gap-3">
-                                                <button type="button" className="flex-1 text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">Buy</button>
-                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><i className="w-5" data-feather="shopping-cart"></i></button>
+                                            <Link to={'/detail-product'} className="flex flex-1 justify-center text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><button type="button" className='flex-1'>Buy</button></Link>
+                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><FiShoppingCart className="w-5"/></button>
                                             </div>
                                         </div>
                                     </div>
                                     {/* product-card-6 */}
                                     <div className="flex flex-col bg-white w-full h-[31rem] relative">
                                         <span className=" text-white font-semibold absolute top-4 left-4 bg-red-700 px-4 py-2 rounded-full">FLASH SALE!</span>
-                                        <div className="bg-[url(assets/fav-img-1.jpg)] bg-no-repeat bg-contain bg-top h-3/4"></div>
+                                        <div className="bg-[url('../assets/fav-img-6.jpg')] bg-no-repeat bg-contain bg-top h-3/4"></div>
                                         <div className="flex flex-col self-center flex-1 bg-white w-11/12 absolute bottom-0 box-border p-3 gap-3 shadow-md">
-                                            <h2 className="text-xl">Hazelnut Latte</h2>
+                                            <h2 className="text-xl">Rice Bowl</h2>
                                             <p className="text-gray-600 text-xs tracking-wide">You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
                                             <div className="flex flex-row gap-4 items-center">
-                                                <span className="text-red-600 text-xs"><del>IDR 20.000</del></span>
+                                                <span className="text-red-600 text-xs"><del>IDR 25.000</del></span>
                                                 <span className="text-orange-500 text-xl">IDR 10.000</span>
                                             </div>
                                             <div className="flex flex-row h-10 gap-3">
-                                                <button type="button" className="flex-1 text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">Buy</button>
-                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><i className="w-5" data-feather="shopping-cart"></i></button>
+                                            <Link to={'/detail-product'} className="flex flex-1 justify-center text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><button type="button" className='flex-1'>Buy</button></Link>
+                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><FiShoppingCart className="w-5"/></button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div className="flex flex-row gap-4">
                                     <div className="flex justify-center items-center text-base bg-orange-500 w-9 h-9 rounded-full hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">1</div>
                                     <div className="flex justify-center items-center text-base bg-gray-300 w-9 h-9 rounded-full hover:bg-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">2</div>
                                     <div className="flex justify-center items-center text-base bg-gray-300 w-9 h-9 rounded-full hover:bg-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">3</div>
                                     <div className="flex justify-center items-center text-base bg-gray-300 w-9 h-9 rounded-full hover:bg-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">4</div>
-                                    <i className="fa-solid fa-circle-chevron-right text-4xl text-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"></i>
+                                    <FaCircleChevronRight className="fa-solid fa-circle-chevron-right text-4xl text-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/>
                                 </div>
                             
                             </div>
@@ -257,6 +266,7 @@ const Product = () => {
                     </div>
                 </div>
             </main>
+            <Footer />
         </>
     );
 }
