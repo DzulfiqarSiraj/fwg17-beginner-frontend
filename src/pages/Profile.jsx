@@ -21,6 +21,7 @@ const Profile = () => {
                         <div className="flex flex-col items-center max-w-xs w-full bg-white border border-gray-200 p-5 gap-1 rounded-md">
                             <span className="text-base font-semibold tracking-wide">Galuh Wizard</span>
                             <span className='text-xs'>ghaluhwizz@gmail.com</span>
+                            <div></div>
                             <button className="flex h-10 text-xs px-10 justify-center items-center border border-orange-500 bg-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">Upload New Photo</button>
                             <span className='text-xs'>Since <strong>20 January 2022</strong></span>
                         </div>
