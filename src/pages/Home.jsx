@@ -110,7 +110,7 @@ const Home = () => {
                             <p className="text-center text-[0.60rem] md:text-xs text-gray-600">You can explore the menu that we provide with fun and have their own taste and make your day better</p>
                         </section>
                         <div className="flex justify-center">
-                            <img className='max-w-sm md:max-w-4xl md:w-full' src={WorldMapImage} alt="" />
+                            <img className='max-w-xs md:max-w-4xl md:w-full' src={WorldMapImage} alt="" />
                         </div>
                 </div>
 
