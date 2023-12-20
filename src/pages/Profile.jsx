@@ -13,8 +13,8 @@ const Profile = () => {
         <>
             <Navbar className='bg-black' />
             {/* <!-- main --> */}
-            <main className="flex flex-col h-fit p-10 pt-20 md:p-24">
-                <div className="flex flex-row items-center py-10 gap-5">
+            <main className="flex flex-col h-fit p-6 pt-20 md:p-24 bg-white">
+                <div className="flex flex-row self-center md:self-start py-10 gap-5">
                     <h1 className="text-4xl font-medium text-gray-900 tracking-wide">Profile</h1>
                 </div>
                 {/* <!-- column-1 --> */}
@@ -31,8 +31,8 @@ const Profile = () => {
 
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col items-center md:max-w-xs w-full bg-white border border-gray-200 p-5 gap-2 rounded-md">
-                            <span className="text-base font-semibold tracking-wide">Galuh Wizard</span>
-                            <span className='text-xs'>ghaluhwizz@gmail.com</span>
+                            <span className="text-3xl md:text-xl font-semibold tracking-wide">Galuh Wizard</span>
+                            <span className='text-base md:text-xs'>ghaluhwizz@gmail.com</span>
                             <div className='flex rounded-full overflow-hidden mb-2'>
                                 <img src={ProfilPhoto} className='w-full'/>
                             </div>
