@@ -11,6 +11,16 @@ function Navbar (props) {
     // eslint-disable-next-line react/prop-types
     const {className} = props;
     const [top, setTop] = React.useState('-top-[500px]')
+    const [searchDisplay, setSearchDisplay] = React.useState('hidden')
+
+    const searchButton = (e) => {
+        e.preventDefault()
+        if(searchDisplay === 'hidden'){
+            setSearchDisplay('flex')
+        }else if(searchDisplay === 'flex'){
+            setSearchDisplay('hidden')
+        }
+    }
 
     const menuToggling = () => {
         if(top === '-top-[500px]'){
@@ -37,12 +47,23 @@ function Navbar (props) {
             </div>
             <div className={`absolute ${className} ${top} right-0 left-0 transition-all duration-300 md:static flex flex-row flex-1 items-center justify-center md:justify-end md:pr-28`}>
                 <ul className={`flex flex-col-reverse md:static md:flex-row gap-6 items-center py-5 md:py-0`}>
-                    <li className="hover:border-b-2 hover:border-b-orange-500 hover:pb-1.5"><a href=""><FiSearch className='text-lg text-white'/></a></li>
-                    <li className="hover:border-b-2 hover:border-b-orange-500 hover:pb-1.5"><a href=""><FiShoppingCart className='text-lg text-white'/></a></li>
-                    <li className="text-white text-xs px-5 py-2 box-border border border-white rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Link to={'/login'}><Button text='Sign In' /></Link></li>
-                    <li className="text-black text-xs px-5 py-2 box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Link to={'/register'}><Button text='Sign Up' /></Link></li>
-                    <li className="md:hidden md:flex text-white text-sm items-center hover:border-b-2 hover:border-b-orange-500"><Link to='/product'>Product</Link></li>
-                    <li className="md:hidden md:flex text-white text-sm items-center hover:border-b-2 hover:border-b-orange-500"><Link to='/'>Home</Link></li>
+                    <li className='flex flex-row-reverse gap-6 items-center'>
+                        <form className='flex flex-row-reverse items-center gap-2' action="">
+                            <div onClick={searchButton}>
+                                <div className="hover:border-b-2 hover:border-b-orange-500 hover:pb-1.5"><a href=""><FiSearch className='text-lg text-white'/></a></div>
+                            </div>
+                        </form>
+                        <div className={`${searchDisplay} flex-row items-center border h-10 border-gray-300 rounded-lg px-4 gap-4`}>
+                            <input className="flex-1 outline-none placeholder:text-sm placeholder:text-gray-500 bg-transparent" id="search" type="text" name="search" placeholder="Search" autoComplete="on"/>
+                        </div>
+                        <div className="hover:border-b-2 hover:border-b-orange-500 hover:pb-1.5"><a href=""><FiShoppingCart className='text-lg text-white'/></a></div>
+                    </li>
+                    <li className="md:hidden flex text-white text-sm items-center hover:border-b-2 hover:border-b-orange-500"><Link to='/product'>Product</Link></li>
+                    <li className="md:hidden flex text-white text-sm items-center hover:border-b-2 hover:border-b-orange-500"><Link to='/'>Home</Link></li>
+                    <li className='flex flex-row gap-4'>
+                        <div className="text-white text-xs px-5 py-2 box-border border border-white rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Link to={'/login'}><Button text='Sign In' /></Link></div>
+                        <div className="text-black text-xs px-5 py-2 box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Link to={'/register'}><Button text='Sign Up' /></Link></div>
+                    </li>
                 </ul>
             </div>
         </nav>
