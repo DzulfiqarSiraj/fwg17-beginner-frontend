@@ -6,6 +6,7 @@ import PasswordInput from '../components/PasswordInput'
 import PhoneNumberInput from '../components/PhoneNumberInput'
 import AddressInput from '../components/AddressInput'
 import Button from '../components/Button'
+import ProfilPhoto from '../assets/redranger.jpg'
 
 const Profile = () => {
     return (
@@ -29,10 +30,12 @@ const Profile = () => {
                     </form>
 
                     <div className="flex flex-col gap-4">
-                        <div className="flex flex-col items-center max-w-xs w-full bg-white border border-gray-200 p-5 gap-1 rounded-md">
+                        <div className="flex flex-col items-center max-w-xs w-full bg-white border border-gray-200 p-5 gap-2 rounded-md">
                             <span className="text-base font-semibold tracking-wide">Galuh Wizard</span>
                             <span className='text-xs'>ghaluhwizz@gmail.com</span>
-                            <div></div>
+                            <div className='flex rounded-full overflow-hidden mb-2'>
+                                <img src={ProfilPhoto} className='w-full'/>
+                            </div>
                             <button className="flex h-10 text-xs px-10 justify-center items-center border border-orange-500 bg-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">Upload New Photo</button>
                             <span className='text-xs'>Since <strong>20 January 2022</strong></span>
                         </div>
