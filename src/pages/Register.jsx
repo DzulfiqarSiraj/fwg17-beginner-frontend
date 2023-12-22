@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import { Link } from 'react-router-dom'
 import FullNameInput from '../components/FullNameInput.jsx';
@@ -15,14 +16,79 @@ const Register = () => {
     const [confirmPasswordInfo, setConfirmPasswordInfo] = React.useState('')
     const [successInfo, setSuccessInfo] = React.useState('')
 
-    const registerProcess = (e) => {
+    const registerProcess = async (e) => {
         e.preventDefault()
-        const {value: fullname} = e.target.fullname
+        const {value: fullName} = e.target.fullName
         const {value: email} = e.target.email
         const {value: password} = e.target.password
         const {value: confirmpassword} = e.target.confirmpassword
+        const form = new URLSearchParams()
+        form.append('fullName',fullName)
+        form.append('email', email)
+        form.append('password',password)
 
-        if(!fullname){
+        try{
+            if(!email && !password && !fullName) {
+                throw new Error('input empty')
+            }
+            if(!fullName){
+                throw new Error('fullname undefined')
+            }
+            if(!email){
+                throw new Error('email undefined')
+            }
+            if(!password){
+                throw new Error('password undefined')
+            }
+
+
+            const {data} = await axios.post('http://localhost:8888/auth/register', form.toString())
+
+            if(fullName && email && password){
+                if(data.success === true){
+                    setSuccessInfo(<div className='flex flex-1 text-green-700'>{data.message}</div>)
+                    setTimeout(()=>{
+                        window.location = '/login'
+                    },2000)
+                }
+            }
+        } catch(err){
+            if(err.message === 'input empty') {
+                setEmailInfo(<div className='text-red-800 text-sm'>Email must not be empty!</div>)
+                setPasswordInfo(<div className='text-red-800 text-sm'>Password must not be empty!</div>)
+                setTimeout(()=>{
+                    setEmailInfo('')
+                    setPasswordInfo('')
+                },2000)
+            }
+            if(err.message === 'fullname undefined'){
+                setFullNameInfo(<div className='text-red-800 text-sm'>Name must not be empty!</div>)
+                setTimeout(()=>{
+                    setFullNameInfo('')
+                },2000)
+            }
+            if(err.message === 'email undefined'){
+                setEmailInfo(<div className='text-red-800 text-sm'>Email must not be empty!</div>)
+                setTimeout(()=>{
+                    setEmailInfo('')
+                },2000)
+            }
+            if(err.message === 'password undefined'){
+                setPasswordInfo(<div className='text-red-800 text-sm'>Password must not be empty!</div>)
+                setTimeout(()=>{
+                    setPasswordInfo('')
+                },2000)
+            }
+            if(err.response.status == 401){
+                setSuccessInfo(<div className='text-red-800 text-sm'>{err.response.data.message}</div>)
+                setTimeout(()=>{
+                    setSuccessInfo('')
+                },2000)
+            }
+        }
+
+
+        if(!fullName){
             setFullNameInfo(<div className='text-red-800 text-sm'>Name must not be empty!</div>)
             setTimeout(()=>{
                 setFullNameInfo('')
@@ -52,7 +118,7 @@ const Register = () => {
             },2000)
         }
 
-        if(fullname && email && password && (confirmpassword === password)){
+        if(fullName && email && password && (confirmpassword === password)){
             setSuccessInfo(<div className='text-green-800 text-sm'>Registration Successfully</div>)
             setTimeout(() => {
                 window.open('http://localhost:5173/login')
