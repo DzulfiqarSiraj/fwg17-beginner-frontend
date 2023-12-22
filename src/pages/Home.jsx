@@ -19,27 +19,35 @@ const Home = () => {
     const [data, setData] = React.useState([
         {
             name: 'Coffee Parfaits',
-            price: 30000,
+            isDiscount: true,
+            bestPrice: 30000,
             image: CoffeeParfaitsImage,
-            description: 'We provide high quality beans, good taste, and healthy meals made by love just for you. Start your day with us for a bigger smile!'
+            description: 'We provide high quality beans, good taste, and healthy meals made by love just for you. Start your day with us for a bigger smile!',
+            isBestSeller: true
         },
         {
             name: 'Affogato',
-            price: 40000,
+            isDiscount: true,
+            bestPrice: 40000,
             image: AffogatoImage,
-            description: 'You can explore the menu that we provide with fun and have their own taste and make your day better. This product is premium coffee drink.'
+            description: 'You can explore the menu that we provide with fun and have their own taste and make your day better. This product is premium coffee drink.',
+            isBestSeller: false
         },
         {
             name: 'Fish and Chips',
-            price: 35000,
+            isDiscount: false,
+            bestPrice: 35000,
             image: FishAndChipsImage,
-            description: 'We provide high quality beans, good taste, and healthy meals made by love just for you. Start your day with us for a bigger smile!'
+            description: 'We provide high quality beans, good taste, and healthy meals made by love just for you. Start your day with us for a bigger smile!',
+            isBestSeller: true
         },
         {
             name: 'Cappucino',
-            price: 25000,
+            isDiscount: true,
+            bestPrice: 25000,
             image: CappucinoImage,
-            description: 'We provide high quality beans, good taste, and healthy meals made by love just for you. Start your day with us for a bigger smile!'
+            description: 'We provide high quality beans, good taste, and healthy meals made by love just for you. Start your day with us for a bigger smile!',
+            isBestSeller: true
         },
     ])
 
@@ -97,7 +105,7 @@ const Home = () => {
                     </section>
                     <div className="flex flex-1 flex-row w-screen justify-center">
                         <div className="grid grid-cols-2 md:grid-cols-4 mx-5 md:mx-32 justify-center gap-5">
-                            {data.map((item, index) => <ProductCard key={String(index)} image={item.image} name={item.name} description={item.description} price={item.price}/>)}
+                            {data.map((item, index) => <ProductCard key={String(index)} image={item.image} name={item.name} description={item.description} bestPrice={item.bestPrice} isDiscount={item.isDiscount} isBestSeller={item.isBestSeller}/>)}
                         </div>
                     </div>
                 </div>
