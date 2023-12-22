@@ -1,16 +1,43 @@
-import { Link } from 'react-router-dom'
+import React from 'react'
+import axios from 'axios'
+// import { Link } from 'react-router-dom'
 import motherImage from '../assets/icon/mother-fig.svg'
 import manImage from '../assets/icon/man-fig.svg'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import ProductCard from '../components/ProductCard.jsx'
 import { FaCircleChevronLeft } from "react-icons/fa6"
 import { FaCircleChevronRight } from "react-icons/fa6"
-import { FiShoppingCart } from "react-icons/fi"
+import { FiChevronRight } from "react-icons/fi";
 
 
 const Product = () => {
+
+    const [data, setData] = React.useState([{}])
+
+    const getProduct = async () => {
+        const res = await axios.get('http://localhost:8888/products')
+        console.log(res.data.results)
+        setData(res.data.results)
+    }
+
+    React.useEffect(()=>{
+        getProduct()
+    },[])
+
+
+    const [sidebarDisplay, setSidebarDisplay] = React.useState('hidden')
+
+    const sidebarButton = () => {
+        if(sidebarDisplay === 'hidden'){
+            setSidebarDisplay('flex')
+        } else if(sidebarDisplay === 'flex'){
+            setSidebarDisplay('hidden')
+        }
+    }
+    
     return (
-        <>        
+        <>
             <Navbar className="bg-black"/>
             {/* main */}
             <main className="flex flex-col w-screen h-fit overflow-hidden justify-center items-center">
@@ -82,175 +109,80 @@ const Product = () => {
                         </div>
             
                         <div className="flex flex-row gap-7">
-                            <aside className="flex flex-row w-80 h-fit bg-black rounded-3xl p-8 items-center">
-                                <form action="" className="flex flex-col w-full gap-6">
-                                    <div className="flex justify-between">
-                                        <span className="text-white font-bold tracking-wide">Filter</span>
-                                        <span className="text-white font-bold tracking-wide text-sm"><button type='reset'>Reset Filter</button></span>
-                                    </div>
-        
-                                    <div className="flex flex-col gap-2">
-                                        <label htmlFor="search" className="text-white font-bold tracking-wide text-sm">Search</label>
-                                        <input id="search" type="text" placeholder="Search Your Product" className="h-12 p-5 placeholder:text-sm rounded-md" />
-                                    </div>
-        
-                                    <div className="flex flex-col gap-4">
-                                        <span className="text-white font-bold tracking-wide text-sm">Category</span>
-                                        <div className="flex flex-row gap-3">
-                                            <input type="radio" id="favorite-product" name="category" value="favorite-product" className="" />
-                                            <label htmlFor="favorite-product" className="text-white">Favorite Product</label>
+                            <div className='fixed top-0 left-0 md:static flex flex-row h-fit z-20'>
+                                <aside className={`${sidebarDisplay} top-0 bottom-0 md:flex md:flex-row w-80 h-screen bg-black rounded-3xl pb-16 pt-32 px-5 md:p-8 items-center`}>
+                                    <form action="" className={`flex flex-col w-full gap-6`}>
+                                        <div className="flex justify-between">
+                                            <span className="text-white font-bold tracking-wide">Filter</span>
+                                            <span className="text-white font-bold tracking-wide text-sm"><button type='reset'>Reset Filter</button></span>
                                         </div>
-                                        <div className="flex flex-row gap-3">
-                                            <input type="radio" id="coffee" name="category" value="coffee" />
-                                            <label htmlFor="coffee" className="text-white">Coffee</label>
+            
+                                        <div className="flex flex-col gap-2">
+                                            <label htmlFor="search" className="text-white font-bold tracking-wide text-sm">Search</label>
+                                            <input id="search" type="text" placeholder="Search Your Product" className="h-12 p-5 placeholder:text-sm rounded-md" />
                                         </div>
-                                        <div className="flex flex-row gap-3">
-                                            <input type="radio" id="non-coffee" name="category" value="non-coffee" />
-                                            <label htmlFor="non-coffee" className="text-white">Non Coffee</label>
+            
+                                        <div className="flex flex-col gap-4">
+                                            <span className="text-white font-bold tracking-wide text-sm">Category</span>
+                                            <div className="flex flex-row gap-3">
+                                                <input type="radio" id="favorite-product" name="category" value="favorite-product" className="" />
+                                                <label htmlFor="favorite-product" className="text-white text-xs md:text-base">Favorite Product</label>
+                                            </div>
+                                            <div className="flex flex-row gap-3">
+                                                <input type="radio" id="coffee" name="category" value="coffee" />
+                                                <label htmlFor="coffee" className="text-white text-xs md:text-base">Coffee</label>
+                                            </div>
+                                            <div className="flex flex-row gap-3">
+                                                <input type="radio" id="non-coffee" name="category" value="non-coffee" />
+                                                <label htmlFor="non-coffee" className="text-white text-xs md:text-base">Non Coffee</label>
+                                            </div>
+                                            <div className="flex flex-row gap-3">
+                                                <input type="radio" id="foods" name="category" value="foods" />
+                                                <label htmlFor="foods" className="text-white text-xs md:text-base">Foods</label>
+                                            </div>
+                                            <div className="flex flex-row gap-3">
+                                                <input type="radio" id="add-on" name="category" value="add-on" />
+                                                <label htmlFor="add-on" className="text-white text-xs md:text-base">Add On</label>
+                                            </div>
                                         </div>
-                                        <div className="flex flex-row gap-3">
-                                            <input type="radio" id="foods" name="category" value="foods" />
-                                            <label htmlFor="foods" className="text-white">Foods</label>
+            
+                                        <div className="flex flex-col gap-4">
+                                            <span className="text-white font-bold tracking-wide text-sm">Sort By</span>
+                                            <div className="flex flex-row gap-3">
+                                                <input type="radio" id="buy-1-get-1" name="sort-by" value="buy-1-get-1" />
+                                                <label htmlFor="buy-1-get-1" className="text-white text-xs md:text-base">Buy One Get One</label>
+                                            </div>
+                                            <div className="flex flex-row gap-3">
+                                                <input type="radio" id="flash-sale" name="sort-by" value="flash-sale" />
+                                                <label htmlFor="flash-sale" className="text-white text-xs md:text-base">Flash Sale</label>
+                                            </div>
+                                            <div className="flex flex-row gap-3">
+                                                <input type="radio" id="birthday-package" name="sort-by" value="birthday-package" />
+                                                <label htmlFor="birthday-package" className="text-white text-xs md:text-base">Birthday Package</label>
+                                            </div>
+                                            <div className="flex flex-row gap-3">
+                                                <input type="radio" id="cheap" name="sort-by" value="cheap" />
+                                                <label htmlFor="cheap" className="text-white text-xs md:text-base">Cheap</label>
+                                            </div>
                                         </div>
-                                        <div className="flex flex-row gap-3">
-                                            <input type="radio" id="add-on" name="category" value="add-on" />
-                                            <label htmlFor="add-on" className="text-white">Add On</label>
+            
+                                        <div className="flex flex-col gap-4">
+                                            <span className="text-white font-bold tracking-wide text-sm">Range Price</span>
+                                            <input type="range" minLength="0" maxLength="1000" step="2" />
                                         </div>
-                                    </div>
-        
-                                    <div className="flex flex-col gap-4">
-                                        <span className="text-white font-bold tracking-wide text-sm">Sort By</span>
-                                        <div className="flex flex-row gap-3">
-                                            <input type="radio" id="buy-1-get-1" name="sort-by" value="buy-1-get-1" />
-                                            <label htmlFor="buy-1-get-1" className="text-white">Buy One Get One</label>
-                                        </div>
-                                        <div className="flex flex-row gap-3">
-                                            <input type="radio" id="flash-sale" name="sort-by" value="flash-sale" />
-                                            <label htmlFor="flash-sale" className="text-white">Flash Sale</label>
-                                        </div>
-                                        <div className="flex flex-row gap-3">
-                                            <input type="radio" id="birthday-package" name="sort-by" value="birthday-package" />
-                                            <label htmlFor="birthday-package" className="text-white">Birthday Package</label>
-                                        </div>
-                                        <div className="flex flex-row gap-3">
-                                            <input type="radio" id="cheap" name="sort-by" value="cheap" />
-                                            <label htmlFor="cheap" className="text-white">Cheap</label>
-                                        </div>
-                                    </div>
-        
-                                    <div className="flex flex-col gap-4">
-                                        <span className="text-white font-bold tracking-wide text-sm">Range Price</span>
-                                        <input type="range" minLength="0" maxLength="1000" step="2" />
-                                    </div>
-        
-                                    <button type="submit" className="text-black text-xs font-semibold px-4 py-3 box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">Apply Filter</button>
-                                </form>
-                            </aside>
+            
+                                        <button type="submit" className="text-black text-xs font-semibold px-4 py-3 box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">Apply Filter</button>
+                                    </form>
+                                </aside>
+                                {/* sidebar button */}
+                                <div onClick={sidebarButton} className={`fixed bottom-0 right-0 md:hidden flex flex-row self-center items-center justify-center bg-black h-10 w-5 rounded-l-xl`}>
+                                <FiChevronRight className='text-white'/>
+                                </div>
+                            </div>
         
                             <div className="flex flex-col flex-1 gap-10 items-center">
-                                <div className="w-full grid grid-cols-2 gap-7">
-                                    {/* product-card-1 */}
-                                    <div id="product-card" className="flex flex-col bg-white w-full h-[31rem] relative">
-                                        <span className=" text-white font-semibold absolute top-4 left-4 bg-red-700 px-4 py-2 rounded-full">FLASH SALE!</span>
-                                        <div className="bg-[url('../assets/fav-img-3.jpg')] bg-no-repeat bg-contain bg-top h-3/4"></div>
-                                        <div className="flex flex-col self-center flex-1 bg-white w-11/12 absolute bottom-0 box-border p-3 gap-3 shadow-md">
-                                            <h2 className="text-xl">Fish and Cheaps</h2>
-                                            <p className="text-gray-600 text-xs tracking-wide">You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
-                                            <div className="flex flex-row gap-4 items-center">
-                                                <span className="text-red-600 text-xs"><del>IDR 35.000,-</del></span>
-                                                <span className="text-orange-500 text-xl">IDR 10.000</span>
-                                            </div>
-                                            <div className="flex flex-row h-10 gap-3">
-                                                <Link to={'/detail-product'} className="flex flex-1 justify-center text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><button type="button" className='flex-1'>Buy</button></Link>
-                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><FiShoppingCart className="w-5"/></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {/* product-card-2 */}
-                                    <div className="flex flex-col bg-white w-full h-[31rem] relative">
-                                        <span className=" text-white font-semibold absolute top-4 left-4 bg-red-700 px-4 py-2 rounded-full">FLASH SALE!</span>
-                                        <div className="bg-[url('../assets/fav-img-1.jpg')] bg-no-repeat bg-contain bg-top h-3/4"></div>
-                                        <div className="flex flex-col self-center flex-1 bg-white w-11/12 absolute bottom-0 box-border p-3 gap-3 shadow-md">
-                                            <h2 className="text-xl">Coffee Parfaits</h2>
-                                            <p className="text-gray-600 text-xs tracking-wide">You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
-                                            <div className="flex flex-row gap-4 items-center">
-                                                <span className="text-red-600 text-xs"><del>IDR 30.000,-</del></span>
-                                                <span className="text-orange-500 text-xl">IDR 10.000</span>
-                                            </div>
-                                            <div className="flex flex-row h-10 gap-3">
-                                            <Link to={'/detail-product'} className="flex flex-1 justify-center text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><button type="button" className='flex-1'>Buy</button></Link>
-                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><FiShoppingCart className="w-5"/></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {/* product-card-3 */}
-                                    <div id="product-card" className="flex flex-col bg-white w-full h-[31rem] relative">
-                                        <span className=" text-white font-semibold absolute top-4 left-4 bg-red-700 px-4 py-2 rounded-full">FLASH SALE!</span>
-                                        <div className="bg-[url('../assets/fav-img-2.jpg')] bg-no-repeat bg-contain bg-top h-3/4"></div>
-                                        <div className="flex flex-col self-center flex-1 bg-white w-11/12 absolute bottom-0 box-border p-3 gap-3 shadow-md">
-                                            <h2 className="text-xl">Affogato</h2>
-                                            <p className="text-gray-600 text-xs tracking-wide">You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
-                                            <div className="flex flex-row gap-4 items-center">
-                                                <span className="text-red-600 text-xs"><del>IDR 20.000</del></span>
-                                                <span className="text-orange-500 text-xl">IDR 40.000,-</span>
-                                            </div>
-                                            <div className="flex flex-row h-10 gap-3">
-                                            <Link to={'/detail-product'} className="flex flex-1 justify-center text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><button type="button" className='flex-1'>Buy</button></Link>
-                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><FiShoppingCart className="w-5"/></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {/* product-card-4 */}
-                                    <div className="flex flex-col bg-white w-full h-[31rem] relative">
-                                        <span className=" text-white font-semibold absolute top-4 left-4 bg-red-700 px-4 py-2 rounded-full">FLASH SALE!</span>
-                                        <div className="bg-[url('../assets/fav-img-4.jpg')] bg-no-repeat bg-contain bg-top h-3/4"></div>
-                                        <div className="flex flex-col self-center flex-1 bg-white w-11/12 absolute bottom-0 box-border p-3 gap-3 shadow-md">
-                                            <h2 className="text-xl">Cappuccino</h2>
-                                            <p className="text-gray-600 text-xs tracking-wide">You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
-                                            <div className="flex flex-row gap-4 items-center">
-                                                <span className="text-red-600 text-xs"><del>IDR 25.000,-</del></span>
-                                                <span className="text-orange-500 text-xl">IDR 10.000</span>
-                                            </div>
-                                            <div className="flex flex-row h-10 gap-3">
-                                            <Link to={'/detail-product'} className="flex flex-1 justify-center text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><button type="button" className='flex-1'>Buy</button></Link>
-                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><FiShoppingCart className="w-5"/></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {/* product-card-5 */}
-                                    <div id="product-card" className="flex flex-col bg-white w-full h-[31rem] relative">
-                                        <span className=" text-white font-semibold absolute top-4 left-4 bg-red-700 px-4 py-2 rounded-full">FLASH SALE!</span>
-                                        <div className="bg-[url('../assets/fav-img-5.jpg')] bg-no-repeat bg-contain bg-top h-3/4"></div>
-                                        <div className="flex flex-col self-center flex-1 bg-white w-11/12 absolute bottom-0 box-border p-3 gap-3 shadow-md">
-                                            <h2 className="text-xl">Espresso</h2>
-                                            <p className="text-gray-600 text-xs tracking-wide">You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
-                                            <div className="flex flex-row gap-4 items-center">
-                                                <span className="text-red-600 text-xs"><del>IDR 25.000,-</del></span>
-                                                <span className="text-orange-500 text-xl">IDR 10.000</span>
-                                            </div>
-                                            <div className="flex flex-row h-10 gap-3">
-                                            <Link to={'/detail-product'} className="flex flex-1 justify-center text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><button type="button" className='flex-1'>Buy</button></Link>
-                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><FiShoppingCart className="w-5"/></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {/* product-card-6 */}
-                                    <div className="flex flex-col bg-white w-full h-[31rem] relative">
-                                        <span className=" text-white font-semibold absolute top-4 left-4 bg-red-700 px-4 py-2 rounded-full">FLASH SALE!</span>
-                                        <div className="bg-[url('../assets/fav-img-6.jpg')] bg-no-repeat bg-contain bg-top h-3/4"></div>
-                                        <div className="flex flex-col self-center flex-1 bg-white w-11/12 absolute bottom-0 box-border p-3 gap-3 shadow-md">
-                                            <h2 className="text-xl">Rice Bowl</h2>
-                                            <p className="text-gray-600 text-xs tracking-wide">You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
-                                            <div className="flex flex-row gap-4 items-center">
-                                                <span className="text-red-600 text-xs"><del>IDR 25.000</del></span>
-                                                <span className="text-orange-500 text-xl">IDR 10.000</span>
-                                            </div>
-                                            <div className="flex flex-row h-10 gap-3">
-                                            <Link to={'/detail-product'} className="flex flex-1 justify-center text-black text-xs font-semibold tracking-wide box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><button type="button" className='flex-1'>Buy</button></Link>
-                                                <button type="button" className="flex justify-center items-center text-orange-500 w-14 px-2 box-border border border-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><FiShoppingCart className="w-5"/></button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div className="w-full grid grid-cols-2 gap-7 h-fit">
+                                    {data.map((item) => <ProductCard key={item.id} image={item.image} name={item.name} description={item.description} basePrice={item.basePrice} isDiscount={item.isDiscount} isBestSeller={item.isBestSeller}/>)}
                                 </div>
 
                                 <div className="flex flex-row gap-4">
