@@ -1,29 +1,43 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import axios from "axios"
+import { Link, useParams } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
-import CappuccinoImage from '../assets/fav-img-4.jpg'
-import CappuccinoImage1 from '../assets/image-32.jpg'
-import CappuccinoImage2 from '../assets/image-33.jpg'
-import CappuccinoImage3 from '../assets/image-34.jpg'
 import { FaStar } from "react-icons/fa6";
 import { FaCircleChevronRight } from "react-icons/fa6"
 import { FiShoppingCart } from "react-icons/fi"
+import CoffeeBeanImage from '../assets/coffeebean.jpg'
 
+// eslint-disable-next-line react/prop-types
 const DetailProduct = () => {
+    
+    const [data, setData] = React.useState(null)
+    const {id} = useParams();
+    console.log(id)
+    
+    const getProduct = async () => {
+        const res = await axios.get(`http://localhost:8888/products/${id}`)
+        console.log(res.data.results)
+        setData(res.data.results)
+    }
 
-    const [result, setResult] = React.useState(0)
+    React.useEffect(()=>{
+        getProduct()
+    },[])
+
+
+    const [quantity, setQuantity] = React.useState(0)
 
     const decButton = () => {
-        if(result <= 0) {
-            setResult(0)
+        if(quantity <= 0) {
+            setQuantity(0)
         } else {
-            setResult(result - 1)
+            setQuantity(   quantity - 1)
         }
     }
 
     const addButton = () => {
-        setResult(result + 1)
+        setQuantity(   quantity + 1)
     }
 
 
@@ -35,25 +49,25 @@ const DetailProduct = () => {
                 {/* <!-- column-1 --> */}
                 <div className="flex w-full flex-row gap-5"> {/*<!-- left--> */}
                     <div className="flex w-2/4 flex-col gap-5">
-                        <div className="w-full"><img className="w-full" src={CappuccinoImage} alt="" /></div>
+                        <div className="w-full"><img className="w-full" id={data?.id} src={data?.image !== null && data?.image !== '' ? `http://localhost:8888/uploads/products/${data?.image}` : CoffeeBeanImage} alt=""/></div>
                         <div className="flex flex-row gap-5">
                             <div className="flex-1">
-                                <img className="w-full" src={CappuccinoImage1} alt="" />
+                                <img className="w-full" src={data?.image !== null && data?.image !== '' ? `http://localhost:8888/uploads/products/${data?.image}` : CoffeeBeanImage} alt="" />
                             </div>
                             <div className="flex-1">
-                                <img className="w-full" src={CappuccinoImage2} alt="" />
+                                <img className="w-full" src={data?.image !== null && data?.image !== '' ? `http://localhost:8888/uploads/products/${data?.image}` : CoffeeBeanImage} alt="" />
                             </div>
                             <div className="flex-1">
-                                <img className="w-full" src={CappuccinoImage3} alt="" />
+                                <img className="w-full" src={data?.image !== null && data?.image !== '' ? `http://localhost:8888/uploads/products/${data?.image}` : CoffeeBeanImage} alt="" />
                             </div>
                         </div>
                     </div>
         
                     <div className="flex flex-col flex-1 bg-white gap-5"> {/*<!-- right --> */}
                         <span className="text-sm text-white font-semibold tracking-wide bg-red-600 w-fit py-2 px-3 rounded-full">FLASH SALE!</span>
-                        <h1 className="font-medium text-5xl tracking-wide">Cappuccino</h1>
+                        <h1 className="font-medium text-5xl tracking-wide">{data?.name}</h1>
                         <div className="flex flex-row gap-3 items-center">
-                            <span className="text-red-700"><del>IDR 25.000,-</del></span>
+                            <span className="text-red-700"><del>Idr {data?.basePrice.toLocaleString('id')},-</del></span>
                             <span className="text-xl text-orange-500 font-medium">IDR 10.000,-</span>
                         </div>
                         <div className="flex flex-row gap-3 items-center h-3 mb-2">
@@ -67,14 +81,14 @@ const DetailProduct = () => {
                         <div className="flex flex-row gap-4 items-start">
                             <div className="flex flex-row divide-x-2 gap-4 divide-gray-600">
                                 <span className="text-gray-600">200+ Review</span>
-                                <span className="text-gray-600 pl-4">Recommendation</span>
+                                {data?.isBestSeller && <span className="text-gray-600 pl-4">Recommendation</span>}
                             </div>
                             <i className="text-orange-500 w-5 self-start box-border pb-1" data-feather="thumbs-up"></i>
                         </div>
-                        <p className="text-gray-600">Cold brewing is a method of brewing that combines ground coffee and cool water and uses time instead of heat to extract the flavor. It is brewed in small batches and steeped for as long as 48 hours</p>
+                        <p className="text-gray-600">{data?.description}</p>
                         <div className="h-9 w-fit flex flex-row border rounded-md border-gray-3">
                             <div onClick={decButton} id="substract-button" className="flex w-9 text-lg font-semibold justify-center items-center border border-orange-500 rounded-md hover:bg-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">-</div>
-                            <div id="quantity-number" className="flex w-10 text-lg font-semibold justify-center items-center">{result}</div>
+                            <div id="quantity-number" className="flex w-10 text-lg font-semibold justify-center items-center">{quantity}</div>
                             <div onClick={addButton} id="add-button" className="flex w-9 text-lg font-semibold justify-center items-center border border-orange-500 rounded-md hover:bg-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">+</div>
                         </div>
         
