@@ -17,7 +17,8 @@ const Product = () => {
 
     const getProduct = async () => {
         const res = await axios.get('http://localhost:8888/products')
-        console.log(res.data.results)
+        console.log(res.data)
+        console.log(res.data.results[0])
         setData(res.data.results)
     }
 
@@ -182,7 +183,7 @@ const Product = () => {
         
                             <div className="flex flex-col flex-1 gap-10 items-center">
                                 <div className="w-full grid grid-cols-2 gap-7 h-fit">
-                                    {data.map((item) => <ProductCard key={item.id} image={item.image} name={item.name} description={item.description} basePrice={item.basePrice} isDiscount={item.isDiscount} isBestSeller={item.isBestSeller}/>)}
+                                    {data.map((item) => <ProductCard key={item.id} id={item.id} image={item.image} name={item.name} description={item.description} basePrice={item.basePrice} isDiscount={item.isDiscount} isBestSeller={item.isBestSeller}/>)}
                                 </div>
 
                                 <div className="flex flex-row gap-4">
