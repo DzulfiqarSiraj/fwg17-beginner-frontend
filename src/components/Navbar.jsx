@@ -61,8 +61,8 @@ function Navbar (props) {
                     <li className="md:hidden flex text-white text-sm items-center hover:border-b-2 hover:border-b-orange-500"><Link to='/product'>Product</Link></li>
                     <li className="md:hidden flex text-white text-sm items-center hover:border-b-2 hover:border-b-orange-500"><Link to='/'>Home</Link></li>
                     <li className='flex flex-row gap-4'>
-                        <div className="text-white text-xs px-5 py-2 box-border border border-white rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Link to={'/login'}><Button text='Sign In' /></Link></div>
-                        <div className="text-black text-xs px-5 py-2 box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Link to={'/register'}><Button text='Sign Up' /></Link></div>
+                        <Link to={'/login'}><div className="text-white text-xs px-5 py-2 box-border border border-white rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Button text='Sign In' /></div></Link>
+                        <Link to={'/register'}><div className="text-black text-xs px-5 py-2 box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Button text='Sign Up' /></div></Link>
                     </li>
                 </ul>
             </div>
