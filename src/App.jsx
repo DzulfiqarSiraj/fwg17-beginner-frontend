@@ -32,7 +32,7 @@ const router = createBrowserRouter([
         element: <Product />,
     },
     {
-        path: '/detail-product',
+        path: '/:id',
         element: <DetailProduct />
     },
     {
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
     {
         path: '/profile',
         element: <Profile />
-    },
+    }
 ]);
 
 const App = () => {
