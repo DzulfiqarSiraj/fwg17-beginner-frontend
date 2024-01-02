@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import EmailInput from '../components/EmailInput.jsx';
 import PasswordInput from '../components/PasswordInput.jsx';
@@ -12,6 +12,15 @@ const Login = () => {
     const [loginInfo, setLoginInfo] = React.useState('')
     const [emailInfo, setEmailInfo] = React.useState('')
     const [passwordInfo, setPasswordInfo] = React.useState('')
+    const [token, setToken] = React.useState(window.localStorage.getItem('token'))
+    const [successMessage, setSuccessMessage] = React.useState(null)
+    const navigate = useNavigate()
+
+    React.useEffect(()=>{
+        if(token){
+            navigate('/')
+        }
+    },[token, navigate])
 
     const LoginProcess = async (e) => {
         e.preventDefault()
@@ -34,14 +43,18 @@ const Login = () => {
 
             const {data} = await axios.post('http://localhost:8888/auth/login', form.toString())
 
+            setSuccessMessage(data.message)
 
-            if(email && password){
-                if(data.success === true){
-                    setLoginInfo(<div className='flex flex-1 text-green-700'>Login Success</div>)
-                    setTimeout(()=>{
-                        window.location = '/'
-                    },2000)
-                }
+            const {token: resultToken} = data.results
+            
+            
+            if(email && password && successMessage){
+                setLoginInfo(<div className='flex flex-1 text-green-700'>{successMessage}</div>)
+                setTimeout(()=>{
+                    setToken(resultToken)
+                    window.localStorage.setItem('token', resultToken)
+                    navigate('/')
+                },2000)
             }
         }catch(err){
             if(err.message === 'input empty') {

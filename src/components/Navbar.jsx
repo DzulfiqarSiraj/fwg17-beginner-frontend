@@ -12,6 +12,21 @@ function Navbar (props) {
     const {className} = props;
     const [top, setTop] = React.useState('-top-[500px]')
     const [searchDisplay, setSearchDisplay] = React.useState('hidden')
+    const [showLogout, setShowLogout] = React.useState('hidden')
+    const [token, setToken] = React.useState(window.localStorage.getItem('token'))
+
+    const profileButton = () => {
+        if(showLogout === 'hidden'){
+            setShowLogout('flex')
+        } else if(showLogout === 'flex'){
+            setShowLogout('hidden')
+        }
+    }
+
+    const onLogout = () => {
+        setToken(null)
+        window.localStorage.removeItem('token')
+    }
 
     const searchButton = (e) => {
         e.preventDefault()
@@ -46,7 +61,7 @@ function Navbar (props) {
                 </ul>
             </div>
             <div className={`absolute ${className} ${top} right-0 left-0 transition-all duration-300 md:static flex flex-row flex-1 items-center justify-center md:justify-end md:pr-28`}>
-                <ul className={`flex flex-col-reverse md:static md:flex-row gap-6 items-center py-5 md:py-0`}>
+                <ul className={`flex flex-col-reverse md:static md:flex-row gap-3 md:gap-6 items-center py-5 md:py-0`}>
                     <li className='flex flex-row-reverse gap-6 items-center'>
                         <form className='flex flex-row-reverse items-center gap-2' action="">
                             <div onClick={searchButton}>
@@ -60,10 +75,15 @@ function Navbar (props) {
                     </li>
                     <li className="md:hidden flex text-white text-sm items-center border-b-2 border-b-transparent hover:border-b-orange-500 py-1"><Link to='/products'>Product</Link></li>
                     <li className="md:hidden flex text-white text-sm items-center border-b-2 border-b-transparent hover:border-b-orange-500 py-1"><Link to='/'>Home</Link></li>
+                    {token ? 
+                    <li className='flex flex-col items-center md:relative gap-3'>
+                        <div onClick={profileButton} className='bg-white w-7 h-7 cursor-pointer rounded-full'></div>
+                        <Button onClick={onLogout} text='Logout' className={`md:${showLogout} md:absolute -bottom-8 bg-orange-500 text-xs py-1 px-2 md:left-1/2 md:-translate-x-1/2`}/>
+                        </li> : 
                     <li className='flex flex-row gap-4'>
                         <Link to={'/login'}><div className="text-white text-xs px-5 py-2 box-border border border-white rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Button text='Sign In' /></div></Link>
                         <Link to={'/register'}><div className="text-black text-xs px-5 py-2 box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Button text='Sign Up' /></div></Link>
-                    </li>
+                    </li>}
                 </ul>
             </div>
         </nav>
