@@ -9,16 +9,42 @@ import ProductCard from '../components/ProductCard.jsx'
 import { FaCircleChevronLeft } from "react-icons/fa6"
 import { FaCircleChevronRight } from "react-icons/fa6"
 import { FiChevronRight } from "react-icons/fi";
+import PaginationButton from '../components/PaginationButton.jsx'
 
 
 const Product = () => {
 
     const [data, setData] = React.useState([{}])
+    const [pageInfo, setPageInfo] = React.useState(null)
+    const [showPaginationButton, setShowPaginationButton] = React.useState([])
 
-    const getProduct = async () => {
-        const res = await axios.get('http://localhost:8888/products')
+    const getProduct = async (page) => {
+        let res
+        if(page === 'previous'){
+            res = await axios.get('http://localhost:8888/products',{params: {
+                page: pageInfo.prevPage
+            }})
+        }else if(page === 'next'){
+            res = await axios.get('http://localhost:8888/products',{params: {
+                page: pageInfo.nextPage
+            }})
+        }else{
+            res = await axios.get('http://localhost:8888/products')
+        }
+        
         console.log(res.data)
-        console.log(res.data.results[0])
+        console.log(res.data.pageInfo)
+
+        let paginationButton = []
+        
+        for(let i = 1; i <= (res.data.pageInfo.totalPage); i++){
+            paginationButton.push({text: i})
+        }
+        
+        console.log(paginationButton)
+        
+        setShowPaginationButton(paginationButton.map((item,index) => <PaginationButton key={index} text={item.text} className={item.text === res.data.pageInfo.currentPage? 'bg-orange-500' : 'bg-gray-300'}/>))
+        setPageInfo(res.data.pageInfo)
         setData(res.data.results)
     }
 
@@ -183,15 +209,13 @@ const Product = () => {
         
                             <div className="flex flex-col flex-1 gap-10 items-center">
                                 <div className="w-full grid grid-cols-2 gap-7 h-fit">
-                                    {data.map((item) => <ProductCard key={item.id} id={item.id} image={item.image} name={item.name} description={item.description} basePrice={item.basePrice} isDiscount={item.isDiscount} isBestSeller={item.isBestSeller}/>)}
+                                    {data.map((item) => <ProductCard key={item.id} id={item.id} image={item.image} name={item.name} description={item.description} basePrice={item.basePrice} discount={item.discount} isBestSeller={item.isBestSeller}/>)}
                                 </div>
 
                                 <div className="flex flex-row gap-4">
-                                    <div className="flex justify-center items-center text-base bg-orange-500 w-9 h-9 rounded-full hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">1</div>
-                                    <div className="flex justify-center items-center text-base bg-gray-300 w-9 h-9 rounded-full hover:bg-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">2</div>
-                                    <div className="flex justify-center items-center text-base bg-gray-300 w-9 h-9 rounded-full hover:bg-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">3</div>
-                                    <div className="flex justify-center items-center text-base bg-gray-300 w-9 h-9 rounded-full hover:bg-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">4</div>
-                                    <FaCircleChevronRight className="fa-solid fa-circle-chevron-right text-4xl text-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/>
+                                    <button type='button' onClick={() => getProduct('previous')}><FaCircleChevronLeft className="fa-solid fa-circle-chevron-right text-4xl text-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/></button>
+                                    {showPaginationButton}
+                                    <button type='button' onClick={() => getProduct('next')}><FaCircleChevronRight className="fa-solid fa-circle-chevron-right text-4xl text-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/></button>
                                 </div>
                             
                             </div>

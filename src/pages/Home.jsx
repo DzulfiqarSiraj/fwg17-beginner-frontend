@@ -1,62 +1,42 @@
 import React from 'react'
+import axios from 'axios'
 import WorldMapImage from '../assets/Huge Globalmap.svg'
 import ShopManagerImage from '../assets/shop-manager.jpg'
 import Navbar from '../components/Navbar.jsx'
 import Footer from '../components/Footer.jsx'
 import ProductCard from '../components/ProductCard.jsx'
-import CoffeeParfaitsImage from '../assets/fav-img-1.jpg'
-import AffogatoImage from '../assets/fav-img-2.jpg'
-import FishAndChipsImage from '../assets/fav-img-3.jpg'
-import CappucinoImage from '../assets/fav-img-4.jpg'
 import { FaCircleCheck } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa6";
 import { FaCircleChevronLeft } from "react-icons/fa6"
 import { FaCircleChevronRight } from "react-icons/fa6"
 
+
+export const getBestSellerProduct = async (cb, data) => {
+    const {data: response} = await axios.get('https://localhost:8888/products',{
+        params: {
+            bestSeller: true,
+            limit: data?.limit || 6
+        }
+    })
+    if(response.results){
+        cb(response.results)
+    }
+}
+
 const Home = () => {
 
-    // eslint-disable-next-line no-unused-vars
-    const [data, setData] = React.useState([
-        {
-            name: 'Coffee Parfaits',
-            isDiscount: true,
-            bestPrice: 30000,
-            image: CoffeeParfaitsImage,
-            description: 'We provide high quality beans, good taste, and healthy meals made by love just for you. Start your day with us for a bigger smile!',
-            isBestSeller: true
-        },
-        {
-            name: 'Affogato',
-            isDiscount: true,
-            bestPrice: 40000,
-            image: AffogatoImage,
-            description: 'You can explore the menu that we provide with fun and have their own taste and make your day better. This product is premium coffee drink.',
-            isBestSeller: false
-        },
-        {
-            name: 'Fish and Chips',
-            isDiscount: false,
-            bestPrice: 35000,
-            image: FishAndChipsImage,
-            description: 'We provide high quality beans, good taste, and healthy meals made by love just for you. Start your day with us for a bigger smile!',
-            isBestSeller: true
-        },
-        {
-            name: 'Cappucino',
-            isDiscount: true,
-            bestPrice: 25000,
-            image: CappucinoImage,
-            description: 'We provide high quality beans, good taste, and healthy meals made by love just for you. Start your day with us for a bigger smile!',
-            isBestSeller: true
-        },
-    ])
+    const [data, setData] = React.useState([])
+
+    React.useEffect(()=>{
+        getBestSellerProduct(setData, {limit: 4})
+    },[])
 
     return(
         <>
             <Navbar className="bg-[#00000033]"/>
             <main className="flex flex-col w-screen h-fit bg-white">
                 {/* column 1 */}
-                <div className="flex flex-col-reverse md:flex-row h-screen w-full">
+                <div className="flex flex-col md:flex-row h-screen w-full">
                     <div className="flex flex-1 justify-center items-center bg-gradient-to-b from-gray-700 to-gray-950 pt-12 pb-5">
                         <section className="flex flex-col items-start box-border md:mx-28 px-12 py-4 gap-4">
                             <h1 className="text-4xl font-semibold text-white tracking-wide">Start Your Day with Coffee and Good Meals</h1>
@@ -78,7 +58,7 @@ const Home = () => {
                             </div>
                         </section>
                     </div>
-                    <div className="bg-[url('../assets/bg-home-col1.jpg')] flex-1 bg-center bg-cover"></div>
+                    <div className="bg-[url('../assets/bg-home-col1.jpg')] h-1/3 md:h-full md:flex-1 bg-center bg-cover"></div>
                 </div>
 
                 {/* column 2 */}
@@ -104,8 +84,8 @@ const Home = () => {
                         <p className="inline-block text-xs text-center text-gray-600 md:px-0 px-10">Let&apos;s choose and have a bit taste of people&apos;s favorite. It might be yours too!</p>
                     </section>
                     <div className="flex flex-1 flex-row w-screen justify-center">
-                        <div className="grid grid-cols-2 md:grid-cols-4 mx-5 md:mx-32 justify-center gap-5">
-                            {data.map((item, index) => <ProductCard key={String(index)} image={item.image} name={item.name} description={item.description} bestPrice={item.bestPrice} isDiscount={item.isDiscount} isBestSeller={item.isBestSeller}/>)}
+                        <div className={`flex flex-col md:flex-row mx-5 md:mx-32 justify-center gap-5`}>
+                            {data.map((item) => <ProductCard key={item.id} id={item.id} image={item.image} name={item.name} description={item.description} basePrice={item.basePrice} discount={item.discount} isBestSeller={item.isBestSeller}/>)}
                         </div>
                     </div>
                 </div>

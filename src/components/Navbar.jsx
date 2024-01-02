@@ -40,8 +40,8 @@ function Navbar (props) {
                             <span className="font-sacramento text-white text-lg">Coffee Shop</span>
                         </Link>
                     </li>
-                    <li className="hidden md:flex text-white text-sm items-center hover:border-b-2 hover:border-b-orange-500"><Link to='/'>Home</Link></li>
-                    <li className=" hidden md:flex text-white text-sm items-center hover:border-b-2 hover:border-b-orange-500"><Link to='/product'>Product</Link></li>
+                    <li className="hidden md:flex text-white text-sm items-center border-b-2 border-b-transparent hover:border-b-orange-500 py-1"><Link to='/'>Home</Link></li>
+                    <li className=" hidden md:flex text-white text-sm items-center border-b-2 border-b-transparent hover:border-b-orange-500 py-1"><Link to='/products'>Product</Link></li>
                     <li className='flex items-center md:hidden'><TbMenu2 onClick={menuToggling} className='text-4xl text-white'/></li>
                 </ul>
             </div>
@@ -58,8 +58,8 @@ function Navbar (props) {
                         </div>
                         <div className="hover:border-b-2 hover:border-b-orange-500 hover:pb-1.5"><a href=""><FiShoppingCart className='text-lg text-white'/></a></div>
                     </li>
-                    <li className="md:hidden flex text-white text-sm items-center hover:border-b-2 hover:border-b-orange-500"><Link to='/product'>Product</Link></li>
-                    <li className="md:hidden flex text-white text-sm items-center hover:border-b-2 hover:border-b-orange-500"><Link to='/'>Home</Link></li>
+                    <li className="md:hidden flex text-white text-sm items-center border-b-2 border-b-transparent hover:border-b-orange-500 py-1"><Link to='/products'>Product</Link></li>
+                    <li className="md:hidden flex text-white text-sm items-center border-b-2 border-b-transparent hover:border-b-orange-500 py-1"><Link to='/'>Home</Link></li>
                     <li className='flex flex-row gap-4'>
                         <Link to={'/login'}><div className="text-white text-xs px-5 py-2 box-border border border-white rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Button text='Sign In' /></div></Link>
                         <Link to={'/register'}><div className="text-black text-xs px-5 py-2 box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Button text='Sign Up' /></div></Link>
