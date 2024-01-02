@@ -9,6 +9,7 @@ import CheckoutProduct from './pages/CheckoutProduct';
 import HistoryOrder from './pages/HistoryOrder';
 import DetailOrder from './pages/DetailOrder';
 import Profile from './pages/Profile';
+import PrivateRoot from './components/PrivateRoot';
 
 const router = createBrowserRouter([
     {
@@ -49,7 +50,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/profile',
-        element: <Profile />
+        element: <PrivateRoot><Profile /></PrivateRoot>
     }
 ]);
 
