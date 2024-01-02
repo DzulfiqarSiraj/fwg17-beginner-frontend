@@ -1,6 +1,9 @@
 import { FiMapPin } from "react-icons/fi";
 
-const AddressInput = () => {
+const AddressInput = (props) => {
+
+    // eslint-disable-next-line react/prop-types
+    const {defaultValue} = props
     return (
         <label htmlFor="address" className="flex flex-col gap-2">
             <span className="font-semibold text-lg">Address</span>
@@ -8,7 +11,7 @@ const AddressInput = () => {
                 <div>
                     <FiMapPin className="text-gray-500" />
                 </div>
-                <input className="flex-1 outline-none placeholder:text-sm placeholder:text-gray-500" id="address" type="text" name="address" placeholder="Enter Your Address" autoComplete="on"/>
+                <textarea defaultValue={defaultValue} className="flex-1 outline-none placeholder:text-sm placeholder:text-gray-500" id="address" name="address" placeholder="Enter Your Address" autoComplete="on"/>
             </div>
         </label>
     )

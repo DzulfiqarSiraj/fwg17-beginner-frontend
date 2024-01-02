@@ -4,7 +4,7 @@ import { FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 const PasswordInput = (props) => {
 
     // eslint-disable-next-line react/prop-types
-    const {text, placeholder, id, name} = props
+    const {text, placeholder, id, name, defaultValue} = props
 
     const [type, setType] = React.useState('password');
     const [icon, setIcon] = React.useState(<FiEyeOff className='text-gray-500'/>);
@@ -27,7 +27,7 @@ const PasswordInput = (props) => {
                 <div>
                     <FiLock className='text-gray-500'/>
                 </div>
-                <input className="flex-1 outline-none placeholder:text-sm placeholder:text-gray-500" id={id} type={type} name={name} placeholder={`${placeholder}`} autoComplete='on'/>
+                <input defaultValue={defaultValue} className="flex-1 outline-none placeholder:text-sm placeholder:text-gray-500" id={id} type={type} name={name} placeholder={`${placeholder}`} autoComplete='on'/>
                 <div className="flex items-center">
                     <button onClick={handleToggle} type="button">
                        {icon} 

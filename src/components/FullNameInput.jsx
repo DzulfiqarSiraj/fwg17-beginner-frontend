@@ -1,6 +1,8 @@
 import { FiUser } from "react-icons/fi";
 
-const FullNameInput = () => {
+const FullNameInput = (props) => {
+    // eslint-disable-next-line react/prop-types
+    const {defaultValue} = props
 
     return (
         <label htmlFor="fullName" className="flex flex-col gap-2">
@@ -9,7 +11,7 @@ const FullNameInput = () => {
                 <div>
                     <FiUser className="text-gray-500" />
                 </div>
-                <input className="flex-1 outline-none placeholder:text-sm placeholder:text-gray-500" id="fullName" type="text" name="fullName" placeholder="Enter Your Full Name" autoComplete="on"/>
+                <input defaultValue={defaultValue} className="flex-1 outline-none placeholder:text-sm placeholder:text-gray-500" id="fullName" type="text" name="fullName" placeholder="Enter Your Full Name" autoComplete="on"/>
             </div>
         </label>
     )

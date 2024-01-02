@@ -1,6 +1,8 @@
 import { FiMail } from "react-icons/fi";
 
-const EmailInput = () => {
+const EmailInput = (props) => {
+    // eslint-disable-next-line react/prop-types
+    const {defaultValue} = props
     return (
         <label htmlFor="email" className="flex flex-col gap-2">
             <span className="font-semibold text-lg">Email</span>
@@ -8,7 +10,7 @@ const EmailInput = () => {
                 <div>
                     <FiMail className="text-gray-500" />
                 </div>
-                <input className="flex-1 outline-none placeholder:text-sm placeholder:text-gray-500" id="email" type="email" name="email" placeholder="Enter Your Email" autoComplete="on"/>
+                <input defaultValue={defaultValue} className="flex-1 outline-none placeholder:text-sm placeholder:text-gray-500" id="email" type="email" name="email" placeholder="Enter Your Email" autoComplete="on"/>
             </div>
         </label>
     )
