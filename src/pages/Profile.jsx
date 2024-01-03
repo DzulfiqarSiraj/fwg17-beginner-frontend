@@ -8,7 +8,7 @@ import PasswordInput from '../components/PasswordInput'
 import PhoneNumberInput from '../components/PhoneNumberInput'
 import AddressInput from '../components/AddressInput'
 import Button from '../components/Button'
-import ProfilPhoto from '../assets/redranger.jpg'
+import { FiUser } from "react-icons/fi";
 
 const Profile = () => {
 
@@ -79,7 +79,7 @@ const Profile = () => {
                             <span className="text-3xl md:text-xl font-semibold tracking-wide">{user.fullName}</span>
                             <span className='text-base md:text-xs'>{user.email}</span>
                             <div className='flex rounded-full overflow-hidden mb-2'>
-                                <img src={ProfilPhoto} className='w-full'/>
+                                {user?.pictures !== null && user?.pictures !== '' ? <img id={user?.id} src={ `http://localhost:8888/uploads/users/${user?.pictures}`} className='max-w-[9rem] w-full'/> : <FiUser className='text-9xl'/>}
                             </div>
                             <button className="flex h-10 text-xs px-10 justify-center items-center border border-orange-500 bg-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">Upload New Photo</button>
                             <span className='text-xs'>Since <strong>20 January 2022</strong></span>

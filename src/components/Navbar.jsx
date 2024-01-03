@@ -1,21 +1,34 @@
 import React from 'react';
+import axios from 'axios';
 import {Link, useNavigate} from 'react-router-dom'
 import CoffeeShopLogo from '../assets/icon/coffee-white-icon.svg';
 import {FiSearch,FiShoppingCart} from 'react-icons/fi'
 import Button from './Button';
 import { TbMenu2 } from "react-icons/tb";
+import { FiUser } from "react-icons/fi";
 
 // eslint-disable-next-line react/prop-types
 function Navbar (props) {
 
     // eslint-disable-next-line react/prop-types
     const {className} = props;
+    const [user, setUser] = React.useState({})
     const navigate = useNavigate()
     const [top, setTop] = React.useState('-top-[500px]')
     const [searchDisplay, setSearchDisplay] = React.useState('hidden')
     const [showLogout, setShowLogout] = React.useState('hidden')
     const [showProfile, setShowProfile] = React.useState('hidden')
     const [token, setToken] = React.useState(window.localStorage.getItem('token'))
+
+    React.useEffect(()=>{
+        axios.get('http://localhost:8888/profile',{
+            headers: {
+                'Authorization' : `Bearer ${token}`
+            }
+        }).then(({data}) => {
+            setUser(data.results)
+        })
+    },[])
 
     const accountButton = () => {
         if(showLogout === 'hidden' && showProfile === 'hidden'){
@@ -85,9 +98,9 @@ function Navbar (props) {
                     <li className="md:hidden flex text-white text-sm items-center border-b-2 border-b-transparent hover:border-b-orange-500 py-1"><Link to='/'>Home</Link></li>
                     {token ? 
                     <li className='flex flex-col items-center md:relative gap-3'>
-                        <div onClick={accountButton} className='bg-white w-7 h-7 cursor-pointer rounded-full'></div>
-                        <Button onClick={onProfile} text='Profile' className={`md:${showProfile} md:absolute -bottom-8 border border-orange-500 bg-orange-500 text-xs  py-1 px-2 md:left-1/2 md:-translate-x-1/2`}/>
-                        <Button onClick={onLogout} text='Logout' className={`md:${showLogout} md:absolute -bottom-16 border border-white md:border-orange-500 text-xs text-white md:text-orange-500 py-1 px-2 md:left-1/2 md:-translate-x-1/2`}/>
+                        {user?.pictures !== null & user?.pictures !== '' ? <img onClick={accountButton} id={user?.id} src={`http://localhost:8888/uploads/users/${user?.pictures}`} className='bg-white w-7 h-7 cursor-pointer rounded-full' /> : <FiUser onClick={accountButton} className='text-xl text-white cursor-pointer'/>}
+                        <Button onClick={onProfile} text='Profile' className={`md:${showProfile} md:absolute -bottom-14 border border-orange-500 bg-orange-500 text-xs  py-1 px-2 md:left-1/2 md:-translate-x-1/2`}/>
+                        <Button onClick={onLogout} text='Logout' className={`md:${showLogout} md:absolute -bottom-24 border border-white md:border-orange-500 text-xs text-white md:text-orange-500 py-1 px-2 md:left-1/2 md:-translate-x-1/2`}/>
                         </li> : 
                     <li className='flex flex-row gap-4'>
                         <Link to={'/login'}><div className="text-white text-xs px-5 py-2 box-border border border-white rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Button text='Sign In' /></div></Link>
