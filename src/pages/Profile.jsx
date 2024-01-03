@@ -15,6 +15,8 @@ const Profile = () => {
     const [user, setUser] = React.useState({})
     const [successMessage, setSuccessMessage] = React.useState(null)
     const token = window.localStorage.getItem('token')
+    const [preview, setPreview] = React.useState()
+
     React.useEffect(()=>{
         axios.get('http://localhost:8888/profile',{
             headers: {
@@ -53,6 +55,27 @@ const Profile = () => {
         setSuccessMessage(data.message)
         setUser(data.results)
     }
+
+    const changePicture = (e) => {
+        const pictureUrl = URL.createObjectURL(e.target.files[0])
+        setPreview(pictureUrl)
+    }
+
+    const uploadPhoto = async (e) => {
+        e.preventDefault()
+        const [file] = e.target.picture.files
+        if(file){
+            const form = new FormData()
+            form.append('picture',file)
+            const {data} = await axios.patch('http://localhost:8888/profile', form, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    "Content-Type" : 'multipart/form-data'
+                }
+            })
+            console.log(data)
+        }
+    }
     return (
         <>
             <Navbar className='bg-black' />
@@ -76,12 +99,20 @@ const Profile = () => {
 
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col items-center md:max-w-xs w-full bg-white border border-gray-200 p-5 gap-2 rounded-md">
-                            <span className="text-3xl md:text-xl font-semibold tracking-wide">{user.fullName}</span>
+                            <span className="text-center text-3xl md:text-xl font-semibold tracking-wide">{user.fullName}</span>
                             <span className='text-base md:text-xs'>{user.email}</span>
-                            <div className='flex rounded-full overflow-hidden mb-2'>
-                                {user?.pictures !== null && user?.pictures !== '' ? <img id={user?.id} src={ `http://localhost:8888/uploads/users/${user?.pictures}`} className='max-w-[9rem] w-full'/> : <FiUser className='text-9xl'/>}
-                            </div>
-                            <button className="flex h-10 text-xs px-10 justify-center items-center border border-orange-500 bg-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">Upload New Photo</button>
+                            <form onSubmit={uploadPhoto} className='flex flex-col items-center justify-center'>
+                                <label className='flex rounded-full overflow-hidden mb-2 cursor-pointer relative'>
+                                    {(!preview && !user?.pictures) && <FiUser className='text-9xl'/>}
+                                    {(!preview && user?.pictures) && <img src={`http://localhost:8888/uploads/users/${user?.pictures}`} className='max-w-[9rem] w-full h-full object-cover'/>}
+                                    {preview && <img src={preview} className='max-w-[9rem] w-full h-full object-cover'/>}
+
+                                    {preview && <div className='absolute w-full h-full bg-[rgba(0,0,0,0.5)]'></div>}
+
+                                    <input multiple={false} onChange={changePicture} type="file" name='picture' className='hidden'/>
+                                </label>
+                                <button className="flex h-10 text-xs px-10 justify-center items-center border border-orange-500 bg-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">Upload New Photo</button>
+                            </form>
                             <span className='text-xs'>Since <strong>20 January 2022</strong></span>
                         </div>
                     </div>
