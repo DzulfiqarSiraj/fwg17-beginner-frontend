@@ -16,23 +16,29 @@ const Product = () => {
 
     const [data, setData] = React.useState([{}])
     const [pageInfo, setPageInfo] = React.useState(null)
+    const [showNextPage, setShowNextPage] = React.useState('')
     const [showPaginationButton, setShowPaginationButton] = React.useState([])
-    const [showCurrentButton, setShowCurrentButton] = React.useState(1)
+    const [showCurrentButton, setShowCurrentButton] = React.useState()
     const [filterDisplay, setFilterDisplay] = React.useState('hidden')
+    const [keyword, setKeyword] = React.useState('')
 
     const getProduct = async (page) => {
         let res
+        setShowNextPage(res.pageInfo.nextPage)
         if(page === 'previous'){
             res = await axios.get('http://localhost:8888/products',{params: {
-                page: pageInfo.prevPage
+                page: pageInfo.prevPage,
+                search: keyword
             }})
         }else if(page === 'next'){
             res = await axios.get('http://localhost:8888/products',{params: {
-                page: pageInfo.nextPage
+                page: pageInfo.nextPage,
+                search: keyword
             }})
         }else{
             res = await axios.get('http://localhost:8888/products')
         }
+
 
         let arrayPage = []
         for(let i = 1; i <= (res.data.pageInfo.totalPage); i++){
@@ -52,8 +58,11 @@ const Product = () => {
     const getFilterData = async (e) => {
         e.preventDefault()
         const {value: search} = e.target.search
-        const form = new URLSearchParams()
-        form.append('search', search)
+        // const form = new URLSearchParams()
+        // form.append('search', search)
+        console.log(e.target)
+
+        setKeyword(search)
 
         const res = await axios.get('http://localhost:8888/products', {params: {
             search: search
@@ -75,7 +84,8 @@ const Product = () => {
 
     const showCurrentPage = async (page = 1) => {
         const res = await axios.get('http://localhost:8888/products', {params: {
-            page: page
+            page: page,
+            search: keyword
         }})
 
         setShowCurrentButton(page)
@@ -239,13 +249,13 @@ const Product = () => {
         
                             <div className="flex flex-col flex-1 gap-10 items-center">
                                 <div className="w-full grid grid-cols-2 gap-7 h-fit">
-                                    {data.map((item) => <ProductCard key={item.id} id={item.id} image={item.image} name={item.name} description={item.description} basePrice={item.basePrice} discount={item.discount} isBestSeller={item.isBestSeller}/>)}
+                                    {data?.map((item) => <ProductCard key={item.id} id={item.id} image={item.image} name={item.name} description={item.description} basePrice={item.basePrice} discount={item.discount} isBestSeller={item.isBestSeller}/>)}
                                 </div>
 
                                 <div className="flex flex-row gap-4">
                                     <button type='button' onClick={() => getProduct('previous')}><FaCircleChevronLeft className="fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl text-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/></button>
                                     {showPaginationButton.map((item) => <PaginationButton onClick={()=>showCurrentPage(item)}  key={item} text={item} className={item === showCurrentButton ? 'bg-orange-500':'bg-gray-200'}/>)}
-                                    <button type='button' onClick={() => getProduct('next')}><FaCircleChevronRight className="fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl text-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/></button>
+                                    <button className={showNextPage === null ? 'hidden':''} type='button' onClick={() => getProduct('next')}><FaCircleChevronRight className="fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl text-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/></button>
                                 </div>
                             
                             </div>
