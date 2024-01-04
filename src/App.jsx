@@ -33,20 +33,20 @@ const router = createBrowserRouter([
         element: <Product />,
     },
     {
-        path: '/products/:id',
+        path: 'products/:id',
         element: <DetailProduct />
     },
     {
         path: '/checkout-product',
-        element: <CheckoutProduct />
+        element: <PrivateRoot><CheckoutProduct /></PrivateRoot>
     },
     {
         path: '/history-order',
-        element: <HistoryOrder />
+        element: <PrivateRoot><HistoryOrder /></PrivateRoot>
     },
     {
         path: '/detail-order',
-        element: <DetailOrder />
+        element: <PrivateRoot><DetailOrder /></PrivateRoot>
     },
     {
         path: '/profile',
