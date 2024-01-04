@@ -14,6 +14,7 @@ const Profile = () => {
 
     const [user, setUser] = React.useState({})
     const [successMessage, setSuccessMessage] = React.useState(null)
+    const [uploadSuccessMessage, setUploadSuccessMessage] = React.useState('')
     const token = window.localStorage.getItem('token')
     const [preview, setPreview] = React.useState()
 
@@ -75,12 +76,19 @@ const Profile = () => {
                         "Content-Type" : 'multipart/form-data'
                     }
                 })
-                window.alert(res.message)
                 setUser(res.results)
                 setPreview(null)
+                console.log(res)
+                setUploadSuccessMessage(<p className='text-green-500 text-xl self-center'>{res.message}</p>)
+                setTimeout(() => {
+                    setUploadSuccessMessage('')
+                },2000)
             }
         } catch (err) {
-            window.alert(err.response.res.message)
+            setUploadSuccessMessage(<p className='text-red-500 text-xl self-center'>{err.message}</p>)
+            setTimeout(() => {
+                setUploadSuccessMessage('')
+            },2000)
         }
 
     }
@@ -89,6 +97,7 @@ const Profile = () => {
             <Navbar className='bg-black' />
             {/* <!-- main --> */}
             <main className="flex flex-col h-fit p-6 pt-20 md:p-24 bg-white">
+                {uploadSuccessMessage}
                 <div className="flex flex-row self-center md:self-start py-10 gap-5">
                     <h1 className="text-4xl font-medium text-gray-900 tracking-wide">Profile</h1>
                 </div>
@@ -102,7 +111,6 @@ const Profile = () => {
                         <AddressInput defaultValue={user.address} />
                         {successMessage && <div className='text-xl text-green-700 self-center'>{successMessage}</div>}
                         <Button type='submit' text='Submit' className='bg-orange-500 py-3'/>
-
                     </form>
 
                     <div className="flex flex-col gap-4">
