@@ -13,7 +13,7 @@ const ProductCard = ({id, image, name, description, basePrice, discount, isBestS
                 <div className="hidden">{id}</div>
                 <div >{image !== null && image !== '' ? <img className="w-full" src={`http://localhost:8888/uploads/products/${image}`} alt="" /> : <img className="w-full" src={CoffeeBeanImage} alt="" />}</div>
             </Link>
-            <div className='bg-white shadow-md rounded-b p-3 mx-3 -mt-10 flex flex-col gap-4 flex-1'>
+            <div className='bg-white shadow-md rounded-b p-3 mx-3 -mt-10 flex flex-col gap-4 flex-1 md:max-w-xs md:w-full'>
                 <div className='text-base md:text-2xl font-bold'>{name}</div>
                 <div className='flex flex-1 text-[0.50rem] md:text-base text-gray-500 tracking-wide'>{description}</div>
                 <div className="flex flex-col md:flex-row md:gap-2 md:items-center">
