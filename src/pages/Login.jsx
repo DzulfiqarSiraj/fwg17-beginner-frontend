@@ -9,9 +9,9 @@ import BrandLogo from '../components/BrandLogo.jsx';
 
 const Login = () => {
     
-    const [loginInfo, setLoginInfo] = React.useState('')
     const [emailInfo, setEmailInfo] = React.useState('')
     const [passwordInfo, setPasswordInfo] = React.useState('')
+    const [loginError, setLoginError] = React.useState(null)
     const [token, setToken] = React.useState(window.localStorage.getItem('token'))
     const [successMessage, setSuccessMessage] = React.useState(null)
     const navigate = useNavigate()
@@ -44,18 +44,16 @@ const Login = () => {
             const {data} = await axios.post('http://localhost:8888/auth/login', form.toString())
 
             setSuccessMessage(data.message)
-
+            
             const {token: resultToken} = data.results
+            console.log(data)
             
-            
-            if(email && password && successMessage){
-                setLoginInfo(<div className='flex flex-1 text-green-700'>{successMessage}</div>)
-                setTimeout(()=>{
-                    setToken(resultToken)
-                    window.localStorage.setItem('token', resultToken)
-                    navigate('/')
-                },2000)
-            }
+            setTimeout(()=>{
+                setToken(resultToken)
+                window.localStorage.setItem('token', resultToken)
+                navigate('/')
+            },2000)
+
         }catch(err){
             if(err.message === 'input empty') {
                 setEmailInfo(<div className='text-red-800 text-sm'>Email must not be empty!</div>)
@@ -78,9 +76,9 @@ const Login = () => {
                 },2000)
             }
             if(err.response.status == 401){
-                setLoginInfo(<div className='text-red-800 text-sm'>{err.response.data.message}</div>)
+                setLoginError(<div className='text-red-800 text-sm'>{err.response.data.message}</div>)
                 setTimeout(()=>{
-                    setLoginInfo('')
+                    setLoginError(null)
                 },2000)
             }
         }
@@ -102,7 +100,8 @@ const Login = () => {
                             {emailInfo}
                             <PasswordInput text="Password" name="password" placeholder="Enter Your Password"/>
                             {passwordInfo}
-                            {loginInfo}
+                            {successMessage && <div className='flex flex-1 text-green-700'>{successMessage}</div>}
+                            {loginError}
                             <span className='text-slate-400 self-end'><Link to='/forgot-password'>Forgot Password?</Link></span>
                             <Button type='submit' className="bg-orange-500 py-3">Login</Button>
                         </form>
