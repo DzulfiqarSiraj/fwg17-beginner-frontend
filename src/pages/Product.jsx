@@ -8,8 +8,8 @@ import Footer from '../components/Footer'
 import ProductCard from '../components/ProductCard.jsx'
 import { FaCircleChevronLeft } from "react-icons/fa6"
 import { FaCircleChevronRight } from "react-icons/fa6"
-import { FiChevronRight } from "react-icons/fi";
 import PaginationButton from '../components/PaginationButton.jsx'
+import { FiChevronRight } from "react-icons/fi";
 
 
 const Product = () => {
@@ -17,6 +17,8 @@ const Product = () => {
     const [data, setData] = React.useState([{}])
     const [pageInfo, setPageInfo] = React.useState(null)
     const [showPaginationButton, setShowPaginationButton] = React.useState([])
+    const [showCurrentButton, setShowCurrentButton] = React.useState(1)
+    const [filterDisplay, setFilterDisplay] = React.useState('hidden')
 
     const getProduct = async (page) => {
         let res
@@ -31,41 +33,75 @@ const Product = () => {
         }else{
             res = await axios.get('http://localhost:8888/products')
         }
-        
-        console.log(res.data)
-        console.log(res.data.pageInfo)
 
-        let paginationButton = []
-        
+        let arrayPage = []
         for(let i = 1; i <= (res.data.pageInfo.totalPage); i++){
-            paginationButton.push({text: i})
+            arrayPage.push(i)
         }
-        
-        console.log(paginationButton)
-        
-        setShowPaginationButton(paginationButton.map((item,index) => <PaginationButton key={index} text={item.text} className={item.text === res.data.pageInfo.currentPage? 'bg-orange-500' : 'bg-gray-300'}/>))
+
+        setShowPaginationButton(arrayPage)
+
+
+        setShowCurrentButton(res.data.pageInfo.currentPage)
+        console.log(typeof showPaginationButton, showPaginationButton)
+
         setPageInfo(res.data.pageInfo)
         setData(res.data.results)
     }
 
-    React.useEffect(()=>{
-        getProduct()
-    },[])
+    const getFilterData = async (e) => {
+        e.preventDefault()
+        const {value: search} = e.target.search
+        const form = new URLSearchParams()
+        form.append('search', search)
+
+        const res = await axios.get('http://localhost:8888/products', {params: {
+            search: search
+        }})
+
+        let arrayPage = []
+        for(let i = 1; i <= (res.data.pageInfo.totalPage); i++){
+            arrayPage.push(i)
+        }
+        
+        setShowPaginationButton(arrayPage)
 
 
-    const [sidebarDisplay, setSidebarDisplay] = React.useState('hidden')
+        setShowCurrentButton(res.data.pageInfo.currentPage)
 
-    const sidebarButton = () => {
-        if(sidebarDisplay === 'hidden'){
-            setSidebarDisplay('flex')
-        } else if(sidebarDisplay === 'flex'){
-            setSidebarDisplay('hidden')
+        setPageInfo(res.data.pageInfo)
+        setData(res.data.results)
+    }
+
+    const showCurrentPage = async (page = 1) => {
+        const res = await axios.get('http://localhost:8888/products', {params: {
+            page: page
+        }})
+
+        setShowCurrentButton(page)
+        setPageInfo(res.data.pageInfo)
+        setData(res.data.results)
+    }
+
+    const showFilter = () => {
+        if(filterDisplay == 'flex'){
+            setFilterDisplay('hidden')
+        } else if(filterDisplay == 'hidden'){
+            setFilterDisplay('flex')
         }
     }
+
+    React.useEffect(()=>{
+        getProduct()
+        showCurrentPage()
+        getFilterData()
+    },[])
+
     
     return (
         <>
             <Navbar className="bg-black"/>
+            <div onClick={showFilter} className={'md:hidden fixed bottom-1/2 left-0 z-50 bg-black w-5 h-8 flex items-center justify-center rounded-r-md'}><FiChevronRight className='text-lg font-bold text-white' /></div>
             {/* main */}
             <main className="flex flex-col w-screen h-fit overflow-hidden justify-center items-center">
                 <header className="flex items-center w-screen h-72 bg-[url('../assets/bg-product-1.jpg')] bg-cover bg-center">
@@ -136,76 +172,70 @@ const Product = () => {
                         </div>
             
                         <div className="flex flex-row gap-7">
-                            <div className='fixed top-0 left-0 md:static flex flex-row h-fit z-20'>
-                                <aside className={`${sidebarDisplay} top-0 bottom-0 md:flex md:flex-row w-80 h-screen bg-black rounded-3xl pb-16 pt-32 px-5 md:p-8 items-center`}>
-                                    <form action="" className={`flex flex-col w-full gap-6`}>
-                                        <div className="flex justify-between">
-                                            <span className="text-white font-bold tracking-wide">Filter</span>
-                                            <span className="text-white font-bold tracking-wide text-sm"><button type='reset'>Reset Filter</button></span>
+                            <aside className={`${filterDisplay} fixed md:static z-50 md:z-0 top-0 md:flex h-full bg-black rounded-3xl items-center p-8`}>
+                                <form onSubmit={getFilterData} className={`flex flex-col w-full gap-6`}>
+                                    <div className="flex justify-between">
+                                        <span className="text-white font-bold tracking-wide">Filter</span>
+                                        <span className="text-white font-bold tracking-wide text-sm"><button type='reset'>Reset Filter</button></span>
+                                    </div>
+        
+                                    <div className="flex flex-col gap-2">
+                                        <label htmlFor="search" className="text-white font-bold tracking-wide text-sm">Search</label>
+                                        <input id="search" name='search' type="text" placeholder="Search Your Product" className="h-12 p-5 placeholder:text-sm rounded-md" />
+                                    </div>
+        
+                                    <div className="flex flex-col gap-4">
+                                        <span className="text-white font-bold tracking-wide text-sm">Category</span>
+                                        <div className="flex flex-row gap-3">
+                                            <input type="radio" id="favorite-product" name="category" value="favorite-product" className="" />
+                                            <label htmlFor="favorite-product" className="text-white text-xs md:text-base">Favorite Product</label>
                                         </div>
-            
-                                        <div className="flex flex-col gap-2">
-                                            <label htmlFor="search" className="text-white font-bold tracking-wide text-sm">Search</label>
-                                            <input id="search" type="text" placeholder="Search Your Product" className="h-12 p-5 placeholder:text-sm rounded-md" />
+                                        <div className="flex flex-row gap-3">
+                                            <input type="radio" id="coffee" name="category" value="coffee" />
+                                            <label htmlFor="coffee" className="text-white text-xs md:text-base">Coffee</label>
                                         </div>
-            
-                                        <div className="flex flex-col gap-4">
-                                            <span className="text-white font-bold tracking-wide text-sm">Category</span>
-                                            <div className="flex flex-row gap-3">
-                                                <input type="radio" id="favorite-product" name="category" value="favorite-product" className="" />
-                                                <label htmlFor="favorite-product" className="text-white text-xs md:text-base">Favorite Product</label>
-                                            </div>
-                                            <div className="flex flex-row gap-3">
-                                                <input type="radio" id="coffee" name="category" value="coffee" />
-                                                <label htmlFor="coffee" className="text-white text-xs md:text-base">Coffee</label>
-                                            </div>
-                                            <div className="flex flex-row gap-3">
-                                                <input type="radio" id="non-coffee" name="category" value="non-coffee" />
-                                                <label htmlFor="non-coffee" className="text-white text-xs md:text-base">Non Coffee</label>
-                                            </div>
-                                            <div className="flex flex-row gap-3">
-                                                <input type="radio" id="foods" name="category" value="foods" />
-                                                <label htmlFor="foods" className="text-white text-xs md:text-base">Foods</label>
-                                            </div>
-                                            <div className="flex flex-row gap-3">
-                                                <input type="radio" id="add-on" name="category" value="add-on" />
-                                                <label htmlFor="add-on" className="text-white text-xs md:text-base">Add On</label>
-                                            </div>
+                                        <div className="flex flex-row gap-3">
+                                            <input type="radio" id="non-coffee" name="category" value="non-coffee" />
+                                            <label htmlFor="non-coffee" className="text-white text-xs md:text-base">Non Coffee</label>
                                         </div>
-            
-                                        <div className="flex flex-col gap-4">
-                                            <span className="text-white font-bold tracking-wide text-sm">Sort By</span>
-                                            <div className="flex flex-row gap-3">
-                                                <input type="radio" id="buy-1-get-1" name="sort-by" value="buy-1-get-1" />
-                                                <label htmlFor="buy-1-get-1" className="text-white text-xs md:text-base">Buy One Get One</label>
-                                            </div>
-                                            <div className="flex flex-row gap-3">
-                                                <input type="radio" id="flash-sale" name="sort-by" value="flash-sale" />
-                                                <label htmlFor="flash-sale" className="text-white text-xs md:text-base">Flash Sale</label>
-                                            </div>
-                                            <div className="flex flex-row gap-3">
-                                                <input type="radio" id="birthday-package" name="sort-by" value="birthday-package" />
-                                                <label htmlFor="birthday-package" className="text-white text-xs md:text-base">Birthday Package</label>
-                                            </div>
-                                            <div className="flex flex-row gap-3">
-                                                <input type="radio" id="cheap" name="sort-by" value="cheap" />
-                                                <label htmlFor="cheap" className="text-white text-xs md:text-base">Cheap</label>
-                                            </div>
+                                        <div className="flex flex-row gap-3">
+                                            <input type="radio" id="foods" name="category" value="foods" />
+                                            <label htmlFor="foods" className="text-white text-xs md:text-base">Foods</label>
                                         </div>
-            
-                                        <div className="flex flex-col gap-4">
-                                            <span className="text-white font-bold tracking-wide text-sm">Range Price</span>
-                                            <input type="range" minLength="0" maxLength="1000" step="2" />
+                                        <div className="flex flex-row gap-3">
+                                            <input type="radio" id="add-on" name="category" value="add-on" />
+                                            <label htmlFor="add-on" className="text-white text-xs md:text-base">Add On</label>
                                         </div>
-            
-                                        <button type="submit" className="text-black text-xs font-semibold px-4 py-3 box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">Apply Filter</button>
-                                    </form>
-                                </aside>
-                                {/* sidebar button */}
-                                <div onClick={sidebarButton} className={`fixed bottom-0 right-0 md:hidden flex flex-row self-center items-center justify-center bg-black h-10 w-5 rounded-l-xl`}>
-                                <FiChevronRight className='text-white'/>
-                                </div>
-                            </div>
+                                    </div>
+        
+                                    <div className="flex flex-col gap-4">
+                                        <span className="text-white font-bold tracking-wide text-sm">Sort By</span>
+                                        <div className="flex flex-row gap-3">
+                                            <input type="radio" id="buy-1-get-1" name="sort-by" value="buy-1-get-1" />
+                                            <label htmlFor="buy-1-get-1" className="text-white text-xs md:text-base">Buy One Get One</label>
+                                        </div>
+                                        <div className="flex flex-row gap-3">
+                                            <input type="radio" id="flash-sale" name="sort-by" value="flash-sale" />
+                                            <label htmlFor="flash-sale" className="text-white text-xs md:text-base">Flash Sale</label>
+                                        </div>
+                                        <div className="flex flex-row gap-3">
+                                            <input type="radio" id="birthday-package" name="sort-by" value="birthday-package" />
+                                            <label htmlFor="birthday-package" className="text-white text-xs md:text-base">Birthday Package</label>
+                                        </div>
+                                        <div className="flex flex-row gap-3">
+                                            <input type="radio" id="cheap" name="sort-by" value="cheap" />
+                                            <label htmlFor="cheap" className="text-white text-xs md:text-base">Cheap</label>
+                                        </div>
+                                    </div>
+        
+                                    <div className="flex flex-col gap-4">
+                                        <span className="text-white font-bold tracking-wide text-sm">Range Price</span>
+                                        <input type="range" minLength="0" maxLength="1000" step="2" />
+                                    </div>
+        
+                                    <button type="submit" className="text-black text-xs font-semibold px-4 py-3 box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">Apply Filter</button>
+                                </form>
+                            </aside>
         
                             <div className="flex flex-col flex-1 gap-10 items-center">
                                 <div className="w-full grid grid-cols-2 gap-7 h-fit">
@@ -213,9 +243,9 @@ const Product = () => {
                                 </div>
 
                                 <div className="flex flex-row gap-4">
-                                    <button type='button' onClick={() => getProduct('previous')}><FaCircleChevronLeft className="fa-solid fa-circle-chevron-right text-4xl text-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/></button>
-                                    {showPaginationButton}
-                                    <button type='button' onClick={() => getProduct('next')}><FaCircleChevronRight className="fa-solid fa-circle-chevron-right text-4xl text-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/></button>
+                                    <button type='button' onClick={() => getProduct('previous')}><FaCircleChevronLeft className="fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl text-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/></button>
+                                    {showPaginationButton.map((item) => <PaginationButton onClick={()=>showCurrentPage(item)}  key={item} text={item} className={item === showCurrentButton ? 'bg-orange-500':'bg-gray-200'}/>)}
+                                    <button type='button' onClick={() => getProduct('next')}><FaCircleChevronRight className="fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl text-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/></button>
                                 </div>
                             
                             </div>
