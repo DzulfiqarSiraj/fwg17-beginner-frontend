@@ -7,36 +7,28 @@ import { FaStar } from "react-icons/fa6";
 import { FaCircleChevronRight } from "react-icons/fa6"
 import ProductCard from "../components/ProductCard"
 import CoffeeBeanImage from '../assets/coffeebean.jpg'
+import { getBestSellerProduct } from "./Home"
 
 // eslint-disable-next-line react/prop-types
 const DetailProduct = () => {
     
-    const [detailProduct, setDetailProduct] = React.useState(null)
+    const [detailProduct, setDetailProduct] = React.useState({})
     const [bestSeller, setBestSeller] = React.useState([])
-    const {id} = useParams();
-    console.log(id)
+    const {id} = useParams()
 
-    const getBestSeller = async (data) => {
-        const {data: res} = await axios.get('http://localhost:8888/products', {
-            params: {
-                limit: data?.limit || 4
-            }
-        })
-        if(res.results){
-            setBestSeller(res.results)
+    const getDetailProduct = async (id) => {
+        const {data} = await axios.get(`http://localhost:8888/products/${id}`)
+        console.log(data)
+        if(data.success){
+            setDetailProduct(data.results)
         }
-    }
-    
-    const getProductbyId = async (id) => {
-        const res = await axios.get(`http://localhost:8888/products/${id}`)
-        console.log(res.data.results)
-        setDetailProduct(res.data.results)
     }
 
     React.useEffect(()=>{
-        getProductbyId(id)
-        getBestSeller(setBestSeller, {limit: 4})
+        getDetailProduct(id)
+        getBestSellerProduct(setBestSeller, {limit: 3})
     },[id])
+    
 
 
     const [quantity, setQuantity] = React.useState(0)
@@ -118,7 +110,8 @@ const DetailProduct = () => {
                         <div className="flex flex-col gap-3">
                             <span className="font-semibold">Hot/Ice?</span>
                             <div className="flex flex-row items-center h-10 gap-8">
-                                <div className="flex flex-1 h-full tracking-wide justify-center text-sm items-center border border-gray-300 hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">Hot</div>
+                                <div className="flex flex-1 h-full tracking-wide justify-center text-sm items-center border border-gray-300 hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer"
+                                >Hot</div>
                                 <div className="flex flex-1 h-full tracking-wide text-sm justify-center items-center border border-gray-300 hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">Ice</div>
                             </div>
                         </div>
