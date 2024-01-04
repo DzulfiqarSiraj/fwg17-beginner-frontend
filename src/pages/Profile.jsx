@@ -63,18 +63,26 @@ const Profile = () => {
 
     const uploadPhoto = async (e) => {
         e.preventDefault()
-        const [file] = e.target.picture.files
-        if(file){
-            const form = new FormData()
-            form.append('picture',file)
-            const {data} = await axios.patch('http://localhost:8888/profile', form, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    "Content-Type" : 'multipart/form-data'
-                }
-            })
-            console.log(data)
+        try {
+            const [file] = e.target.pictures.files
+            console.log(file)
+            if(file){
+                const form = new FormData()
+                form.append('pictures',file)
+                const {data: res} = await axios.patch('http://localhost:8888/profile', form, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        "Content-Type" : 'multipart/form-data'
+                    }
+                })
+                window.alert(res.message)
+                setUser(res.results)
+                setPreview(null)
+            }
+        } catch (err) {
+            window.alert(err.response.res.message)
         }
+
     }
     return (
         <>
@@ -109,7 +117,7 @@ const Profile = () => {
 
                                     {preview && <div className='absolute w-full h-full bg-[rgba(0,0,0,0.5)]'></div>}
 
-                                    <input multiple={false} onChange={changePicture} type="file" name='picture' className='hidden'/>
+                                    <input multiple={false} onChange={changePicture} type="file" name='pictures' className='hidden'/>
                                 </label>
                                 <button className="flex h-10 text-xs px-10 justify-center items-center border border-orange-500 bg-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">Upload New Photo</button>
                             </form>
