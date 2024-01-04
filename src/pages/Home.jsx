@@ -12,10 +12,10 @@ import { FaCircleChevronRight } from "react-icons/fa6"
 
 
 export const getBestSellerProduct = async (cb, data) => {
-    const {data: response} = await axios.get('https://localhost:8888/products',{
+    const {data: response} = await axios.get('http://localhost:8888/products',{
         params: {
             bestSeller: true,
-            limit: data?.limit || 6
+            limit: data?.limit
         }
     })
     if(response.results){
