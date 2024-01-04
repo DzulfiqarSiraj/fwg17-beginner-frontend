@@ -101,7 +101,7 @@ function Navbar (props) {
                         {user?.pictures !== null & user?.pictures !== '' ? <img onClick={accountButton} id={user?.id} src={`http://localhost:8888/uploads/users/${user?.pictures}`} className='bg-white w-7 h-7 cursor-pointer rounded-full' /> : <FiUser onClick={accountButton} className='text-xl text-white cursor-pointer'/>}
                         <Button onClick={onProfile} text='Profile' className={`md:${showProfile} md:absolute -bottom-14 border border-orange-500 bg-orange-500 text-xs  py-1 px-2 md:left-1/2 md:-translate-x-1/2`}/>
                         <Button onClick={onLogout} text='Logout' className={`md:${showLogout} md:absolute -bottom-24 border border-white md:border-orange-500 text-xs text-white md:text-orange-500 py-1 px-2 md:left-1/2 md:-translate-x-1/2`}/>
-                        </li> : 
+                    </li> : 
                     <li className='flex flex-row gap-4'>
                         <Link to={'/login'}><div className="text-white text-xs px-5 py-2 box-border border border-white rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Button text='Sign In' /></div></Link>
                         <Link to={'/register'}><div className="text-black text-xs px-5 py-2 box-border border border-orange-500 bg-orange-500 rounded-md hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"><Button text='Sign Up' /></div></Link>
