@@ -6,15 +6,19 @@ import PasswordInput from '../components/PasswordInput.jsx';
 import Button from '../components/Button.jsx'
 import { FaFacebook } from "react-icons/fa6";
 import BrandLogo from '../components/BrandLogo.jsx';
+import { useSelector, useDispatch } from 'react-redux';
+import { login as loginAction } from '../redux/reducers/auth.js';
 
 const Login = () => {
     
     const [emailInfo, setEmailInfo] = React.useState('')
     const [passwordInfo, setPasswordInfo] = React.useState('')
     const [loginError, setLoginError] = React.useState(null)
-    const [token, setToken] = React.useState(window.localStorage.getItem('token'))
+    // const [token, setToken] = React.useState(window.localStorage.getItem('token'))
     const [successMessage, setSuccessMessage] = React.useState(null)
     const navigate = useNavigate()
+    const token = useSelector(state => state.auth.token)
+    const dispatch = useDispatch()
 
     React.useEffect(()=>{
         if(token){
@@ -49,8 +53,9 @@ const Login = () => {
             console.log(data)
             
             setTimeout(()=>{
-                setToken(resultToken)
-                window.localStorage.setItem('token', resultToken)
+                // setToken(resultToken)
+                // window.localStorage.setItem('token', resultToken)
+                dispatch(loginAction(resultToken))
                 navigate('/')
             },2000)
 

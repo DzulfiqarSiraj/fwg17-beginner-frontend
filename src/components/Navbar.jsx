@@ -6,28 +6,42 @@ import {FiSearch,FiShoppingCart} from 'react-icons/fi'
 import Button from './Button';
 import { TbMenu2 } from "react-icons/tb";
 import { FiUser } from "react-icons/fi";
+import { useDispatch, useSelector } from 'react-redux';
+import { logout as logoutAction } from '../redux/reducers/auth';
+import { setProfile as setProfileAction } from '../redux/reducers/profile';
+
 
 // eslint-disable-next-line react/prop-types
 function Navbar (props) {
 
     // eslint-disable-next-line react/prop-types
     const {className} = props;
-    const [user, setUser] = React.useState({})
+    // const [user, setUser] = React.useState({})
+    const user = useSelector(state => state.profile.data)
     const navigate = useNavigate()
     const [top, setTop] = React.useState('-top-[500px]')
     const [searchDisplay, setSearchDisplay] = React.useState('hidden')
     const [showLogout, setShowLogout] = React.useState('hidden')
     const [showProfile, setShowProfile] = React.useState('hidden')
-    const [token, setToken] = React.useState(window.localStorage.getItem('token'))
+    // const [token, setToken] = React.useState(window.localStorage.getItem('token'))
+    const token = useSelector(state => state.auth.token)
+    const dispatch = useDispatch()
+
+    const getProfile = () => {
+        if(token) {
+            axios.get('http://localhost:8888/profile',{
+                headers: {
+                    'Authorization' : `Bearer ${token}`
+                }
+            }).then(({data}) => {
+                // setUser(data.results)
+                dispatch(setProfileAction(data.results))
+            })
+        }
+    }
 
     React.useEffect(()=>{
-        axios.get('http://localhost:8888/profile',{
-            headers: {
-                'Authorization' : `Bearer ${token}`
-            }
-        }).then(({data}) => {
-            setUser(data.results)
-        })
+        getProfile()
     },[])
 
     const accountButton = () => {
@@ -44,8 +58,9 @@ function Navbar (props) {
         navigate('/profile')
     }
     const onLogout = () => {
-        setToken(null)
-        window.localStorage.removeItem('token')
+        dispatch(logoutAction())
+        // setToken(null)
+        // window.localStorage.removeItem('token')
         navigate('/login')
     }
 

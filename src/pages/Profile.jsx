@@ -9,23 +9,32 @@ import PhoneNumberInput from '../components/PhoneNumberInput'
 import AddressInput from '../components/AddressInput'
 import Button from '../components/Button'
 import { FiUser } from "react-icons/fi";
+import { useDispatch, useSelector } from 'react-redux'
+import { setProfile as setProfileAction } from '../redux/reducers/profile'
 
 const Profile = () => {
 
-    const [user, setUser] = React.useState({})
+    // const [user, setUser] = React.useState({})
+    const user = useSelector(state => state.profile.data)
     const [successMessage, setSuccessMessage] = React.useState(null)
     const [uploadSuccessMessage, setUploadSuccessMessage] = React.useState('')
-    const token = window.localStorage.getItem('token')
+    // const token = window.localStorage.getItem('token')
     const [preview, setPreview] = React.useState()
+    const token = useSelector(state => state.auth.token)
+    const dispatch = useDispatch()
+
+    // const getProfile = () => {
+    //     axios.get('http://localhost:8888/profile',{
+    //         headers: {
+    //             'Authorization' : `Bearer ${token}`
+    //         }
+    //     }).then(({data}) => {
+    //         setUser(data.results)
+    //     })
+    // }
 
     React.useEffect(()=>{
-        axios.get('http://localhost:8888/profile',{
-            headers: {
-                'Authorization' : `Bearer ${token}`
-            }
-        }).then(({data}) => {
-            setUser(data.results)
-        })
+        // getProfile()
     },[])
 
     React.useEffect(() => {
@@ -54,7 +63,8 @@ const Profile = () => {
             }
         })
         setSuccessMessage(data.message)
-        setUser(data.results)
+        // setUser(data.results)
+        dispatch(setProfileAction(data.results))
     }
 
     const changePicture = (e) => {
@@ -66,7 +76,6 @@ const Profile = () => {
         e.preventDefault()
         try {
             const [file] = e.target.pictures.files
-            console.log(file)
             if(file){
                 const form = new FormData()
                 form.append('pictures',file)
@@ -76,9 +85,9 @@ const Profile = () => {
                         "Content-Type" : 'multipart/form-data'
                     }
                 })
-                setUser(res.results)
+                // setUser(res.results)
+                dispatch(setProfileAction(res.results))
                 setPreview(null)
-                console.log(res)
                 setUploadSuccessMessage(<p className='text-green-500 text-xl self-center'>{res.message}</p>)
                 setTimeout(() => {
                     setUploadSuccessMessage('')

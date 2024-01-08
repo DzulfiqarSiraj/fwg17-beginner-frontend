@@ -1,4 +1,10 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+// Redux integration
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+
+// Pages and component
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
@@ -9,7 +15,9 @@ import CheckoutProduct from './pages/CheckoutProduct';
 import HistoryOrder from './pages/HistoryOrder';
 import DetailOrder from './pages/DetailOrder';
 import Profile from './pages/Profile';
-import PrivateRoot from './components/PrivateRoot';
+import PrivateRoute from './components/PrivateRoute';
+
+
 
 const router = createBrowserRouter([
     {
@@ -38,24 +46,28 @@ const router = createBrowserRouter([
     },
     {
         path: '/checkout-product',
-        element: <PrivateRoot><CheckoutProduct /></PrivateRoot>
+        element: <PrivateRoute><CheckoutProduct /></PrivateRoute>
     },
     {
         path: '/history-order',
-        element: <PrivateRoot><HistoryOrder /></PrivateRoot>
+        element: <PrivateRoute><HistoryOrder /></PrivateRoute>
     },
     {
         path: '/detail-order',
-        element: <PrivateRoot><DetailOrder /></PrivateRoot>
+        element: <PrivateRoute><DetailOrder /></PrivateRoute>
     },
     {
         path: '/profile',
-        element: <PrivateRoot><Profile /></PrivateRoot>
+        element: <PrivateRoute><Profile /></PrivateRoute>
     }
 ]);
 
 const App = () => {
-    return <RouterProvider router={router} />;
+    return (
+        <Provider store={store}>
+            <RouterProvider router={router} />
+        </Provider>
+    )
 };
 
 export default App;
