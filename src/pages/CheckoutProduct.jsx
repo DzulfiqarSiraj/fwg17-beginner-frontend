@@ -1,3 +1,5 @@
+import React from 'react';
+import { useSelector } from 'react-redux';
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { FiXCircle } from "react-icons/fi";
@@ -11,9 +13,16 @@ import BcaImage from '../assets/bca.svg'
 import GopayImage from '../assets/gopay.svg'
 import OvoImage from '../assets/ovo.svg'
 import PaypalImage from '../assets/paypal.svg'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const CheckoutProduct = () => {
+    
+    const cart = useSelector(state => state.cart.data)
+    const navigate = useNavigate()
+    const totalOrder = cart.reduce((prev, curr) => {
+        return prev + curr.product.basePrice + curr.size.additionalPrice + curr.variant.additionalPrice
+    },0)
+
     return (
         <>
             <Navbar className="bg-black"/>
@@ -26,51 +35,34 @@ const CheckoutProduct = () => {
                             <span className="text-xl font-semibold tracking-wide">Your Order</span>
                             <button className="flex flex-row h-10 text-sm justify-center items-center gap-2 border border-orange-500 bg-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">
                                 <div className="flex pl-2 items-center"><FiPlus className='w-4' /></div>
-                                <div className="flex flex-1 pr-2 items-center"><span>Add Menu</span></div>
+                                <button type='button' onClick={() => navigate('/products')} className="flex flex-1 pr-2 items-center"><span>Add Menu</span></button>
                             </button>
                         </div>
                         {/* <!-- product-card-1 --> */}
-                        <div className="flex flex-row h-fit bg-gray-100 gap-5">
-                            <div className="flex bg-[url('../assets/fav-img-4.jpg')] h-48 aspect-square bg-cover bg-center"></div>
-                            <div className="flex flex-col flex-1 self-center gap-3">
-                                <span className="w-fit text-xs text-white font-semibold bg-red-700 px-2 py-1 rounded-full">FLASH SALE!</span>
-                                <span className="font-semibold tracking-wide">Cappuccino</span>
-                                <div className="flex flex-row items-center gap-2 divide-x-2 divide-gray-300">
-                                    <span className="text-sm text-gray-600">2pcs</span>
-                                    <span className="text-sm text-gray-600 pl-2">Regular</span>
-                                    <span className="text-sm text-gray-600 pl-2">Ice</span>
-                                    <span className="text-sm text-gray-600 pl-2">Door Delivery</span>
+                        {
+                            cart.map(product => (
+                                <div key={`product_${product?.product?.id}`} className="flex flex-row h-fit bg-gray-100 gap-5">
+                                    <img src={`http://localhost:8888/uploads/products/${product.product.image}`} className='h-48 aspect-square object-cover bg-center'/>
+                                    <div className="flex flex-col flex-1 self-center gap-3">
+                                        <span className="w-fit text-xs text-white font-semibold bg-red-700 px-2 py-1 rounded-full">FLASH SALE!</span>
+                                        <span className="font-semibold tracking-wide">{product?.product?.name}</span>
+                                        <div className="flex flex-row items-center gap-2 divide-x-2 divide-gray-300">
+                                            <span className="text-sm text-gray-600">2pcs</span>
+                                            <span className="text-sm text-gray-600 pl-2">{product.size.size}</span>
+                                            <span className="text-sm text-gray-600 pl-2">{product?.variant?.variant}</span>
+                                            <span className="text-sm text-gray-600 pl-2">Door Delivery</span>
+                                        </div>
+                                        <div className="flex flex-row gap-3 items-center">
+                                            <span className="self-center text-xs text-red-700"><del>IDR 0,-</del></span>
+                                            <span className="text-base text-orange-500">IDR {Number(Number(product?.product?.basePrice) + Number(product?.variant?.additionalPrice) + Number(product?.size?.additionalPrice)).toLocaleString('id')},-</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex w-fit justify-center items-center px-8">
+                                        <FiXCircle className='text-red-700' />
+                                    </div>
                                 </div>
-                                <div className="flex flex-row gap-3 items-center">
-                                    <span className="self-center text-xs text-red-700"><del>IDR 25.000,-</del></span>
-                                    <span className="text-base text-orange-500">IDR 10.000,-</span>
-                                </div>
-                            </div>
-                            <div className="flex w-fit justify-center items-center px-8">
-                                <FiXCircle className='text-red-700' />
-                            </div>
-                        </div>
-                        {/* <!-- product-card-2 --> */}
-                        <div className="flex flex-row h-fit bg-gray-100 gap-5">
-                            <div className="flex bg-[url('../assets/fav-img-5.jpg')] h-48 aspect-square bg-cover bg-center"></div>
-                            <div className="flex flex-col flex-1 self-center gap-3">
-                                <span className="w-fit text-xs text-white font-semibold bg-red-700 px-2 py-1 rounded-full">FLASH SALE!</span>
-                                <span className="font-semibold tracking-wide">Espresso</span>
-                                <div className="flex flex-row items-center gap-2 divide-x-2 divide-gray-300">
-                                    <span className="text-sm text-gray-600">2pcs</span>
-                                    <span className="text-sm text-gray-600 pl-2">Regular</span>
-                                    <span className="text-sm text-gray-600 pl-2">Hot</span>
-                                    <span className="text-sm text-gray-600 pl-2">Dine In</span>
-                                </div>
-                                <div className="flex flex-row gap-3 items-center">
-                                    <span className="self-center text-xs text-red-700"><del>IDR 25.000,-</del></span>
-                                    <span className="text-base text-orange-500">IDR 10.000,-</span>
-                                </div>
-                            </div>
-                            <div className="flex w-fit justify-center items-center px-8">
-                            <FiXCircle className='text-red-700' />
-                            </div>
-                        </div>
+                            ))
+                        }                        
                         
                         <span className="text-xl font-semibold tracking-wide">Payment Info & Delivery</span>
 
@@ -123,7 +115,7 @@ const CheckoutProduct = () => {
                             <div className="flex flex-col p-3 gap-5">
                                 <div className="flex flex-row justify-between ">
                                     <span className="font-semibold text-gray-800">Order</span>
-                                    <span className="font-semibold">IDR 20.000</span>
+                                    <span className="font-semibold">IDR {Number(totalOrder).toLocaleString('id')},-</span>
                                 </div>
                                 <div className="flex flex-row justify-between ">
                                     <span className="font-semibold text-gray-800">Delivery</span>
@@ -131,12 +123,12 @@ const CheckoutProduct = () => {
                                 </div>
                                 <div className="flex flex-row justify-between ">
                                     <span className="font-semibold text-gray-800">Tax</span>
-                                    <span className="font-semibold">IDR 4000</span>
+                                    <span className="font-semibold">IDR {(Number(totalOrder) * 0.1).toLocaleString('id')},-</span>
                                 </div>
                                 <hr />
                                 <div className="flex flex-row justify-between ">
                                     <span className="font-semibold text-gray-800">Sub Total</span>
-                                    <span className="font-semibold">IDR 24.000</span>
+                                    <span className="font-semibold">IDR {(Number(totalOrder) + (Number(totalOrder) * 0.1)).toLocaleString('id')},-</span>
                                 </div>
                                 <Link to={'/history-order'} className="flex h-10 text-sm justify-center items-center border border-orange-500 bg-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer"><button id="checkout-button" >Checkout</button></Link>
                                 <span className="font-thin text-sm tracking-wide">We Accept</span>

@@ -1,6 +1,6 @@
 import React from "react"
 import axios from "axios"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import { FaStar } from "react-icons/fa6";
@@ -8,43 +8,62 @@ import { FaCircleChevronRight } from "react-icons/fa6"
 import ProductCard from "../components/ProductCard"
 import CoffeeBeanImage from '../assets/coffeebean.jpg'
 import { getBestSellerProduct } from "./Home"
+import { useDispatch } from "react-redux"
+import { addToCart as addToCartAction } from "../redux/reducers/cart"
 
 // eslint-disable-next-line react/prop-types
 const DetailProduct = () => {
     
     const [detailProduct, setDetailProduct] = React.useState({})
     const [bestSeller, setBestSeller] = React.useState([])
+    const [quantity, setQuantity] = React.useState(0)
+    const [localSelector, setLocalSelector] = React.useState({
+        product: null,
+        size: null,
+        variant: null,
+        quantity: 0
+    })
     const {id} = useParams()
+
+    const decButton = () => {
+        if(quantity <= 0) {
+            setQuantity(0)
+        } else {
+            setQuantity(quantity - 1)
+        }
+    }
+
+    const addButton = () => {
+        setQuantity(quantity + 1)
+    }
+
 
     const getDetailProduct = async (id) => {
         const {data} = await axios.get(`http://localhost:8888/products/${id}`)
-        console.log(data)
         if(data.success){
             setDetailProduct(data.results)
+            setLocalSelector({
+                product: data.results,
+                size: data.results.sizes[0],
+                variant: data.results.variants[0],
+                quantity
+            })
         }
+        console.log(localSelector)
     }
 
     React.useEffect(()=>{
         getDetailProduct(id)
         getBestSellerProduct(setBestSeller, {limit: 3})
     },[id])
-    
 
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const [quantity, setQuantity] = React.useState(0)
-
-    const decButton = () => {
-        if(quantity <= 0) {
-            setQuantity(0)
-        } else {
-            setQuantity(   quantity - 1)
-        }
+    const addCart = () => {
+        dispatch(addToCartAction(localSelector))
+        navigate('/checkout-product')
     }
-
-    const addButton = () => {
-        setQuantity(   quantity + 1)
-    }
-
 
     return (
         <>
@@ -100,27 +119,31 @@ const DetailProduct = () => {
         
                         <div className="flex flex-col gap-3">
                             <span className="font-semibold">Choose Size</span>
+
                             <div className="flex flex-row items-center h-10 gap-8">
-                                <div className="flex flex-1 h-full text-sm tracking-wide justify-center items-center border border-gray-300 hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">Regular</div>
-                                <div className="flex flex-1 h-full tracking-wide text-sm justify-center items-center border border-gray-300 hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">Medium</div>
-                                <div className="flex flex-1 h-full tracking-wide justify-center text-sm items-center border border-gray-300 hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">Large</div>
+                                {detailProduct?.sizes?.map(item => (
+                                        <button onClick={()=>setLocalSelector({...localSelector, size: item})} type="button" key={`size_${item.id}`} className={`flex flex-1 h-full text-sm tracking-wide justify-center items-center border ${localSelector.size.id === item.id ? 'border-orange-500':'border-gray-300'} hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer`}>
+                                        {item.size}
+                                    </button>
+                                ))}
                             </div>
                         </div>
         
                         <div className="flex flex-col gap-3">
                             <span className="font-semibold">Hot/Ice?</span>
                             <div className="flex flex-row items-center h-10 gap-8">
-                                <div className="flex flex-1 h-full tracking-wide justify-center text-sm items-center border border-gray-300 hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer"
-                                >Hot</div>
-                                <div className="flex flex-1 h-full tracking-wide text-sm justify-center items-center border border-gray-300 hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">Ice</div>
+                                {detailProduct?.variants?.map(item => (
+                                    <button onClick={()=>setLocalSelector({...localSelector, variant: item})} type="button" key={`variant_${item.id}`} className={`flex flex-1 h-full text-sm tracking-wide text-black justify-center items-center border ${localSelector.variant.id === item.id ? 'border-orange-500':'border-gray-300'} hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer`}>
+                                        {item.variant}
+                                    </button>
+                                ))}
                             </div>
                         </div>
         
                         <div className="flex flex-row h-11 gap-5 mt-8">
                             <Link to={'/checkout-product'} className="flex flex-1 text-sm justify-center items-center border border-orange-500 bg-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer"><button id="buy-button" >Buy</button></Link>
-                            <button className="flex flex-row flex-1 justify-center items-center gap-5 border border-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">
-                                <div><i data-feather="shopping-cart" className="text-orange-500"></i></div>
-                                <span className="text-sm text-orange-500">add to cart</span>
+                            <button onClick={addCart} className="flex flex-row flex-1 justify-center items-center gap-5 border border-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">
+                                Add to Cart
                             </button>
                         </div>
                     </div>
