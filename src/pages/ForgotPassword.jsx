@@ -26,7 +26,7 @@ const ForgotPassword = () => {
                 {forgotPasswordInfo}
                 <form onSubmit={forgotPasswordProcess} className="flex flex-col gap-6">
                     <EmailInput />
-                    <Button type='submit' className="bg-orange-500 py-3">Submit</Button>
+                    <Button type='submit' className="bg-[#1A4D2E] py-3 text-white">Submit</Button>
                 </form>
             </div>
         </section>

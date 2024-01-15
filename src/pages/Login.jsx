@@ -108,10 +108,10 @@ const Login = () => {
                             {successMessage && <div className='flex flex-1 text-green-700'>{successMessage}</div>}
                             {loginError}
                             <span className='text-slate-400 self-end'><Link to='/forgot-password'>Forgot Password?</Link></span>
-                            <Button type='submit' className="bg-orange-500 py-3">Login</Button>
+                            <Button type='submit' className="bg-[#1A4D2E] py-3 text-white">Login</Button>
                         </form>
 
-                        <span className="text-slate-400 item self-center my-5">Don&apos;t Have An Account? <Link to='/register' className='text-orange-500'>Register</Link></span>
+                        <span className="text-slate-400 item self-center my-5">Don&apos;t Have An Account? <Link to='/register' className='text-[#1A4D2E]'>Register</Link></span>
 
                         <div className="flex flex-col self-center items-center relative w-full mb-5">
                             <span className="inline-block text-center bg-white w-[100px] z-10 text-xs text-slate-400">Or</span>

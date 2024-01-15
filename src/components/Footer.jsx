@@ -31,9 +31,9 @@ const Footer = () => {
         <div className="flex flex-col w-fit gap-5">
             <span className="font-semibold text-gray-900">Social Media</span>
             <div className="flex flex-row gap-4">
-                <div className="flex justify-center items-center bg-orange-500 w-9 h-9 rounded-full hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer hover:grayscale"><a href=""><FaFacebookF /></a></div>
-                <div className="flex justify-center items-center bg-orange-500 w-9 h-9 rounded-full hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer hover:grayscale"><a href=""><FaTwitter /></a></div>
-                <div className="flex justify-center items-center bg-orange-500 w-9 h-9 rounded-full hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer hover:grayscale"><a href=""><FaInstagram className='text-xl'/></a></div>
+                <div className="flex justify-center items-center bg-[#1A4D2E] w-9 h-9 rounded-full hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer hover:grayscale"><a href=""><FaFacebookF className='text-white'/></a></div>
+                <div className="flex justify-center items-center bg-[#1A4D2E] w-9 h-9 rounded-full hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer hover:grayscale"><a href=""><FaTwitter className='text-white'/></a></div>
+                <div className="flex justify-center items-center bg-[#1A4D2E] w-9 h-9 rounded-full hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer hover:grayscale"><a href=""><FaInstagram className='text-xl text-white'/></a></div>
             </div>
         </div>
     </footer>

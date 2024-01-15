@@ -16,19 +16,17 @@ const Product = () => {
 
     const [data, setData] = React.useState([{}])
     const [pageInfo, setPageInfo] = React.useState(null)
-    const [showNextPage, setShowNextPage] = React.useState('')
     const [showPaginationButton, setShowPaginationButton] = React.useState([])
-    const [showCurrentButton, setShowCurrentButton] = React.useState()
+    const [showCurrentPageButton, setShowCurrentPageButton] = React.useState()
     const [filterDisplay, setFilterDisplay] = React.useState('hidden')
     const [keyword, setKeyword] = React.useState('')
 
     const getProduct = async (page) => {
         let res
-        setShowNextPage(res.pageInfo.nextPage)
         if(page === 'previous'){
             res = await axios.get('http://localhost:8888/products',{params: {
                 page: pageInfo.prevPage,
-                search: keyword
+                search: keyword,
             }})
         }else if(page === 'next'){
             res = await axios.get('http://localhost:8888/products',{params: {
@@ -48,8 +46,7 @@ const Product = () => {
         setShowPaginationButton(arrayPage)
 
 
-        setShowCurrentButton(res.data.pageInfo.currentPage)
-        console.log(typeof showPaginationButton, showPaginationButton)
+        setShowCurrentPageButton(res.data.pageInfo.currentPage)
 
         setPageInfo(res.data.pageInfo)
         setData(res.data.results)
@@ -76,7 +73,7 @@ const Product = () => {
         setShowPaginationButton(arrayPage)
 
 
-        setShowCurrentButton(res.data.pageInfo.currentPage)
+        setShowCurrentPageButton(res.data.pageInfo.currentPage)
 
         setPageInfo(res.data.pageInfo)
         setData(res.data.results)
@@ -88,7 +85,7 @@ const Product = () => {
             search: keyword
         }})
 
-        setShowCurrentButton(page)
+        setShowCurrentPageButton(page)
         setPageInfo(res.data.pageInfo)
         setData(res.data.results)
     }
@@ -124,8 +121,8 @@ const Product = () => {
                         <div className="flex flex-row items-center justify-between">
                             <h1 className="text-4xl font-medium text-gray-900 tracking-wide">Today <span className="text-yellow-900">Promo</span></h1>
                             <div className="flex flex-row items-center justify-center gap-2">
-                                <FaCircleChevronLeft className="fa-solid fa-circle-chevron-left text-3xl text-gray-300 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer hover:text-orange-500"/>
-                                <FaCircleChevronRight className="fa-solid fa-circle-chevron-right text-3xl text-gray-300 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer hover:text-orange-500"/>
+                                <FaCircleChevronLeft className="fa-solid fa-circle-chevron-left text-3xl text-gray-300 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer hover:text-[#FF9F29]"/>
+                                <FaCircleChevronRight className="fa-solid fa-circle-chevron-right text-3xl text-gray-300 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer hover:text-[#FF9F29]"/>
                             </div>
                         </div>
                         <div className="flex flex-row gap-10 w-max overflow-hidden relative left-1/2 -translate-x-1/2">
@@ -168,7 +165,7 @@ const Product = () => {
             
                         </div>
                         <div className="flex flex-row gap-2 tracking-wide">
-                            <div className="w-6 h-2 bg-orange-500 rounded-full"></div>
+                            <div className="w-6 h-2 bg-[#FF9F29] rounded-full"></div>
                             <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
                             <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
                             <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
@@ -191,29 +188,29 @@ const Product = () => {
         
                                     <div className="flex flex-col gap-2">
                                         <label htmlFor="search" className="text-white font-bold tracking-wide text-sm">Search</label>
-                                        <input id="search" name='search' type="text" placeholder="Search Your Product" className="h-12 p-5 placeholder:text-sm rounded-md" />
+                                        <input id="search" name='search' type="number" placeholder="Search Your Product" className="h-12 p-5 placeholder:text-sm rounded-md" />
                                     </div>
         
                                     <div className="flex flex-col gap-4">
                                         <span className="text-white font-bold tracking-wide text-sm">Category</span>
                                         <div className="flex flex-row gap-3">
-                                            <input type="radio" id="favorite-product" name="category" value="favorite-product" className="" />
+                                            <input type="checkbox" id="favorite-product" name="category" value="favorite product" className="" />
                                             <label htmlFor="favorite-product" className="text-white text-xs md:text-base">Favorite Product</label>
                                         </div>
                                         <div className="flex flex-row gap-3">
-                                            <input type="radio" id="coffee" name="category" value="coffee" />
+                                            <input type="checkbox" id="coffee" name="category" value="coffee" />
                                             <label htmlFor="coffee" className="text-white text-xs md:text-base">Coffee</label>
                                         </div>
                                         <div className="flex flex-row gap-3">
-                                            <input type="radio" id="non-coffee" name="category" value="non-coffee" />
+                                            <input type="checkbox" id="non-coffee" name="category" value="non coffee" />
                                             <label htmlFor="non-coffee" className="text-white text-xs md:text-base">Non Coffee</label>
                                         </div>
                                         <div className="flex flex-row gap-3">
-                                            <input type="radio" id="foods" name="category" value="foods" />
+                                            <input type="checkbox" id="foods" name="category" value="foods" />
                                             <label htmlFor="foods" className="text-white text-xs md:text-base">Foods</label>
                                         </div>
                                         <div className="flex flex-row gap-3">
-                                            <input type="radio" id="add-on" name="category" value="add-on" />
+                                            <input type="checkbox" id="add-on" name="category" value="add on" />
                                             <label htmlFor="add-on" className="text-white text-xs md:text-base">Add On</label>
                                         </div>
                                     </div>
@@ -253,9 +250,9 @@ const Product = () => {
                                 </div>
 
                                 <div className="flex flex-row gap-4">
-                                    <button type='button' onClick={() => getProduct('previous')}><FaCircleChevronLeft className="fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl text-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/></button>
-                                    {showPaginationButton.map((item) => <PaginationButton onClick={()=>showCurrentPage(item)}  key={item} text={item} className={item === showCurrentButton ? 'bg-orange-500':'bg-gray-200'}/>)}
-                                    <button className={showNextPage === null ? 'hidden':''} type='button' onClick={() => getProduct('next')}><FaCircleChevronRight className="fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl text-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/></button>
+                                    <button type='button' onClick={() => getProduct('previous')}><FaCircleChevronLeft className="fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl text-[#FF9F29] hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/></button>
+                                    {showPaginationButton.map((item) => <PaginationButton onClick={()=>showCurrentPage(item)}  key={item} text={item} className={item === showCurrentPageButton ? 'bg-[#FF9F29]':'bg-gray-200'}/>)}
+                                    <button type='button' onClick={() => getProduct('next')}><FaCircleChevronRight className="fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl text-[#FF9F29] hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/></button>
                                 </div>
                             
                             </div>

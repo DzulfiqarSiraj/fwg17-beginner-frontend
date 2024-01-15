@@ -49,7 +49,7 @@ const DetailProduct = () => {
                 quantity
             })
         }
-        console.log(localSelector)
+        console.log(data.results.sizes[0])
     }
 
     React.useEffect(()=>{
@@ -93,14 +93,14 @@ const DetailProduct = () => {
                         <div className="flex flex-row gap-3 items-center">
                         {Number(detailProduct?.discount) !== 0 ? <span className='text-[0.6rem] md:text-xs font-bold text-red-500'><del>Rp {Number(detailProduct?.basePrice).toLocaleString('id')},-</del></span> : ''}
                     
-                    <span className='text-sm md:text-xl font-bold text-orange-500'>Rp {(Number(detailProduct?.basePrice) - (Number(detailProduct?.basePrice)*Number(detailProduct?.discount))).toLocaleString('id')},-</span>
+                        <span className='text-sm md:text-xl font-bold text-[#1A4D2E]'>Rp {(Number(detailProduct?.basePrice) - (Number(detailProduct?.basePrice)*Number(detailProduct?.discount))).toLocaleString('id')},-</span>
                         </div>
                         <div className="flex flex-row gap-3 items-center h-3 mb-2">
-                            <FaStar className="text-orange-500 text-sm"/>
-                            <FaStar className="text-orange-500 text-sm"/>
-                            <FaStar className="text-orange-500 text-sm"/>
-                            <FaStar className="text-orange-500 text-sm"/>
-                            <FaStar className="text-orange-500 text-sm"/>
+                            <FaStar className="text-[#FF9F29] text-sm"/>
+                            <FaStar className="text-[#FF9F29] text-sm"/>
+                            <FaStar className="text-[#FF9F29] text-sm"/>
+                            <FaStar className="text-[#FF9F29] text-sm"/>
+                            <FaStar className="text-[#FF9F29] text-sm"/>
                             <span className="text-gray-500 text-base">5.0</span>
                         </div>
                         <div className="flex flex-row gap-4 items-start">
@@ -112,9 +112,9 @@ const DetailProduct = () => {
                         </div>
                         <p className="text-gray-600">{detailProduct?.description}</p>
                         <div className="h-9 w-fit flex flex-row border rounded-md border-gray-3">
-                            <div onClick={decButton} id="substract-button" className="flex w-9 text-lg font-semibold justify-center items-center border border-orange-500 rounded-md hover:bg-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">-</div>
+                            <div onClick={decButton} id="substract-button" className="flex w-9 text-lg font-semibold justify-center items-center border border-[#1A4D2E] rounded-md hover:bg-[#1A4D2E] active:scale-95 transition:all duration-300 cursor-pointer hover:text-white">-</div>
                             <div id="quantity-number" className="flex w-10 text-lg font-semibold justify-center items-center">{quantity}</div>
-                            <div onClick={addButton} id="add-button" className="flex w-9 text-lg font-semibold justify-center items-center border border-orange-500 rounded-md hover:bg-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">+</div>
+                            <div onClick={addButton} id="add-button" className="flex w-9 text-lg font-semibold justify-center items-center border border-[#1A4D2E] rounded-md hover:bg-[#1A4D2E] hover:text-white active:scale-95 transition:all duration-300 cursor-pointer">+</div>
                         </div>
         
                         <div className="flex flex-col gap-3">
@@ -122,7 +122,7 @@ const DetailProduct = () => {
 
                             <div className="flex flex-row items-center h-10 gap-8">
                                 {detailProduct?.sizes?.map(item => (
-                                        <button onClick={()=>setLocalSelector({...localSelector, size: item})} type="button" key={`size_${item.id}`} className={`flex flex-1 h-full text-sm tracking-wide justify-center items-center border ${localSelector.size.id === item.id ? 'border-orange-500':'border-gray-300'} hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer`}>
+                                        <button onClick={()=>setLocalSelector({...localSelector, size: item})} type="button" key={`size_${item.id}`} className={`flex flex-1 h-full text-sm tracking-wide justify-center items-center border ${localSelector.size.id === item.id ? 'border-[#1A4D2E]':'border-gray-300'} hover:border hover:border-[#1A4D2E] hover:bg-[#1A4D2E] hover:text-white active:scale-95 transition:all duration-300 cursor-pointer`}>
                                         {item.size}
                                     </button>
                                 ))}
@@ -133,7 +133,7 @@ const DetailProduct = () => {
                             <span className="font-semibold">Hot/Ice?</span>
                             <div className="flex flex-row items-center h-10 gap-8">
                                 {detailProduct?.variants?.map(item => (
-                                    <button onClick={()=>setLocalSelector({...localSelector, variant: item})} type="button" key={`variant_${item.id}`} className={`flex flex-1 h-full text-sm tracking-wide text-black justify-center items-center border ${localSelector.variant.id === item.id ? 'border-orange-500':'border-gray-300'} hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer`}>
+                                    <button onClick={()=>setLocalSelector({...localSelector, variant: item})} type="button" key={`variant_${item.id}`} className={`flex flex-1 h-full text-sm tracking-wide text-black justify-center items-center border ${localSelector.variant.id === item.id ? 'border-[#1A4D2E]':'border-gray-300'} hover:border hover:border-[#1A4D2E] hover:bg-[#1A4D2E] hover:text-white active:scale-95 transition:all duration-300 cursor-pointer`}>
                                         {item.variant}
                                     </button>
                                 ))}
@@ -141,8 +141,8 @@ const DetailProduct = () => {
                         </div>
         
                         <div className="flex flex-row h-11 gap-5 mt-8">
-                            <Link to={'/checkout-product'} className="flex flex-1 text-sm justify-center items-center border border-orange-500 bg-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer"><button id="buy-button" >Buy</button></Link>
-                            <button onClick={addCart} className="flex flex-row flex-1 justify-center items-center gap-5 border border-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">
+                            <Link to={'/checkout-product'} className="flex flex-1 text-sm justify-center items-center border border-[#1A4D2E] bg-[#1A4D2E] rounded-md hover:border-[#1A4D2E] text-white active:scale-95 transition:all duration-300 cursor-pointer"><button id="buy-button" >Buy</button></Link>
+                            <button onClick={addCart} className="flex flex-row flex-1 justify-center items-center gap-5 border border-[#1A4D2E] rounded-md hover:border-[#1A4D2E] active:scale-95 transition:all duration-300 cursor-pointer">
                                 Add to Cart
                             </button>
                         </div>
@@ -156,11 +156,11 @@ const DetailProduct = () => {
                     </div>
         
                     <div className="flex flex-row gap-4 self-center items-center pt-5 pb-10">
-                        <div className="flex justify-center items-center text-base bg-orange-500 w-9 h-9 rounded-full hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">1</div>
-                        <div className="flex justify-center items-center text-base bg-gray-300 w-9 h-9 rounded-full hover:bg-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">2</div>
-                        <div className="flex justify-center items-center text-base bg-gray-300 w-9 h-9 rounded-full hover:bg-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">3</div>
-                        <div className="flex justify-center items-center text-base bg-gray-300 w-9 h-9 rounded-full hover:bg-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">4</div>
-                        <FaCircleChevronRight className="fa-solid fa-circle-chevron-right text-4xl text-orange-500 hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/>
+                        <div className="flex justify-center items-center text-base bg-[#FF9F29] w-9 h-9 rounded-full hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">1</div>
+                        <div className="flex justify-center items-center text-base bg-gray-300 w-9 h-9 rounded-full hover:bg-[#FF9F29] hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">2</div>
+                        <div className="flex justify-center items-center text-base bg-gray-300 w-9 h-9 rounded-full hover:bg-[#FF9F29] hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">3</div>
+                        <div className="flex justify-center items-center text-base bg-gray-300 w-9 h-9 rounded-full hover:bg-[#FF9F29] hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">4</div>
+                        <FaCircleChevronRight className="fa-solid fa-circle-chevron-right text-4xl text-[#FF9F29] hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/>
                     </div>
                 </div>
             </main>

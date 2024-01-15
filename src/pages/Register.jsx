@@ -127,10 +127,10 @@ const Register = () => {
                         <PasswordInput text="Confirm Password" name="confirmpassword" placeholder="Enter Your Password Again"/>
                         {confirmPasswordInfo}
                         {successInfo}
-                        <Button type='submit' className="bg-orange-500 py-3">Register</Button>
+                        <Button type='submit' className="bg-[#1A4D2E] text-white py-3">Register</Button>
                     </form>
 
-                    <span className="text-slate-400 item self-center my-5">Have An Account? <Link to='/login' className='text-orange-500'>Login</Link></span>
+                    <span className="text-slate-400 item self-center my-5">Have An Account? <Link to='/login' className='text-[#1A4D2E]'>Login</Link></span>
 
                     <div className="flex flex-col self-center items-center relative w-full mb-5">
                         <span className="inline-block text-center bg-white w-[100px] z-10 text-xs text-slate-400">Or</span>
