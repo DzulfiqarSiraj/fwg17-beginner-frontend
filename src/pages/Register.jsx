@@ -48,7 +48,7 @@ const Register = () => {
             }
 
 
-            const {data} = await axios.post('http://localhost:8888/auth/register', form.toString())
+            const {data} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/register`, form.toString())
 
             if(fullName && email && password){
                 if(data.success === true){

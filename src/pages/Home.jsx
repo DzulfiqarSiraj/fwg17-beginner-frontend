@@ -12,7 +12,7 @@ import { FaCircleChevronRight } from "react-icons/fa6"
 
 
 export const getBestSellerProduct = async (cb, data) => {
-    const {data: response} = await axios.get('http://localhost:8888/products',{
+    const {data: response} = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`,{
         params: {
             bestSeller: true,
             limit: data?.limit

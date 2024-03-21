@@ -56,7 +56,7 @@ const Profile = () => {
             }
         })
         console.log(form)
-        const {data} = await axios.patch('http://localhost:8888/profile', form, {
+        const {data} = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/profile`, form, {
             headers: {
                 'Content-Type' : 'multipart/form-data',
                 'Authorization': `Bearer ${token}`
