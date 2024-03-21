@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 const PrivateRoute = ({children}) => {
     // const [token, setToken] = React.useState(window.localStorage.getItem('token'))
     const token = useSelector(state => state.auth.token)
-    const navigate = useNavigate
+    const navigate = useNavigate()
 
     React.useEffect(() => {
         if(!token){
