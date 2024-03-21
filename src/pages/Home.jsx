@@ -28,6 +28,11 @@ const Home = () => {
     const [data, setData] = React.useState([])
 
     React.useEffect(()=>{
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth",
+          });
         getBestSellerProduct(setData, {limit: 4})
     },[])
 

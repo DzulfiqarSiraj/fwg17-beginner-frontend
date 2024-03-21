@@ -21,6 +21,12 @@ const Login = () => {
     const dispatch = useDispatch()
 
     React.useEffect(()=>{
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth",
+          });
+          
         if(token){
             navigate('/')
         }

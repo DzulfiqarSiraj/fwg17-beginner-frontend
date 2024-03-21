@@ -108,6 +108,14 @@ const Register = () => {
         }        
     }
 
+    React.useEffect(()=>{
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth",
+          });
+    },[])
+
     return (
         <main className="flex flex-col w-screen h-fit md:flex-row">
             <section className="hidden md:flex w-4/12 bg-[url('../assets/bg-register.png')] bg-cover bg-center">

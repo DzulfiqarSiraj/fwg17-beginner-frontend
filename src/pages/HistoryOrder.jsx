@@ -1,3 +1,4 @@
+import React from 'react'
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
@@ -11,6 +12,13 @@ import { FaArrowsSpin } from "react-icons/fa6";
 import MessageIcon from "../assets/icon/message-icon.svg"
 
 const HistoryOrder = () => {
+    React.useEffect(()=>{
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth",
+          });
+    },[])
     return (
         <>
             <Navbar className="bg-black"/>

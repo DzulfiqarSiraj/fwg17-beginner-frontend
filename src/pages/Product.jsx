@@ -45,7 +45,6 @@ const Product = () => {
 
         setShowPaginationButton(arrayPage)
 
-
         setShowCurrentPageButton(res.data.pageInfo.currentPage)
 
         setPageInfo(res.data.pageInfo)
@@ -54,15 +53,15 @@ const Product = () => {
 
     const getFilterData = async (e) => {
         e.preventDefault()
-        const {value: search} = e.target.search
+        const {value: keyword} = e.target.keyword
         // const form = new URLSearchParams()
         // form.append('search', search)
         console.log(e.target)
 
-        setKeyword(search)
+        setKeyword(keyword)
 
         const res = await axios.get('http://localhost:8888/products', {params: {
-            search: search
+            keyword: keyword
         }})
 
         let arrayPage = []
@@ -71,7 +70,6 @@ const Product = () => {
         }
         
         setShowPaginationButton(arrayPage)
-
 
         setShowCurrentPageButton(res.data.pageInfo.currentPage)
 
@@ -99,6 +97,11 @@ const Product = () => {
     }
 
     React.useEffect(()=>{
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth",
+          });
         getProduct()
         showCurrentPage()
         getFilterData()
@@ -187,8 +190,8 @@ const Product = () => {
                                     </div>
         
                                     <div className="flex flex-col gap-2">
-                                        <label htmlFor="search" className="text-white font-bold tracking-wide text-sm">Search</label>
-                                        <input id="search" name='search' type="number" placeholder="Search Your Product" className="h-12 p-5 placeholder:text-sm rounded-md" />
+                                        <label htmlFor="keyword" className="text-white font-bold tracking-wide text-sm">Search</label>
+                                        <input id="keyword" name='keyword' type="text" placeholder="Search Your Product" className="h-12 p-5 placeholder:text-sm rounded-md" />
                                     </div>
         
                                     <div className="flex flex-col gap-4">
@@ -246,13 +249,13 @@ const Product = () => {
         
                             <div className="flex flex-col flex-1 gap-10 items-center">
                                 <div className="w-full grid grid-cols-2 gap-7 h-fit">
-                                    {data?.map((item) => <ProductCard key={item.id} id={item.id} image={item.image} name={item.name} description={item.description} basePrice={item.basePrice} discount={item.discount} isBestSeller={item.isBestSeller}/>)}
+                                    {data?.map((item) => <ProductCard key={item?.id} id={item.id} image={item.image} name={item.name} description={item.description} basePrice={item.basePrice} discount={item.discount} isBestSeller={item.isBestSeller}/>)}
                                 </div>
 
                                 <div className="flex flex-row gap-4">
-                                    <button type='button' onClick={() => getProduct('previous')}><FaCircleChevronLeft className="fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl text-[#FF9F29] hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/></button>
+                                    <button disabled={pageInfo?.prevPage == null? true : false} type='button' onClick={() => getProduct('previous')}><FaCircleChevronLeft className={`fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl hover:opacity-90 ${pageInfo?.prevPage == null? 'text-slate-300' : 'active:scale-95 text-[#FF9F29]'} transition:all duration-300 cursor-pointer`}/></button>
                                     {showPaginationButton.map((item) => <PaginationButton onClick={()=>showCurrentPage(item)}  key={item} text={item} className={item === showCurrentPageButton ? 'bg-[#FF9F29]':'bg-gray-200'}/>)}
-                                    <button type='button' onClick={() => getProduct('next')}><FaCircleChevronRight className="fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl text-[#FF9F29] hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer"/></button>
+                                    <button disabled={pageInfo?.nextPage == null? true : false} type='button' onClick={() => getProduct('next')}><FaCircleChevronRight className={`fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl hover:opacity-90 ${pageInfo?.nextPage == null? 'text-slate-300' : 'active:scale-95 text-[#FF9F29]'} transition:all duration-300 cursor-pointer`}/></button>
                                 </div>
                             
                             </div>

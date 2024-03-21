@@ -1,3 +1,4 @@
+import React from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { FiUser } from "react-icons/fi";
@@ -8,6 +9,13 @@ import { FiTruck } from "react-icons/fi";
 import { FiLoader } from "react-icons/fi";
 
 const DetailOrder = () => {
+    React.useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth",
+          });
+    },[])
     return (
         <>
             <Navbar className='bg-black' />

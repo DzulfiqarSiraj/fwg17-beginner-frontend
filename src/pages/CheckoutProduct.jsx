@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { FiXCircle } from "react-icons/fi";
@@ -13,15 +13,31 @@ import BcaImage from '../assets/bca.svg'
 import GopayImage from '../assets/gopay.svg'
 import OvoImage from '../assets/ovo.svg'
 import PaypalImage from '../assets/paypal.svg'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+import { emptyCart as emptyCartAction } from '../redux/reducers/cart';
 
 const CheckoutProduct = () => {
     
     const cart = useSelector(state => state.cart.data)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const totalOrder = cart.reduce((prev, curr) => {
         return prev + curr.product.basePrice + curr.size.additionalPrice + curr.variant.additionalPrice
     },0)
+
+    const orderProcess = () => {
+        dispatch(emptyCartAction())
+        navigate('/history-order')
+    }
+
+    React.useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth",
+          });
+    },[])
 
     return (
         <>
@@ -48,7 +64,7 @@ const CheckoutProduct = () => {
                                         <span className="font-semibold tracking-wide">{product?.product?.name}</span>
                                         <div className="flex flex-row items-center gap-2 divide-x-2 divide-gray-300">
                                             <span className="text-sm text-gray-600">2pcs</span>
-                                            <span className="text-sm text-gray-600 pl-2">{product.size.size}</span>
+                                            <span className="text-sm text-gray-600 pl-2">{product?.size?.size}</span>
                                             <span className="text-sm text-gray-600 pl-2">{product?.variant?.variant}</span>
                                             <span className="text-sm text-gray-600 pl-2">Door Delivery</span>
                                         </div>
@@ -130,7 +146,7 @@ const CheckoutProduct = () => {
                                     <span className="font-semibold text-gray-800">Sub Total</span>
                                     <span className="font-semibold">IDR {(Number(totalOrder) + (Number(totalOrder) * 0.1)).toLocaleString('id')},-</span>
                                 </div>
-                                <Link to={'/history-order'} className="flex h-10 text-sm justify-center items-center border border-orange-500 bg-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer"><button id="checkout-button" >Checkout</button></Link>
+                                <button onClick={orderProcess} id="checkout-button" >Checkout</button>
                                 <span className="font-thin text-sm tracking-wide">We Accept</span>
                                 <div className="flex flex-row">
                                     <div className="flex flex-1 justify-start items-center"><img src={BriImage} alt="" /></div>
