@@ -102,7 +102,7 @@ const Register = () => {
             if(fullName && email && password && (confirmpassword === password)){
                 setSuccessInfo(<div className='text-green-800 text-sm'>Registration Successfully</div>)
                 setTimeout(() => {
-                    window.open(`${import.meta.env.VITE_FRONTEND_URL}/login'`)
+                    window.open(`${import.meta.env.VITE_FRONTEND_URL}/login`)
                 },3000)
             }
         }        
