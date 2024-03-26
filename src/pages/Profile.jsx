@@ -18,7 +18,6 @@ const Profile = () => {
     const user = useSelector(state => state.profile.data)
     const [successMessage, setSuccessMessage] = React.useState(null)
     const [uploadSuccessMessage, setUploadSuccessMessage] = React.useState('')
-    // const token = window.localStorage.getItem('token')
     const [preview, setPreview] = React.useState()
     const token = useSelector(state => state.auth.token)
     const dispatch = useDispatch()
