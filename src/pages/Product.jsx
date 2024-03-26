@@ -24,17 +24,17 @@ const Product = () => {
     const getProduct = async (page) => {
         let res
         if(page === 'previous'){
-            res = await axios.get('http://localhost:8888/products',{params: {
+            res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`,{params: {
                 page: pageInfo.prevPage,
                 search: keyword,
             }})
         }else if(page === 'next'){
-            res = await axios.get('http://localhost:8888/products',{params: {
+            res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`,{params: {
                 page: pageInfo.nextPage,
                 search: keyword
             }})
         }else{
-            res = await axios.get('http://localhost:8888/products')
+            res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`)
         }
 
 
@@ -60,7 +60,7 @@ const Product = () => {
 
         setKeyword(keyword)
 
-        const res = await axios.get('http://localhost:8888/products', {params: {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
             keyword: keyword
         }})
 
@@ -78,7 +78,7 @@ const Product = () => {
     }
 
     const showCurrentPage = async (page = 1) => {
-        const res = await axios.get('http://localhost:8888/products', {params: {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
             page: page,
             search: keyword
         }})
@@ -253,9 +253,24 @@ const Product = () => {
                                 </div>
 
                                 <div className="flex flex-row gap-4">
-                                    <button disabled={pageInfo?.prevPage == null? true : false} type='button' onClick={() => getProduct('previous')}><FaCircleChevronLeft className={`fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl hover:opacity-90 ${pageInfo?.prevPage == null? 'text-slate-300' : 'active:scale-95 text-[#FF9F29]'} transition:all duration-300 cursor-pointer`}/></button>
-                                    {showPaginationButton.map((item) => <PaginationButton onClick={()=>showCurrentPage(item)}  key={item} text={item} className={item === showCurrentPageButton ? 'bg-[#FF9F29]':'bg-gray-200'}/>)}
-                                    <button disabled={pageInfo?.nextPage == null? true : false} type='button' onClick={() => getProduct('next')}><FaCircleChevronRight className={`fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl hover:opacity-90 ${pageInfo?.nextPage == null? 'text-slate-300' : 'active:scale-95 text-[#FF9F29]'} transition:all duration-300 cursor-pointer`}/></button>
+                                    <button disabled={pageInfo?.prevPage == null? true : false} type='button' onClick={() => {
+                                        getProduct('previous');
+                                        window.scrollTo({
+                                            top: 600,
+                                            behavior: "smooth",});
+                                        }}><FaCircleChevronLeft className={`fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl hover:opacity-90 ${pageInfo?.prevPage == null? 'text-slate-300' : 'active:scale-95 text-[#FF9F29]'} transition:all duration-300 cursor-pointer`}/></button>
+                                    {showPaginationButton.map((item) => <PaginationButton onClick={()=>{
+                                        showCurrentPage(item); 
+                                        window.scrollTo({
+                                        top: 600,
+                                        behavior: "smooth",});
+                                    }}  key={item} text={item} className={item === showCurrentPageButton ? 'bg-[#FF9F29]':'bg-gray-200'}/>)}
+                                    <button disabled={pageInfo?.nextPage == null? true : false} type='button' onClick={() => {
+                                        getProduct('next');
+                                        window.scrollTo({
+                                            top: 600,
+                                            behavior: "smooth",});
+                                        }}><FaCircleChevronRight className={`fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl hover:opacity-90 ${pageInfo?.nextPage == null? 'text-slate-300' : 'active:scale-95 text-[#FF9F29]'} transition:all duration-300 cursor-pointer`}/></button>
                                 </div>
                             
                             </div>

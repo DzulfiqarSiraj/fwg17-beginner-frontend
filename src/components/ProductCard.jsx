@@ -11,7 +11,7 @@ const ProductCard = ({id, image, name, description, basePrice, discount, isBestS
             {isBestSeller && <span className="bg-red-500 text-[0.5rem] md:text-sm font-semibold rounded-full p-2 top-3 left-3 absolute">FLASH SALE!</span>  }
             <div className="max-w-md w-full aspect-square">
                 <div className="hidden">{id}</div>
-                <div >{(image !== null && image !== '') ? <img className="w-full" src={`http://localhost:8888/uploads/products/${image}`} alt="" /> : <img className="w-full" src={CoffeeBeanImage} alt="" />}</div>
+                <div >{(image !== null && image !== '') ? <img className="w-full" src={`${import.meta.env.VITE_BACKEND_URL}/uploads/products/${image}`} alt="" /> : <img className="w-full" src={CoffeeBeanImage} alt="" />}</div>
             </div>
             <div className='bg-white shadow-md rounded-b p-3 mx-3 -mt-10 flex flex-col gap-4 flex-1 md:max-w-xs md:w-full'>
                 <div className='text-base md:text-2xl font-bold'>{name}</div>

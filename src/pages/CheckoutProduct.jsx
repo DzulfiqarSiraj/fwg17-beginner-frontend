@@ -58,7 +58,7 @@ const CheckoutProduct = () => {
                         {
                             cart.map(product => (
                                 <div key={`product_${product?.product?.id}`} className="flex flex-row h-fit bg-gray-100 gap-5">
-                                    <img src={`http://localhost:8888/uploads/products/${product.product.image}`} className='h-48 aspect-square object-cover bg-center'/>
+                                    <img src={`${import.meta.env.VITE_BACKEND_URL}/uploads/products/${product.product.image}`} className='h-48 aspect-square object-cover bg-center'/>
                                     <div className="flex flex-col flex-1 self-center gap-3">
                                         <span className="w-fit text-xs text-white font-semibold bg-red-700 px-2 py-1 rounded-full">FLASH SALE!</span>
                                         <span className="font-semibold tracking-wide">{product?.product?.name}</span>

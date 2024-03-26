@@ -39,7 +39,7 @@ const DetailProduct = () => {
 
 
     const getDetailProduct = async (id) => {
-        const {data} = await axios.get(`http://localhost:8888/products/${id}`)
+        const {data} = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products/${id}`)
         if(data.success){
             setDetailProduct(data.results)
             setLocalSelector({
@@ -78,16 +78,16 @@ const DetailProduct = () => {
                 {/* <!-- column-1 --> */}
                 <div className="flex w-full flex-row gap-5"> {/*<!-- left--> */}
                     <div className="flex w-2/4 flex-col gap-5">
-                        <div className="w-full"><img className="w-full" id={detailProduct?.id} src={detailProduct?.image !== null && detailProduct?.image !== '' ? `http://localhost:8888/uploads/products/${detailProduct?.image}` : CoffeeBeanImage} alt=""/></div>
+                        <div className="w-full"><img className="w-full" id={detailProduct?.id} src={detailProduct?.image !== null && detailProduct?.image !== '' ? `${import.meta.env.VITE_BACKEND_URL}/uploads/products/${detailProduct?.image}` : CoffeeBeanImage} alt=""/></div>
                         <div className="flex flex-row gap-5">
                             <div className="flex-1">
-                                <img className="w-full" src={detailProduct?.image !== null && detailProduct?.image !== '' ? `http://localhost:8888/uploads/products/${detailProduct?.image}` : CoffeeBeanImage} alt="" />
+                                <img className="w-full" src={detailProduct?.image !== null && detailProduct?.image !== '' ? `${import.meta.env.VITE_BACKEND_URL}/uploads/products/${detailProduct?.image}` : CoffeeBeanImage} alt="" />
                             </div>
                             <div className="flex-1">
-                                <img className="w-full" src={detailProduct?.image !== null && detailProduct?.image !== '' ? `http://localhost:8888/uploads/products/${detailProduct?.image}` : CoffeeBeanImage} alt="" />
+                                <img className="w-full" src={detailProduct?.image !== null && detailProduct?.image !== '' ? `${import.meta.env.VITE_BACKEND_URL}/uploads/products/${detailProduct?.image}` : CoffeeBeanImage} alt="" />
                             </div>
                             <div className="flex-1">
-                                <img className="w-full" src={detailProduct?.image !== null && detailProduct?.image !== '' ? `http://localhost:8888/uploads/products/${detailProduct?.image}` : CoffeeBeanImage} alt="" />
+                                <img className="w-full" src={detailProduct?.image !== null && detailProduct?.image !== '' ? `${import.meta.env.VITE_BACKEND_URL}/uploads/products/${detailProduct?.image}` : CoffeeBeanImage} alt="" />
                             </div>
                         </div>
                     </div>
