@@ -11,7 +11,7 @@ const ForgotPassword = () => {
         e.preventDefault()
         setForgotPasswordInfo(<span className="text-neutral-600 text-sm mb-5">We will send new password to your email</span>)
         setTimeout(() => {
-            window.open(`${import.meta.env.VITE_FRONTEND_URL}login`)
+            window.open(`${import.meta.env.VITE_FRONTEND_URL}/login`)
         },3000)
     }
 
