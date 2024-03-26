@@ -29,7 +29,7 @@ function Navbar (props) {
 
     const getProfile = () => {
         if(token) {
-            axios.get(`${import.meta.env.VITE_BACKEND_URL}/profile`,{
+            axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/profile`,{
                 headers: {
                     'Authorization' : `Bearer ${token}`
                 }
