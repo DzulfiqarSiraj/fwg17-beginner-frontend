@@ -73,6 +73,7 @@ const DetailProduct = () => {
           });
         getDetailProduct(id)
         getBestSellerProduct(setBestSeller, {limit: 3})
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[id])
 
     const dispatch = useDispatch()
@@ -114,7 +115,7 @@ const DetailProduct = () => {
         
                     <div className="flex flex-col flex-1 bg-white gap-5"> {/*<!-- right --> */}
                         {detailProduct?.tag === "Flash Sale" && <span className="text-sm text-white font-semibold tracking-wide bg-red-600 w-fit py-2 px-3 rounded-full">FLASH SALE!</span>}
-                        {detailProduct?.tag === "End Year Sale" && <span className="text-sm text-white font-semibold tracking-wide bg-red-600 w-fit py-2 px-3 rounded-full">END YEAR SALE!</span>}
+                        {detailProduct?.tag === "End Year Sale" && <span className="text-sm text-white font-semibold tracking-wide bg-orange-600 w-fit py-2 px-3 rounded-full">END YEAR SALE!</span>}
                         {detailProduct?.tag === "Ramadhan Sale" && <span className="text-sm text-white font-semibold tracking-wide bg-green-700 w-fit py-2 px-3 rounded-full">RAMADHAN SALE!</span>}
                         <h1 className="font-medium text-5xl tracking-wide">{detailProduct?.name}</h1>
                         <div className="flex flex-row gap-3 items-center">
