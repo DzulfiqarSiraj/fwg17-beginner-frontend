@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React from 'react'
 import axios from 'axios'
 import WorldMapImage from '../assets/Huge Globalmap.svg'
