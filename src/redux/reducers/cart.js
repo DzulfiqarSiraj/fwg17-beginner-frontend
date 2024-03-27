@@ -14,11 +14,17 @@ const cart = createSlice({
             data.push(action.payload)
             state.data = data
         },
+        removeFromCart: (state, action) => {
+            let data = state.data
+            const newData = data.filter((value) => (value.uniqueId !== action.payload.uniqueId))
+            state.data = newData
+        }
+        ,
         emptyCart: () => {
             return initialState
         }
     }
 })
 
-export const {addToCart, emptyCart} = cart.actions
+export const {addToCart, emptyCart, removeFromCart} = cart.actions
 export default cart.reducer
