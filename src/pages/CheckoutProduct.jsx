@@ -82,7 +82,7 @@ const CheckoutProduct = () => {
                                     <div className="flex w-fit justify-center items-center px-8">
                                         <FiXCircle type='button' onClick={() => {
                                             dispatch(removeFromCartAction(product))
-                                        }} className='text-red-700' />
+                                        }} className='text-red-700 hover:text-slate-700 hover:cursor-pointer hover:scale-125 transition:all duration-300' />
                                     </div>
                                 </div>
                             ))

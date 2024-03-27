@@ -1,6 +1,6 @@
 import React from "react"
 import axios from "axios"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import { FaStar } from "react-icons/fa6";
@@ -84,6 +84,12 @@ const DetailProduct = () => {
         navigate('/products')
     }
 
+    const addBuy = () => {
+        dispatch(addToCartAction({...localSelector,
+        uniqueId : Math.random().toPrecision(4).slice(2)}))
+        navigate('/checkout-product')
+    }
+
     return (
         <>
             <Navbar className="bg-black"/>
@@ -162,8 +168,8 @@ const DetailProduct = () => {
                         </div>
         
                         <div className="flex flex-row h-11 gap-5 mt-8">
-                            <Link to={'/checkout-product'} className="flex flex-1 text-sm justify-center items-center border border-[#1A4D2E] bg-[#1A4D2E] rounded-md hover:border-[#1A4D2E] text-white active:scale-95 transition:all duration-300 cursor-pointer"><button id="buy-button" >Buy</button></Link>
-                            <button onClick={addCart} className="flex flex-row flex-1 justify-center items-center gap-5 border border-[#1A4D2E] rounded-md hover:border-[#1A4D2E] active:scale-95 transition:all duration-300 cursor-pointer">
+                            <button type="button" onClick={addBuy} className="flex flex-1 text-sm justify-center items-center border border-[#1A4D2E] bg-[#1A4D2E] rounded-md hover:border-[#1A4D2E] text-white active:scale-95 transition:all duration-300 cursor-pointer" id="buy-button" >Buy</button>
+                            <button type="button" onClick={addCart} className="flex flex-row flex-1 justify-center items-center gap-5 border border-[#1A4D2E] rounded-md hover:border-[#1A4D2E] active:scale-95 transition:all duration-300 cursor-pointer">
                                 Add to Cart
                             </button>
                         </div>
