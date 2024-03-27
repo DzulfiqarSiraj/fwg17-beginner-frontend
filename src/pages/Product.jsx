@@ -37,6 +37,7 @@ const Product = () => {
             }})
         }else{
             res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`,{params: {
+                search: keyword,
                 limit: 6
             }})
         }
@@ -60,7 +61,6 @@ const Product = () => {
         const {value: keyword} = e.target.keyword
         // const form = new URLSearchParams()
         // form.append('search', search)
-        console.log(e.target)
 
         setKeyword(keyword)
 
@@ -259,24 +259,26 @@ const Product = () => {
                                 </div>
 
                                 <div className="flex flex-row gap-4">
-                                    <button disabled={pageInfo?.prevPage == null? true : false} type='button' onClick={() => {
+                                    <button disabled={!pageInfo?.prevPage? true : false} type='button' onClick={() => {
                                         getProduct('previous');
+                                        showCurrentPage(pageInfo?.prevPage)
                                         window.scrollTo({
                                             top: 600,
                                             behavior: "smooth",});
-                                        }}><FaCircleChevronLeft className={`fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl hover:opacity-90 ${pageInfo?.prevPage == null? 'text-slate-300' : 'active:scale-95 text-[#FF9F29]'} transition:all duration-300 cursor-pointer`}/></button>
+                                        }}><FaCircleChevronLeft className={`fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl hover:opacity-90 ${!pageInfo?.prevPage? 'text-slate-300' : 'active:scale-95 text-[#FF9F29]'} transition:all duration-300 cursor-pointer`}/></button>
                                     {showPaginationButton.map((item) => <PaginationButton onClick={()=>{
                                         showCurrentPage(item); 
                                         window.scrollTo({
                                         top: 600,
                                         behavior: "smooth",});
                                     }}  key={item} text={item} className={item === showCurrentPageButton ? 'bg-[#FF9F29]':'bg-gray-200'}/>)}
-                                    <button disabled={pageInfo?.nextPage == null? true : false} type='button' onClick={() => {
+                                    <button disabled={!pageInfo?.nextPage? true : false} type='button' onClick={() => {
                                         getProduct('next');
+                                        showCurrentPage(pageInfo?.nextPage)
                                         window.scrollTo({
                                             top: 600,
                                             behavior: "smooth",});
-                                        }}><FaCircleChevronRight className={`fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl hover:opacity-90 ${pageInfo?.nextPage == null? 'text-slate-300' : 'active:scale-95 text-[#FF9F29]'} transition:all duration-300 cursor-pointer`}/></button>
+                                        }}><FaCircleChevronRight className={`fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl hover:opacity-90 ${!pageInfo?.nextPage? 'text-slate-300' : 'active:scale-95 text-[#FF9F29]'} transition:all duration-300 cursor-pointer`}/></button>
                                 </div>
                             
                             </div>
