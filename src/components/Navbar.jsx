@@ -54,6 +54,10 @@ function Navbar (props) {
         }
     }
 
+    const onCart = () => {
+        navigate('/checkout-product')
+    }
+
     const onProfile = () => {
         navigate('/profile')
     }
@@ -107,7 +111,7 @@ function Navbar (props) {
                         <div className={`${searchDisplay} flex-row items-center border h-10 border-gray-300 rounded-lg px-4 gap-4`}>
                             <input className="flex-1 outline-none placeholder:text-sm placeholder:text-gray-500 bg-transparent" id="search" type="text" name="search" placeholder="Search" autoComplete="on"/>
                         </div>
-                        <div className="hover:border-b-2 hover:border-b-[#0f8b40] hover:pb-1.5"><Link to={'/checkout-product'} ><FiShoppingCart className='text-lg text-white'/></Link></div>
+                        <button type='button' onClick={onCart} className="hover:border-b-2 hover:border-b-[#0f8b40] hover:pb-1.5"><FiShoppingCart className='text-lg text-white'/></button>
                     </li>
                     <li className="md:hidden flex text-white text-sm items-center border-b-2 border-b-transparent hover:border-b-[#0f8b40] py-1"><Link to='/products'>Product</Link></li>
                     <li className="md:hidden flex text-white text-sm items-center border-b-2 border-b-transparent hover:border-b-[#0f8b40] py-1"><Link to='/'>Home</Link></li>

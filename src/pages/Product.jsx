@@ -27,14 +27,18 @@ const Product = () => {
             res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`,{params: {
                 page: pageInfo.prevPage,
                 search: keyword,
+                limit: 6
             }})
         }else if(page === 'next'){
             res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`,{params: {
                 page: pageInfo.nextPage,
-                search: keyword
+                search: keyword,
+                limit: 6
             }})
         }else{
-            res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`)
+            res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`,{params: {
+                limit: 6
+            }})
         }
 
 
@@ -61,7 +65,8 @@ const Product = () => {
         setKeyword(keyword)
 
         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
-            keyword: keyword
+            keyword: keyword,
+            limit : 6
         }})
 
         let arrayPage = []
@@ -80,7 +85,8 @@ const Product = () => {
     const showCurrentPage = async (page = 1) => {
         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
             page: page,
-            search: keyword
+            search: keyword,
+            limit: 6
         }})
 
         setShowCurrentPageButton(page)
@@ -249,7 +255,7 @@ const Product = () => {
         
                             <div className="flex flex-col flex-1 gap-10 items-center">
                                 <div className="w-full grid grid-cols-2 gap-7 h-fit">
-                                    {data?.map((item) => <ProductCard key={item?.id} id={item.id} image={item.image} name={item.name} description={item.description} basePrice={item.basePrice} discount={item.discount} isBestSeller={item.isBestSeller}/>)}
+                                    {data?.map((item) => <ProductCard key={item?.id} id={item?.id} image={item.image} name={item?.name} description={item.description} basePrice={item.basePrice} tag={item.tag} discount={item.discount} isBestSeller={item.isBestSeller}/>)}
                                 </div>
 
                                 <div className="flex flex-row gap-4">

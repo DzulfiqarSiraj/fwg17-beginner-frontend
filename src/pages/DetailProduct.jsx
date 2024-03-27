@@ -16,40 +16,53 @@ const DetailProduct = () => {
     
     const [detailProduct, setDetailProduct] = React.useState({})
     const [bestSeller, setBestSeller] = React.useState([])
-    const [quantity, setQuantity] = React.useState(0)
-    const [localSelector, setLocalSelector] = React.useState({
+    let [qty, setQty] = React.useState(0)
+        const [localSelector, setLocalSelector] = React.useState({
         product: null,
         size: null,
         variant: null,
-        quantity: 0
+        quantity: null,
+        uniqueId: null
     })
     const {id} = useParams()
 
     const decButton = () => {
-        if(quantity <= 0) {
-            setQuantity(0)
-        } else {
-            setQuantity(quantity - 1)
+        if(qty <= 0){
+            setQty(0)
+            console.log(qty)
+            setLocalSelector({
+                ...localSelector,
+                quantity : qty
+            })
+            return
         }
+        setQty(qty -= 1)
+        setLocalSelector({
+            ...localSelector,
+            quantity : qty
+        })
     }
 
     const addButton = () => {
-        setQuantity(quantity + 1)
+        setQty(qty += 1)
+                setLocalSelector({
+            ...localSelector,
+            quantity : qty
+        })
     }
-
 
     const getDetailProduct = async (id) => {
         const {data} = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products/${id}`)
         if(data.success){
             setDetailProduct(data.results)
             setLocalSelector({
+                ...localSelector,
                 product: data.results,
                 size: data.results.sizes[0],
                 variant: data.results.variants[0],
-                quantity
+                quantity : qty
             })
         }
-        console.log(data.results.sizes[0])
     }
 
     React.useEffect(()=>{
@@ -66,8 +79,9 @@ const DetailProduct = () => {
     const navigate = useNavigate()
 
     const addCart = () => {
-        dispatch(addToCartAction(localSelector))
-        navigate('/checkout-product')
+        dispatch(addToCartAction({...localSelector,
+        uniqueId : Math.random().toPrecision(4).slice(2)}))
+        navigate('/products')
     }
 
     return (
@@ -93,7 +107,9 @@ const DetailProduct = () => {
                     </div>
         
                     <div className="flex flex-col flex-1 bg-white gap-5"> {/*<!-- right --> */}
-                        <span className="text-sm text-white font-semibold tracking-wide bg-red-600 w-fit py-2 px-3 rounded-full">FLASH SALE!</span>
+                        {detailProduct?.tag === "Flash Sale" && <span className="text-sm text-white font-semibold tracking-wide bg-red-600 w-fit py-2 px-3 rounded-full">FLASH SALE!</span>}
+                        {detailProduct?.tag === "End Year Sale" && <span className="text-sm text-white font-semibold tracking-wide bg-red-600 w-fit py-2 px-3 rounded-full">END YEAR SALE!</span>}
+                        {detailProduct?.tag === "Ramadhan Sale" && <span className="text-sm text-white font-semibold tracking-wide bg-green-700 w-fit py-2 px-3 rounded-full">RAMADHAN SALE!</span>}
                         <h1 className="font-medium text-5xl tracking-wide">{detailProduct?.name}</h1>
                         <div className="flex flex-row gap-3 items-center">
                         {Number(detailProduct?.discount) !== 0 ? <span className='text-[0.6rem] md:text-xs font-bold text-red-500'><del>Rp {Number(detailProduct?.basePrice).toLocaleString('id')},-</del></span> : ''}
@@ -117,9 +133,9 @@ const DetailProduct = () => {
                         </div>
                         <p className="text-gray-600">{detailProduct?.description}</p>
                         <div className="h-9 w-fit flex flex-row border rounded-md border-gray-3">
-                            <div onClick={decButton} id="substract-button" className="flex w-9 text-lg font-semibold justify-center items-center border border-[#1A4D2E] rounded-md hover:bg-[#1A4D2E] active:scale-95 transition:all duration-300 cursor-pointer hover:text-white">-</div>
-                            <div id="quantity-number" className="flex w-10 text-lg font-semibold justify-center items-center">{quantity}</div>
-                            <div onClick={addButton} id="add-button" className="flex w-9 text-lg font-semibold justify-center items-center border border-[#1A4D2E] rounded-md hover:bg-[#1A4D2E] hover:text-white active:scale-95 transition:all duration-300 cursor-pointer">+</div>
+                            <button type='button' disabled={qty <= 0 ? true : false} onClick={decButton} id="substract-button" className={`flex w-9 text-lg font-semibold justify-center items-center border ${qty <= 0 ? `border-slate-400`: `border-[#1A4D2E] hover:bg-[#1A4D2E]`} rounded-md active:scale-95 transition:all duration-300 cursor-pointer hover:text-white`}>-</button>
+                            <div id="qty-number" className="flex w-10 text-lg font-semibold justify-center items-center">{qty}</div>
+                            <button type='button' onClick={addButton} id="add-button" className="flex w-9 text-lg font-semibold justify-center items-center border border-[#1A4D2E] rounded-md hover:bg-[#1A4D2E] hover:text-white active:scale-95 transition:all duration-300 cursor-pointer">+</button>
                         </div>
         
                         <div className="flex flex-col gap-3">
@@ -135,7 +151,7 @@ const DetailProduct = () => {
                         </div>
         
                         <div className="flex flex-col gap-3">
-                            <span className="font-semibold">Hot/Ice?</span>
+                            <span className="font-semibold">Choose Variant</span>
                             <div className="flex flex-row items-center h-10 gap-8">
                                 {detailProduct?.variants?.map(item => (
                                     <button onClick={()=>setLocalSelector({...localSelector, variant: item})} type="button" key={`variant_${item.id}`} className={`flex flex-1 h-full text-sm tracking-wide text-black justify-center items-center border ${localSelector.variant.id === item.id ? 'border-[#1A4D2E]':'border-gray-300'} hover:border hover:border-[#1A4D2E] hover:bg-[#1A4D2E] hover:text-white active:scale-95 transition:all duration-300 cursor-pointer`}>
@@ -157,7 +173,7 @@ const DetailProduct = () => {
                 <div className="flex flex-col w-full gap-5">
                     <h1 className="text-4xl font-medium text-gray-900 tracking-wide">Recommendation <span className="text-yellow-900">For You</span></h1>
                     <div className="flex flex-row w-full justify-center gap-5">
-                        {bestSeller.map((item) => <ProductCard key={item.id} id={item.id} image={item.image} name={item.name} description={item.description} basePrice={item.basePrice} discount={item.discount} isBestSeller={item.isBestSeller}/>)}                        
+                        {bestSeller.map((item) => <ProductCard key={item.id} id={item.id} image={item.image} name={item.name} description={item.description} basePrice={item.basePrice} tag={item.tag} discount={item.discount}/>)}
                     </div>
         
                     <div className="flex flex-row gap-4 self-center items-center pt-5 pb-10">

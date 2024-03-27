@@ -7,6 +7,7 @@ import { FiPlus } from "react-icons/fi";
 import { FiMail } from "react-icons/fi";
 import { FiUser } from "react-icons/fi";
 import { FiMapPin } from "react-icons/fi";
+import CoffeeBeanImage from '../assets/coffeebean.jpg'
 import BriImage from '../assets/bri.svg'
 import DanaImage from '../assets/dana.svg'
 import BcaImage from '../assets/bca.svg'
@@ -16,6 +17,7 @@ import PaypalImage from '../assets/paypal.svg'
 import { useNavigate } from 'react-router-dom';
 
 import { emptyCart as emptyCartAction } from '../redux/reducers/cart';
+import {removeFromCart as removeFromCartAction} from '../redux/reducers/cart'
 
 const CheckoutProduct = () => {
     
@@ -23,8 +25,10 @@ const CheckoutProduct = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const totalOrder = cart.reduce((prev, curr) => {
-        return prev + curr.product.basePrice + curr.size.additionalPrice + curr.variant.additionalPrice
+        return prev + (curr.product.basePrice + curr.size.additionalPrice + curr.variant.additionalPrice) * curr.quantity
     },0)
+
+    console.log(cart)
 
     const orderProcess = () => {
         dispatch(emptyCartAction())
@@ -49,32 +53,36 @@ const CheckoutProduct = () => {
                     <div className="flex flex-col flex-1 gap-4">
                         <div className="flex flex-row justify-between items-center">
                             <span className="text-xl font-semibold tracking-wide">Your Order</span>
-                            <button className="flex flex-row h-10 text-sm justify-center items-center gap-2 border border-orange-500 bg-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">
+                            <button type="button" onClick={() => navigate('/products')} className="flex flex-row h-10 text-sm justify-center items-center gap-2 border border-orange-500 bg-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">
                                 <div className="flex pl-2 items-center"><FiPlus className='w-4' /></div>
-                                <button type='button' onClick={() => navigate('/products')} className="flex flex-1 pr-2 items-center"><span>Add Menu</span></button>
+                                <div className="flex flex-1 pr-2 items-center"><span>Add Menu</span></div>
                             </button>
                         </div>
                         {/* <!-- product-card-1 --> */}
                         {
                             cart.map(product => (
                                 <div key={`product_${product?.product?.id}`} className="flex flex-row h-fit bg-gray-100 gap-5">
-                                    <img src={`${import.meta.env.VITE_BACKEND_URL}/uploads/products/${product.product.image}`} className='h-48 aspect-square object-cover bg-center'/>
+                                    <img src={product?.product?.image ? `${import.meta.env.VITE_BACKEND_URL}/uploads/products/${product?.product?.image}` : CoffeeBeanImage} className='h-48 aspect-square object-cover bg-center'/>
                                     <div className="flex flex-col flex-1 self-center gap-3">
                                         <span className="w-fit text-xs text-white font-semibold bg-red-700 px-2 py-1 rounded-full">FLASH SALE!</span>
                                         <span className="font-semibold tracking-wide">{product?.product?.name}</span>
                                         <div className="flex flex-row items-center gap-2 divide-x-2 divide-gray-300">
-                                            <span className="text-sm text-gray-600">2pcs</span>
+                                            <span className="text-sm text-gray-600">{product?.quantity} pcs</span>
                                             <span className="text-sm text-gray-600 pl-2">{product?.size?.size}</span>
                                             <span className="text-sm text-gray-600 pl-2">{product?.variant?.variant}</span>
                                             <span className="text-sm text-gray-600 pl-2">Door Delivery</span>
                                         </div>
                                         <div className="flex flex-row gap-3 items-center">
                                             <span className="self-center text-xs text-red-700"><del>IDR 0,-</del></span>
-                                            <span className="text-base text-orange-500">IDR {Number(Number(product?.product?.basePrice) + Number(product?.variant?.additionalPrice) + Number(product?.size?.additionalPrice)).toLocaleString('id')},-</span>
+                                            <span className="text-base text-orange-500">IDR {Number((
+                                                Number(product?.product?.basePrice) + Number(product?.variant?.additionalPrice) + Number(product?.size?.additionalPrice))*Number(product?.quantity)).toLocaleString('id')
+                                                },-</span>
                                         </div>
                                     </div>
                                     <div className="flex w-fit justify-center items-center px-8">
-                                        <FiXCircle className='text-red-700' />
+                                        <FiXCircle type='button' onClick={() => {
+                                            dispatch(removeFromCartAction(product))
+                                        }} className='text-red-700' />
                                     </div>
                                 </div>
                             ))

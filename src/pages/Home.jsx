@@ -14,7 +14,7 @@ import { FaCircleChevronRight } from "react-icons/fa6"
 export const getBestSellerProduct = async (cb, data) => {
     const {data: response} = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`,{
         params: {
-            bestSeller: true,
+            isRecommended: true,
             limit: data?.limit
         }
     })
@@ -90,7 +90,7 @@ const Home = () => {
                     </section>
                     <div className="flex flex-1 flex-row w-screen justify-center p-5 md:p-14">
                         <div className={`grid grid-cols-2 md:grid-cols-4 justify-center gap-5`}>
-                            {data.map((item) => <ProductCard key={item.id} id={item.id} image={item.image} name={item.name} description={item.description} basePrice={item.basePrice} discount={item.discount} isBestSeller={item.isBestSeller}/>)}
+                            {data.map((item) => <ProductCard key={item.id} id={item.id} image={item.image} name={item.name} description={item.description} basePrice={item.basePrice} tag={item.tag} discount={item.discount}/>)}
                         </div>
                     </div>
                 </div>
