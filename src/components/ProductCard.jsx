@@ -9,7 +9,7 @@ const ProductCard = ({id, image, name, description, basePrice, tag, discount}) =
     return (
         <div className='flex flex-col items-center flex-1 relative'>
             {tag == 'Flash Sale' && <span className="bg-red-500 text-white text-[0.5rem] md:text-sm font-semibold rounded-full p-2 top-3 left-3 absolute">FLASH SALE!</span>  }
-            {tag == 'End Year Sale' && <span className="bg-red-500 text-white text-[0.5rem] md:text-sm font-semibold rounded-full p-2 top-3 left-3 absolute">END YEAR SALE!</span>  }
+            {tag == 'End Year Sale' && <span className="bg-orange-500 text-white text-[0.5rem] md:text-sm font-semibold rounded-full p-2 top-3 left-3 absolute">END YEAR SALE!</span>  }
             {tag == 'Ramadhan Sale' && <span className="bg-green-700 text-white text-[0.5rem] md:text-sm font-semibold rounded-full p-2 top-3 left-3 absolute">RAMADHAN SALE!</span>  }
             <div className="max-w-md w-full aspect-square">
                 <div className="hidden">{id}</div>
