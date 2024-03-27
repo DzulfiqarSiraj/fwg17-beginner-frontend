@@ -25,7 +25,11 @@ const CheckoutProduct = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const totalOrder = cart.reduce((prev, curr) => {
-        return prev + (curr.product.basePrice + curr.size.additionalPrice + curr.variant.additionalPrice) * curr.quantity
+        let discount = curr.product.discount
+        if(!curr.product.discount){
+            discount = 0
+        }
+        return prev + (((curr.product.basePrice - (curr.product.basePrice * discount)) + curr.size.additionalPrice + curr.variant.additionalPrice) * curr.quantity)
     },0)
 
     console.log(cart)
@@ -64,7 +68,9 @@ const CheckoutProduct = () => {
                                 <div key={`product_${product?.product?.id}`} className="flex flex-row h-fit bg-gray-100 gap-5">
                                     <img src={product?.product?.image ? `${import.meta.env.VITE_BACKEND_URL}/uploads/products/${product?.product?.image}` : CoffeeBeanImage} className='h-48 aspect-square object-cover bg-center'/>
                                     <div className="flex flex-col flex-1 self-center gap-3">
-                                        <span className="w-fit text-xs text-white font-semibold bg-red-700 px-2 py-1 rounded-full">FLASH SALE!</span>
+                                        {product?.product?.tag === "Flash Sale" && <span className="w-fit text-xs text-white font-semibold bg-red-700 px-2 py-1 rounded-full">FLASH SALE!</span>}
+                                        {product?.product?.tag === "End Year Sale" && <span className="w-fit text-xs text-white font-semibold bg-orange-700 px-2 py-1 rounded-full">END YEAR SALE!</span>}
+                                        {product?.product?.tag === "Ramadhan Sale" && <span className="w-fit text-xs text-white font-semibold bg-green-700 px-2 py-1 rounded-full">RAMADHAN SALE!</span>}
                                         <span className="font-semibold tracking-wide">{product?.product?.name}</span>
                                         <div className="flex flex-row items-center gap-2 divide-x-2 divide-gray-300">
                                             <span className="text-sm text-gray-600">{product?.quantity} pcs</span>
@@ -73,10 +79,16 @@ const CheckoutProduct = () => {
                                             <span className="text-sm text-gray-600 pl-2">Door Delivery</span>
                                         </div>
                                         <div className="flex flex-row gap-3 items-center">
-                                            <span className="self-center text-xs text-red-700"><del>IDR 0,-</del></span>
-                                            <span className="text-base text-orange-500">IDR {Number((
+                                            <span className="self-center text-xs text-red-700"><del>IDR {Number((
                                                 Number(product?.product?.basePrice) + Number(product?.variant?.additionalPrice) + Number(product?.size?.additionalPrice))*Number(product?.quantity)).toLocaleString('id')
-                                                },-</span>
+                                                },-</del></span>
+                                            <span className="text-base text-[#1A4D2E]">IDR {
+                                            product?.product?.discount ?
+                                            ((Number(product?.product?.basePrice)-(Number(product?.product?.basePrice)*Number(product?.product?.discount)))+
+                                            Number(product?.variant?.additionalPrice) + Number(product?.size?.additionalPrice)).toLocaleString('id') :
+                                            Number((
+                                                Number(product?.product?.basePrice) + Number(product?.variant?.additionalPrice) + Number(product?.size?.additionalPrice))*Number(product?.quantity)).toLocaleString('id')
+                                            },-</span>
                                         </div>
                                     </div>
                                     <div className="flex w-fit justify-center items-center px-8">
