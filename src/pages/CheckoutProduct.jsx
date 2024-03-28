@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux';
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -14,16 +15,16 @@ import BcaImage from '../assets/bca.svg'
 import GopayImage from '../assets/gopay.svg'
 import OvoImage from '../assets/ovo.svg'
 import PaypalImage from '../assets/paypal.svg'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 
 import { emptyCart as emptyCartAction } from '../redux/reducers/cart';
 import {removeFromCart as removeFromCartAction} from '../redux/reducers/cart'
 
 const CheckoutProduct = () => {
-    
-    const cart = useSelector(state => state.cart.data)
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const cart = useSelector(state => state.cart.data)
+    const token = useSelector(state => state.auth.token)
     const totalOrder = cart.reduce((prev, curr) => {
         let discount = curr.product.discount
         if(!curr.product.discount){
@@ -34,9 +35,23 @@ const CheckoutProduct = () => {
 
     console.log(cart)
 
-    const orderProcess = () => {
-        dispatch(emptyCartAction())
-        navigate('/history-order')
+    const orderProcess = async () => {
+        try {
+            const reqData = {
+                product : cart
+            }
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, reqData, {
+                headers: {
+                    "Content-Type" : 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+        } catch (error) {
+            console.log(error)
+        } finally {
+            navigate('/history-order')
+            dispatch(emptyCartAction())
+        }
     }
 
     React.useEffect(() => {
@@ -166,7 +181,7 @@ const CheckoutProduct = () => {
                                     <span className="font-semibold text-gray-800">Sub Total</span>
                                     <span className="font-semibold">IDR {(Number(totalOrder) + (Number(totalOrder) * 0.1)).toLocaleString('id')},-</span>
                                 </div>
-                                <button onClick={orderProcess} id="checkout-button" >Checkout</button>
+                                <button onClick={orderProcess} id="checkout-button"  className='flex flex-1 text-sm justify-center items-center border border-[#1A4D2E] bg-[#1A4D2E] rounded-md hover:border-[#1A4D2E] text-white active:scale-95 transition:all duration-300 cursor-pointer'>Checkout</button>
                                 <span className="font-thin text-sm tracking-wide">We Accept</span>
                                 <div className="flex flex-row">
                                     <div className="flex flex-1 justify-start items-center"><img src={BriImage} alt="" /></div>
