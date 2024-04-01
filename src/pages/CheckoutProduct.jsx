@@ -73,6 +73,9 @@ const CheckoutProduct = () => {
             if(customerData.address === ''){
                 throw new Error('empty address')
             }
+            if(shipping === ''){
+                throw new Error('empty shipping')
+            }
             
             const data = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, dataReq, {
                 headers : {
@@ -104,6 +107,12 @@ const CheckoutProduct = () => {
                 setAddressInputMessage('Address Must Not Be Empty')
                 setTimeout(()=>{
                     setAddressInputMessage('')
+                },2000)
+            }
+            if(error.message === 'empty shipping'){
+                setShipping('Choose Delivery Option')
+                setTimeout(()=>{
+                    setShipping('')
                 },2000)
             }
         }
@@ -212,7 +221,7 @@ const CheckoutProduct = () => {
                                     }} className={`flex flex-1 justify-center items-center h-10 border ${shipping === 'Pick Up' ? 'border-green-700' : 'border-gray-500'} rounded-md hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer`}>Pick Up</button>
                                 </div>
                             </div>
-                            {!shipping ? (<div className='text-red-800 text-sm'>Choose Delivery Option!</div>) : ''}
+                            {shipping === 'Choose Delivery Option' ? (<div className='text-red-800 text-sm'>{shipping}!</div>) : ''}
 
                         </form>
 
