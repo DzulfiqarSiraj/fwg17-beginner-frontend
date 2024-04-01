@@ -62,7 +62,7 @@ const DetailOrder = () => {
                         <div key={item?.id} className="flex flex-row h-fit bg-gray-100 gap-5">
                             <div className="flex bg-[url('../assets/fav-img-1.jpg')] h-48 aspect-square bg-cover bg-center"></div>
                             <div className="flex flex-col flex-1 self-center gap-3">
-                                <span className="w-fit text-xs text-white font-semibold bg-red-700 px-2 py-1 rounded-full">FLASH SALE!</span>
+                                {item?.tag && <span className="w-fit text-xs text-white font-semibold bg-red-700 px-2 py-1 rounded-full">FLASH SALE!</span>}
                                 <span className="font-semibold tracking-wide">{item?.product}</span>
                                 <div className="flex flex-row items-center gap-2 divide-x-2 divide-gray-300">
                                     <span className="text-sm text-gray-600">{item?.quantity} pcs</span>
@@ -71,7 +71,7 @@ const DetailOrder = () => {
                                     <span className="text-sm text-gray-600 pl-2">{item?.shipping}</span>
                                 </div>
                                 <div className="flex flex-row gap-3 items-center">
-                                    <span className="self-center text-xs text-red-700"><del>IDR 40.000</del></span>
+                                    {item?.discount !== null && <span className="self-center text-xs text-red-700">&#40; Disc. {item?.discount * 100} % &#41;</span>}
                                     <span className="text-base text-orange-500">IDR {Number(item?.subTotal).toLocaleString('id')}</span>
                                 </div>
                             </div>
