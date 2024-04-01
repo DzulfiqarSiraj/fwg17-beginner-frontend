@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
@@ -10,14 +11,33 @@ import { FaCalendar } from "react-icons/fa6";
 import { FaRepeat } from "react-icons/fa6";
 import { FaArrowsSpin } from "react-icons/fa6";
 import MessageIcon from "../assets/icon/message-icon.svg"
+import { useSelector } from 'react-redux';
 
 const HistoryOrder = () => {
+    const [listOrder, setListOrder] = React.useState([{}])
+    const token = useSelector(state => state.auth.token)
+    const user = useSelector(state => state.profile.data)
+
+    const getOrder = async () => {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
+            'Authorization' : `Bearer ${token}`
+        },
+        params : {
+            userId : user.id
+        }});
+
+        setListOrder(res.data.results)
+       
+    }
+
     React.useEffect(()=>{
         window.scrollTo({
             top: 0,
             left: 0,
             behavior: "smooth",
           });
+
+          getOrder()
     },[])
     return (
         <>
@@ -46,137 +66,40 @@ const HistoryOrder = () => {
                         </div>
                         
                         {/* <!-- product-card-1 --> */}
-                        <div className="flex flex-row h-fit bg-gray-100 gap-2 py-2 pl-2 pr-4 justify-between">
+                        {listOrder?.map((item) => (
+                            <div key={item?.id} className="flex flex-row h-fit bg-gray-100 gap-2 py-2 pl-2 pr-4 justify-between">
                             <div className="flex bg-[url('../assets/fav-img-1.jpg')] h-28 aspect-square bg-cover bg-center"></div>
                             <div className="flex flex-col self-start gap-2 pt-2">
                                 <div className="flex flex-row gap-2 items-center">
                                     <div><FaMugHot className="text-gray-500"/></div>
                                     <span className="text-gray-500">No. Order</span>
                                 </div>
-                                <span className="text-base font-bold tracking-wide">#12354-09893</span>
-                                <Link to={'/detail-order'} className="text-base text-orange-500 hover:text-gray-500"><span >View Order Detail</span></Link>
+                                <span className="text-base font-bold tracking-wide">{item?.orderNumber}</span>
+                                <Link to={`/order-details/${item?.id}`} className="text-base text-orange-500 hover:text-gray-500"><span >View Order Detail</span></Link>
                             </div>
                             <div className="flex flex-col self-start gap-2 pt-2">
                                 <div className="flex flex-row gap-2 items-center">
                                     <div><FaCalendar className="text-gray-500"/></div>
                                     <span className="text-gray-500">Date</span>
                                 </div>
-                                <span className="text-base font-bold tracking-wide">23 January 2023</span>
+                                <span className="text-base font-bold tracking-wide">{item?.date}</span>
                             </div>
                             <div className="flex flex-col self-start gap-2 pt-2">
                                 <div className="flex flex-row gap-2 items-center">
                                     <div><FaRepeat className="text-gray-500" /></div>
                                     <span className="text-gray-500">Total</span>
                                 </div>
-                                <span className="text-base font-bold tracking-wide">IDR 40.000</span>
+                                <span className="text-base font-bold tracking-wide">IDR {Number(item?.grandTotal).toLocaleString('id')},-</span>
                             </div>
                             <div className="flex flex-col self-start gap-2 pt-2">
                                 <div className="flex flex-row gap-2 items-center">
                                     <div><FaArrowsSpin className="text-gray-500" /></div>
                                     <span className="text-gray-500">Status</span>
                                 </div>
-                                <span className="w-fit text-sm font-semibold bg-orange-200 text-orange-600 px-3 py-1 box-border rounded-full">On Progress</span>
+                                <span className="w-fit text-sm font-semibold bg-orange-200 text-orange-600 px-3 py-1 box-border rounded-full">{item?.status}</span>
                             </div>
-                        </div>
-                        {/* <!-- product-card-2 --> */}
-                        <div className="flex flex-row h-fit bg-gray-100 gap-2 py-2 pl-2 pr-4 justify-between">
-                            <div className="flex bg-[url('../assets/fav-img-2.jpg')] h-28 aspect-square bg-cover bg-center"></div>
-                            <div className="flex flex-col self-start gap-2 pt-2">
-                                <div className="flex flex-row gap-2 items-center">
-                                    <div><FaMugHot className="text-gray-500"/></div>
-                                    <span className="text-gray-500">No. Order</span>
-                                </div>
-                                <span className="text-base font-bold tracking-wide">#12354-09893</span>
-                                <Link to={'/detail-order'} className="text-base text-orange-500 hover:text-gray-500"><span >View Order Detail</span></Link>
-                            </div>
-                            <div className="flex flex-col self-start gap-2 pt-2">
-                                <div className="flex flex-row gap-2 items-center">
-                                    <div><FaCalendar className="text-gray-500"/></div>
-                                    <span className="text-gray-500">Date</span>
-                                </div>
-                                <span className="text-base font-bold tracking-wide">23 January 2023</span>
-                            </div>
-                            <div className="flex flex-col self-start gap-2 pt-2">
-                                <div className="flex flex-row gap-2 items-center">
-                                    <div><FaRepeat className="text-gray-500" /></div>
-                                    <span className="text-gray-500">Total</span>
-                                </div>
-                                <span className="text-base font-bold tracking-wide">IDR 40.000</span>
-                            </div>
-                            <div className="flex flex-col self-start gap-2 pt-2">
-                                <div className="flex flex-row gap-2 items-center">
-                                    <div><FaArrowsSpin className="text-gray-500" /></div>
-                                    <span className="text-gray-500">Status</span>
-                                </div>
-                                <span className="w-fit text-sm font-semibold bg-orange-200 text-orange-600 px-3 py-1 box-border rounded-full">On Progress</span>
-                            </div>
-                        </div>
-                        {/* <!-- product-card-3 --> */}
-                        <div className="flex flex-row h-fit bg-gray-100 gap-2 py-2 pl-2 pr-4 justify-between">
-                            <div className="flex bg-[url('../assets/fav-img-3.jpg')] h-28 aspect-square bg-cover bg-center"></div>
-                            <div className="flex flex-col self-start gap-2 pt-2">
-                                <div className="flex flex-row gap-2 items-center">
-                                    <div><FaMugHot className="text-gray-500"/></div>
-                                    <span className="text-gray-500">No. Order</span>
-                                </div>
-                                <span className="text-base font-bold tracking-wide">#12354-09893</span>
-                                <Link to={'/detail-order'} className="text-base text-orange-500 hover:text-gray-500"><span >View Order Detail</span></Link>
-                            </div>
-                            <div className="flex flex-col self-start gap-2 pt-2">
-                                <div className="flex flex-row gap-2 items-center">
-                                    <div><FaCalendar className="text-gray-500"/></div>
-                                    <span className="text-gray-500">Date</span>
-                                </div>
-                                <span className="text-base font-bold tracking-wide">23 January 2023</span>
-                            </div>
-                            <div className="flex flex-col self-start gap-2 pt-2">
-                                <div className="flex flex-row gap-2 items-center">
-                                    <div><FaRepeat className="text-gray-500" /></div>
-                                    <span className="text-gray-500">Total</span>
-                                </div>
-                                <span className="text-base font-bold tracking-wide">IDR 40.000</span>
-                            </div>
-                            <div className="flex flex-col self-start gap-2 pt-2">
-                                <div className="flex flex-row gap-2 items-center">
-                                    <div><FaArrowsSpin className="text-gray-500" /></div>
-                                    <span className="text-gray-500">Status</span>
-                                </div>
-                                <span className="w-fit text-sm font-semibold bg-orange-200 text-orange-600 px-3 py-1 box-border rounded-full">On Progress</span>
-                            </div>
-                        </div>
-                        {/* <!-- product-card-4 --> */}
-                        <div className="flex flex-row h-fit bg-gray-100 gap-2 py-2 pl-2 pr-4 justify-between">
-                            <div className="flex bg-[url('../assets/fav-img-4.jpg')] h-28 aspect-square bg-cover bg-center"></div>
-                            <div className="flex flex-col self-start gap-2 pt-2">
-                                <div className="flex flex-row gap-2 items-center">
-                                    <div><FaMugHot className="text-gray-500"/></div>
-                                    <span className="text-gray-500">No. Order</span>
-                                </div>
-                                <span className="text-base font-bold tracking-wide">#12354-09893</span>
-                                <Link to={'/detail-order'} className="text-base text-orange-500 hover:text-gray-500"><span >View Order Detail</span></Link>
-                            </div>
-                            <div className="flex flex-col self-start gap-2 pt-2">
-                                <div className="flex flex-row gap-2 items-center">
-                                    <div><FaCalendar className="text-gray-500"/></div>
-                                    <span className="text-gray-500">Date</span>
-                                </div>
-                                <span className="text-base font-bold tracking-wide">23 January 2023</span>
-                            </div>
-                            <div className="flex flex-col self-start gap-2 pt-2">
-                                <div className="flex flex-row gap-2 items-center">
-                                    <div><FaRepeat className="text-gray-500" /></div>
-                                    <span className="text-gray-500">Total</span>
-                                </div>
-                                <span className="text-base font-bold tracking-wide">IDR 40.000</span>
-                            </div>
-                            <div className="flex flex-col self-start gap-2 pt-2">
-                                <div className="flex flex-row gap-2 items-center">
-                                    <div><FaArrowsSpin className="text-gray-500" /></div>
-                                    <span className="text-gray-500">Status</span>
-                                </div>
-                                <span className="w-fit text-sm font-semibold bg-orange-200 text-orange-600 px-3 py-1 box-border rounded-full">On Progress</span>
-                            </div>
-                        </div>
+                        </div>                            
+                        ))}
 
 
                         <div className="flex flex-row gap-4 self-center items-center pt-5 pb-10">

@@ -15,12 +15,22 @@ import BcaImage from '../assets/bca.svg'
 import GopayImage from '../assets/gopay.svg'
 import OvoImage from '../assets/ovo.svg'
 import PaypalImage from '../assets/paypal.svg'
-import { useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 import { emptyCart as emptyCartAction } from '../redux/reducers/cart';
 import {removeFromCart as removeFromCartAction} from '../redux/reducers/cart'
 
 const CheckoutProduct = () => {
+    const [customerData, setCustomerData] = React.useState({
+        email : '',
+        fullname : '',
+        address : ''
+    })
+    const [shipping, setShipping] = React.useState('')
+    const [shippingPrice, setShippingPrice] = React.useState(0)
+    const [emailInputMessage, setEmailInputMessage] = React.useState('')
+    const [fullNameInputMessage, setFullNameInputMessage] = React.useState('')
+    const [addressInputMessage, setAddressInputMessage] = React.useState('')
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const cart = useSelector(state => state.cart.data)
@@ -33,27 +43,6 @@ const CheckoutProduct = () => {
         return prev + (((curr.product.basePrice - (curr.product.basePrice * discount)) + curr.size.additionalPrice + curr.variant.additionalPrice) * curr.quantity)
     },0)
 
-    console.log(cart)
-
-    const orderProcess = async () => {
-        try {
-            const reqData = {
-                product : cart
-            }
-            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, reqData, {
-                headers: {
-                    "Content-Type" : 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-        } catch (error) {
-            console.log(error)
-        } finally {
-            navigate('/history-order')
-            dispatch(emptyCartAction())
-        }
-    }
-
     React.useEffect(() => {
         window.scrollTo({
             top: 0,
@@ -61,6 +50,64 @@ const CheckoutProduct = () => {
             behavior: "smooth",
           });
     },[])
+
+    const customerFormHandler = (e) => {
+        setCustomerData({...customerData, [e.target.name] : e.target.value})
+        console.log(customerData)
+    }
+
+    const checkoutProcess = async () => {
+        const dataReq = {
+            cartData : cart,
+            custData : customerData,
+            shippingData : shipping,
+            shippingPrice : shippingPrice
+        }
+        try {
+            if(customerData.email === ''){
+                throw new Error('empty email')
+            }
+            if(customerData.fullname === ''){
+                throw new Error('empty name')
+            }
+            if(customerData.address === ''){
+                throw new Error('empty address')
+            }
+            
+            const data = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, dataReq, {
+                headers : {
+                    'Authorization' : `Bearer ${token}`
+                }
+            });
+            
+            if(data){
+                setTimeout(()=>{
+                    dispatch(emptyCartAction())
+                    navigate('/history-order')
+                },2000)
+            }
+            
+        } catch (error) {
+            if(error.message === 'empty email'){
+                setEmailInputMessage('Email Must Not Be Empty')
+                setTimeout(()=>{
+                    setEmailInputMessage('')
+                },2000)
+            }
+            if(error.message === 'empty name'){
+                setFullNameInputMessage('Name Must Not Be Empty')
+                setTimeout(()=>{
+                    setFullNameInputMessage('')
+                },2000)
+            }
+            if(error.message === 'empty address'){
+                setAddressInputMessage('Address Must Not Be Empty')
+                setTimeout(()=>{
+                    setAddressInputMessage('')
+                },2000)
+            }
+        }
+    }
 
     return (
         <>
@@ -91,16 +138,16 @@ const CheckoutProduct = () => {
                                             <span className="text-sm text-gray-600">{product?.quantity} pcs</span>
                                             <span className="text-sm text-gray-600 pl-2">{product?.size?.size}</span>
                                             <span className="text-sm text-gray-600 pl-2">{product?.variant?.variant}</span>
-                                            <span className="text-sm text-gray-600 pl-2">Door Delivery</span>
+                                            <span className="text-sm text-gray-600 pl-2">{shipping}</span>
                                         </div>
                                         <div className="flex flex-row gap-3 items-center">
-                                            <span className="self-center text-xs text-red-700"><del>IDR {Number((
+                                            {product?.product?.discount && <span className="self-center text-xs text-red-700"><del>IDR {Number((
                                                 Number(product?.product?.basePrice) + Number(product?.variant?.additionalPrice) + Number(product?.size?.additionalPrice))*Number(product?.quantity)).toLocaleString('id')
-                                                },-</del></span>
+                                                },-</del></span>}
                                             <span className="text-base text-[#1A4D2E]">IDR {
                                             product?.product?.discount ?
-                                            ((Number(product?.product?.basePrice)-(Number(product?.product?.basePrice)*Number(product?.product?.discount)))+
-                                            Number(product?.variant?.additionalPrice) + Number(product?.size?.additionalPrice)).toLocaleString('id') :
+                                            (((Number(product?.product?.basePrice)-(Number(product?.product?.basePrice)*Number(product?.product?.discount)))+
+                                            Number(product?.variant?.additionalPrice) + Number(product?.size?.additionalPrice)) * Number(product?.quantity)).toLocaleString('id') :
                                             Number((
                                                 Number(product?.product?.basePrice) + Number(product?.variant?.additionalPrice) + Number(product?.size?.additionalPrice))*Number(product?.quantity)).toLocaleString('id')
                                             },-</span>
@@ -124,35 +171,48 @@ const CheckoutProduct = () => {
                                     <div>
                                         <FiMail />
                                     </div>
-                                    <input className="flex-1 outline-none" id="email" type="email" name="email" />
+                                    <input className="flex-1 outline-none" id="email" type="email" name="email" value={customerData.email} onChange={customerFormHandler}/>
                                 </div>
                             </label>
+                            {emailInputMessage === 'Email Must Not Be Empty' ? (<div className='text-red-800 text-sm'>{emailInputMessage}!</div>) : ''}
                             <label htmlFor="fullname" className="flex flex-col gap-1">
                                 <span className="font-semibold text-lg">Full Name</span>
                                 <div className="flex flex-row items-center border h-10 border-black rounded px-2 gap-2">
                                     <div>
                                         <FiUser />
                                     </div>
-                                    <input className="flex-1  outline-none" id="fullname" type="text" name="fullname" />
+                                    <input className="flex-1  outline-none" id="fullname" type="text" name="fullname" value={customerData.fullname} onChange={customerFormHandler}/>
                                 </div>
                             </label>
+                            {fullNameInputMessage === 'Name Must Not Be Empty' ? (<div className='text-red-800 text-sm'>{fullNameInputMessage}!</div>) : ''}
                             <label htmlFor="address" className="flex flex-col gap-1">
                                 <span className="font-semibold text-lg">Address</span>
                                 <div className="flex flex-row items-center border h-10 border-black rounded px-2 gap-2">
                                     <div>
                                         <FiMapPin />
                                     </div>
-                                    <input className="flex-1 outline-none" id="address" type="address" name="address" />
+                                    <input className="flex-1 outline-none" id="address" type="address" name="address" value={customerData.address} onChange={customerFormHandler}/>
                                 </div>
                             </label>
+                            {addressInputMessage === 'Address Must Not Be Empty' ? (<div className='text-red-800 text-sm'>{addressInputMessage}!</div>) : ''}
                             <div className="flex flex-col gap-1">
                                 <span className="font-semibold text-lg">Delivery</span>
                                 <div className="flex flex-row items-center gap-8">
-                                    <div className="flex flex-1 justify-center items-center h-10 border border-gray-500 rounded-md hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">Dine In</div>
-                                    <div className="flex flex-1 justify-center items-center h-10 border border-gray-500 rounded-md hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">Door Delivery</div>
-                                    <div className="flex flex-1 justify-center items-center h-10 border border-gray-500 rounded-md hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">Pick Up</div>
+                                    <button type='button' onClick={()=>{
+                                        setShipping('Dine In');
+                                        setShippingPrice(0);
+                                    }} className={`flex flex-1 justify-center items-center h-10 border ${shipping === 'Dine In' ? 'border-green-700' : 'border-gray-500'} rounded-md hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer`}>Dine In</button>
+                                    <button type='button' onClick={() => {
+                                        setShipping('Door Delivery');
+                                        setShippingPrice(10000);
+                                    }} className={`flex flex-1 justify-center items-center h-10 border ${shipping === 'Door Delivery' ? 'border-green-700' : 'border-gray-500'} rounded-md hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer`}>Door Delivery</button>
+                                    <button type='button' onClick={() => {
+                                        setShipping('Pick Up');
+                                        setShippingPrice(0);
+                                    }} className={`flex flex-1 justify-center items-center h-10 border ${shipping === 'Pick Up' ? 'border-green-700' : 'border-gray-500'} rounded-md hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer`}>Pick Up</button>
                                 </div>
                             </div>
+                            {!shipping ? (<div className='text-red-800 text-sm'>Choose Delivery Option!</div>) : ''}
 
                         </form>
 
@@ -170,18 +230,20 @@ const CheckoutProduct = () => {
                                 </div>
                                 <div className="flex flex-row justify-between ">
                                     <span className="font-semibold text-gray-800">Delivery</span>
-                                    <span className="font-semibold">IDR 0</span>
+                                    <span className="font-semibold">IDR {Number(shippingPrice).toLocaleString('id')},-</span>
                                 </div>
                                 <div className="flex flex-row justify-between ">
                                     <span className="font-semibold text-gray-800">Tax</span>
-                                    <span className="font-semibold">IDR {(Number(totalOrder) * 0.1).toLocaleString('id')},-</span>
+                                    <span className="font-semibold">IDR {(Number(totalOrder) * 0.05).toLocaleString('id')},-</span>
                                 </div>
                                 <hr />
                                 <div className="flex flex-row justify-between ">
                                     <span className="font-semibold text-gray-800">Sub Total</span>
-                                    <span className="font-semibold">IDR {(Number(totalOrder) + (Number(totalOrder) * 0.1)).toLocaleString('id')},-</span>
+                                    <span className="font-semibold">IDR {((Number(totalOrder) + (Number(totalOrder) * 0.05)) + Number(shippingPrice)).toLocaleString('id')},-</span>
                                 </div>
-                                <button onClick={orderProcess} id="checkout-button"  className='flex flex-1 text-sm justify-center items-center border border-[#1A4D2E] bg-[#1A4D2E] rounded-md hover:border-[#1A4D2E] text-white active:scale-95 transition:all duration-300 cursor-pointer'>Checkout</button>
+                                
+                                <button type='button' onClick={checkoutProcess} className='flex flex-1 text-sm justify-center items-center border border-[#1A4D2E] bg-[#1A4D2E] rounded-md hover:border-[#1A4D2E] text-white active:scale-95 transition:all duration-300 cursor-pointer py-2'>Checkout</button>
+
                                 <span className="font-thin text-sm tracking-wide">We Accept</span>
                                 <div className="flex flex-row">
                                     <div className="flex flex-1 justify-start items-center"><img src={BriImage} alt="" /></div>
