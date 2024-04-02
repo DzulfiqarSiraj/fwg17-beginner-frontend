@@ -124,9 +124,8 @@ const Product = () => {
             <Navbar className="bg-black"/>
             <div onClick={showFilter} className={'md:hidden fixed bottom-1/2 left-0 z-50 bg-black w-5 h-8 flex items-center justify-center rounded-r-md'}><FiChevronRight className='text-lg font-bold text-white' /></div>
             {/* main */}
+            {loading ? <div className='flex flex-1 justify-center max-h-screen max-w-full'><span className="loading loading-infinity w-20"></span></div> :
             <main className="flex flex-col w-screen h-fit overflow-hidden justify-center items-center">
-                {loading ? <div className='flex flex-1 justify-center max-h-screen max-w-full'><span className="loading loading-infinity w-20"></span></div> :
-                <>
                 <header className="flex items-center w-screen h-72 bg-[url('../assets/bg-product-1.jpg')] bg-cover bg-center">
                     <h1 className="w-4/6 text-5xl font-normal text-white tracking-wide ml-20">We Provide Good Coffee and Healthy Meals</h1>
                 </header>
@@ -292,8 +291,7 @@ const Product = () => {
                         </div>
                     </div>
                 </div>
-                </>}
-            </main>
+            </main>}
             <Footer />
         </>
     );
