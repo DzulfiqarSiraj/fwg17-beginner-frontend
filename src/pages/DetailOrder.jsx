@@ -14,11 +14,13 @@ import CoffeeBeanImage from '../assets/coffeebean.jpg'
 
 const DetailOrder = () => {
     const [orderDetail, setOrderDetail] = React.useState([{}])
+    const [loading, setLoading] = React.useState(false)
     const {orderId} = useParams()
     const token = useSelector(state => state.auth.token)
 
     const getOrderDetail = async () => {
         try {
+            setLoading(true)
             const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/order-details`,{
                 headers : {
                     'Authorization' : `Bearer ${token}`
@@ -29,6 +31,7 @@ const DetailOrder = () => {
             });
 
             setOrderDetail(res.data.results)
+            setLoading(true)
             console.log(res.data.results)
         } catch (error) {
             console.log(error)
@@ -49,6 +52,7 @@ const DetailOrder = () => {
         <>
             <Navbar className='bg-black' />
             {/* <!-- main --> */}
+            {loading ? <div className='flex justify-center w-screen h-screen'><span className="loading loading-infinity w-20"></span></div> :
             <main className="flex flex-col h-fit px-24 mb-16 pt-24">
                 <h1 className="text-4xl font-medium text-gray-900 tracking-wide pt-10">Order <span className="font-bold">{orderDetail[0]?.orderNumber}</span></h1>
                 <span className="text-sm text-gray-500 pt-2 pb-10">{orderDetail[0]?.date} at {orderDetail[0]?.time}</span>
@@ -144,6 +148,7 @@ const DetailOrder = () => {
                 </div>
 
             </main>
+            }
             {/* <!-- /main --> */}
             <Footer />
         </>
