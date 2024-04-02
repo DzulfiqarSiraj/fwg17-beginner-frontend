@@ -256,7 +256,7 @@ const Product = () => {
         
                             <div className="flex flex-col flex-1 gap-10 items-center">
                                 <div className="w-full grid grid-cols-2 gap-7 h-fit">
-                                    {data?.map((item) => <ProductCard key={item?.id} id={item?.id} image={item?.image} name={item?.name} description={item?.description} basePrice={item.basePrice} tag={item.tag} discount={item.discount} isBestSeller={item?.isBestSeller}/> || <span key={item?.id} className="loading loading-infinity loading-lg"></span>)}
+                                    {data?.map((item) => <ProductCard key={item?.id} id={item?.id} image={item?.image} name={item?.name} description={item?.description} basePrice={item.basePrice} tag={item.tag} discount={item.discount} isBestSeller={item?.isBestSeller}/>) || <span className="loading loading-infinity loading-lg"></span>}
                                 </div>
 
                                 <div className="flex flex-row gap-4">
