@@ -7,6 +7,7 @@ import { FaStar } from "react-icons/fa6";
 import { FaCircleChevronRight } from "react-icons/fa6"
 import ProductCard from "../components/ProductCard"
 import CoffeeBeanImage from '../assets/coffeebean.jpg'
+import CovLogo from '../assets/icon/cov-black.svg';
 import { getBestSellerProduct } from "./Home"
 import { useDispatch } from "react-redux"
 import { addToCart as addToCartAction } from "../redux/reducers/cart"
@@ -98,7 +99,7 @@ const DetailProduct = () => {
         <>
             <Navbar className="bg-black"/>
             {/* <!-- main --> */}
-            {loading ? <div className='flex justify-center w-screen h-screen'><span className="loading loading-infinity w-20"></span></div> :
+            {loading ? <div className='flex justify-center w-screen h-screen'><img className='w-16 animate-pulse' src={CovLogo} alt="" /></div> :
             <main className="flex flex-col w-screen items-center justify-center pt-32 px-24 gap-10">
                 {/* <!-- column-1 --> */}
                 <div className="flex w-full flex-row gap-5"> {/*<!-- left--> */}

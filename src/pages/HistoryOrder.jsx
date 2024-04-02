@@ -11,6 +11,7 @@ import { FaCalendar } from "react-icons/fa6";
 import { FaRepeat } from "react-icons/fa6";
 import { FaArrowsSpin } from "react-icons/fa6";
 import MessageIcon from "../assets/icon/message-icon.svg"
+import CovLogo from '../assets/icon/cov-black.svg';
 import { useSelector } from 'react-redux';
 
 const HistoryOrder = () => {
@@ -47,7 +48,7 @@ const HistoryOrder = () => {
             <Navbar className="bg-black"/>
 
             {/* <!-- main --> */}
-            {loading ? <div className='flex justify-center w-screen h-screen'><span className="loading loading-infinity w-20"></span></div> :
+            {loading ? <div className='flex justify-center w-screen h-screen'><img className='w-16 animate-pulse' src={CovLogo} alt="" /></div> :
             <main className="flex flex-col h-fit px-24 pt-24">
                 <div className="flex flex-row items-center py-10 gap-5">
                     <h1 className="text-4xl font-medium text-gray-900 tracking-wide">History Order</h1>

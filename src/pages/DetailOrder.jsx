@@ -11,6 +11,7 @@ import { FiLoader } from "react-icons/fi";
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CoffeeBeanImage from '../assets/coffeebean.jpg'
+import CovLogo from '../assets/icon/cov-black.svg';
 
 const DetailOrder = () => {
     const [orderDetail, setOrderDetail] = React.useState([{}])
@@ -52,7 +53,7 @@ const DetailOrder = () => {
         <>
             <Navbar className='bg-black' />
             {/* <!-- main --> */}
-            {loading ? <div className='flex justify-center w-screen h-screen'><span className="loading loading-infinity w-20"></span></div> :
+            {loading ? <div className='flex justify-center w-screen h-screen'><img className='w-16 animate-pulse' src={CovLogo} alt="" /></div> :
             <main className="flex flex-col h-fit px-24 mb-16 pt-24">
                 <h1 className="text-4xl font-medium text-gray-900 tracking-wide pt-10">Order <span className="font-bold">{orderDetail[0]?.orderNumber}</span></h1>
                 <span className="text-sm text-gray-500 pt-2 pb-10">{orderDetail[0]?.date} at {orderDetail[0]?.time}</span>
