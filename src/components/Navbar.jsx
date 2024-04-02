@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {Link, useNavigate} from 'react-router-dom'
-import CoffeeShopLogo from '../assets/icon/coffee-white-icon.svg';
+import CoffeeShopLogo from '../assets/icon/cov-white.svg';
 import {FiSearch,FiShoppingCart} from 'react-icons/fi'
 import Button from './Button';
 import { TbMenu2 } from "react-icons/tb";
@@ -91,9 +91,9 @@ function Navbar (props) {
             <div className={`${className} flex flex-row items-center flex-1 md:justify-start md:pl-28 py-5 px-8 z-50`}>
                 <ul className="flex flex-1 justify-between md:justify-start md:gap-16">
                     <li className="flex flex-row items-center">
-                        <Link to='/' className='flex flex-row gap-3'>
-                            <div><img src={CoffeeShopLogo} alt="" /></div>
-                            <span className="font-sacramento text-white text-lg">Coffee Shop</span>
+                        <Link to='/' className='flex flex-row gap-3 items-center'>
+                            <div><img className='w-8 hover:scale-110 transition-all duration-300' src={CoffeeShopLogo} alt="" /></div>
+                            {/* <span className="font-sacramento text-white text-lg">Coffee Shop</span> */}
                         </Link>
                     </li>
                     <li className="hidden md:flex text-white text-sm items-center border-b-2 border-b-transparent hover:border-b-orange-500 py-1"><Link to='/'>Home</Link></li>
