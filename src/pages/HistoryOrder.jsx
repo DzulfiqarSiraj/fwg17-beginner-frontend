@@ -15,10 +15,12 @@ import { useSelector } from 'react-redux';
 
 const HistoryOrder = () => {
     const [listOrder, setListOrder] = React.useState([{}])
+    const [loading, setLoading] = React.useState(false)
     const token = useSelector(state => state.auth.token)
     const user = useSelector(state => state.profile.data)
 
     const getOrder = async () => {
+        setLoading(true)
         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
             'Authorization' : `Bearer ${token}`
         },
@@ -27,6 +29,7 @@ const HistoryOrder = () => {
         }});
 
         setListOrder(res.data.results)
+        setLoading(false)
        
     }
 
@@ -66,7 +69,7 @@ const HistoryOrder = () => {
                         </div>
                         
                         {/* <!-- product-card-1 --> */}
-                        {listOrder?.map((item) => (
+                        {loading ? <div className='flex flex-1 justify-center'><span className="loading loading-infinity loading-lg"></span></div> : listOrder?.map((item) => (
                             <div key={item?.id} className="flex flex-row h-fit bg-gray-100 gap-2 py-2 pl-2 pr-4 justify-between">
                             <div className="flex bg-[url('../assets/fav-img-1.jpg')] h-28 aspect-square bg-cover bg-center"></div>
                             <div className="flex flex-col self-start gap-2 pt-2">
