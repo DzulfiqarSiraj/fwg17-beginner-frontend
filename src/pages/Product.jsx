@@ -125,6 +125,8 @@ const Product = () => {
             <div onClick={showFilter} className={'md:hidden fixed bottom-1/2 left-0 z-50 bg-black w-5 h-8 flex items-center justify-center rounded-r-md'}><FiChevronRight className='text-lg font-bold text-white' /></div>
             {/* main */}
             <main className="flex flex-col w-screen h-fit overflow-hidden justify-center items-center">
+                {loading ? <div className='flex flex-1 justify-center'><span className="loading loading-infinity w-20"></span></div> :
+                <>
                 <header className="flex items-center w-screen h-72 bg-[url('../assets/bg-product-1.jpg')] bg-cover bg-center">
                     <h1 className="w-4/6 text-5xl font-normal text-white tracking-wide ml-20">We Provide Good Coffee and Healthy Meals</h1>
                 </header>
@@ -260,7 +262,7 @@ const Product = () => {
         
                             <div className="flex flex-col flex-1 gap-10 items-center">
                                 <div className="w-full grid grid-cols-2 gap-7 h-fit">
-                                    {loading ? <div className='flex flex-1 justify-center'><span className="loading loading-infinity loading-lg"></span></div> : data?.map((item) => <ProductCard key={item?.id} id={item?.id} image={item?.image} name={item?.name} description={item?.description} basePrice={item.basePrice} tag={item.tag} discount={item.discount} isBestSeller={item?.isBestSeller}/>)}
+                                    {data?.map((item) => <ProductCard key={item?.id} id={item?.id} image={item?.image} name={item?.name} description={item?.description} basePrice={item.basePrice} tag={item.tag} discount={item.discount} isBestSeller={item?.isBestSeller}/>)}
                                 </div>
 
                                 <div className="flex flex-row gap-4">
@@ -290,6 +292,7 @@ const Product = () => {
                         </div>
                     </div>
                 </div>
+                </>}
             </main>
             <Footer />
         </>
