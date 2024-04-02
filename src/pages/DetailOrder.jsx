@@ -31,7 +31,7 @@ const DetailOrder = () => {
             });
 
             setOrderDetail(res.data.results)
-            setLoading(true)
+            setLoading(false)
             console.log(res.data.results)
         } catch (error) {
             console.log(error)
