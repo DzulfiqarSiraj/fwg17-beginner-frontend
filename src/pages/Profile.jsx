@@ -133,7 +133,7 @@ const Profile = () => {
                             <form onSubmit={uploadPhoto} className='flex flex-col items-center justify-center'>
                                 <label className='flex rounded-full overflow-hidden mb-2 cursor-pointer relative'>
                                     {(!preview && !user?.pictures) && <FiUser className='text-9xl'/>}
-                                    {(!preview && user?.pictures) && <img src={user.pictures} className='max-w-[9rem] w-full h-full object-cover'/>}
+                                    {(!preview && user?.pictures) && <img src={user?.pictures} className='max-w-[9rem] w-full h-full object-cover'/>}
                                     {preview && <img src={preview} className='max-w-[9rem] w-full h-full object-cover'/>}
 
                                     {preview && <div className='absolute w-full h-full bg-[rgba(0,0,0,0.5)]'></div>}
