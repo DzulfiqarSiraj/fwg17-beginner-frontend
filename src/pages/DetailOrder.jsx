@@ -10,6 +10,7 @@ import { FiTruck } from "react-icons/fi";
 import { FiLoader } from "react-icons/fi";
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import CoffeeBeanImage from '../assets/coffeebean.jpg'
 
 const DetailOrder = () => {
     const [orderDetail, setOrderDetail] = React.useState([{}])
@@ -60,7 +61,7 @@ const DetailOrder = () => {
                         {/* <!-- product-card-1 --> */}
                         {orderDetail?.map(item => (
                         <div key={item?.id} className="flex flex-row h-fit bg-gray-100 gap-5">
-                            <div className="flex bg-[url('../assets/fav-img-1.jpg')] h-48 aspect-square bg-cover bg-center"></div>
+                            <img src={item?.image ? `${item?.image}` : CoffeeBeanImage} className='h-48 aspect-square object-cover bg-center'/>
                             <div className="flex flex-col flex-1 self-center gap-3">
                                 {item?.tag && <span className="w-fit text-xs text-white font-semibold bg-red-700 px-2 py-1 rounded-full">FLASH SALE!</span>}
                                 <span className="font-semibold tracking-wide">{item?.product}</span>
