@@ -67,7 +67,7 @@ const Product = () => {
         // form.append('search', search)
 
         setKeyword(keyword)
-
+        setLoading(true)
         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
             keyword: keyword,
             limit : 6
@@ -84,9 +84,11 @@ const Product = () => {
 
         setPageInfo(res.data.pageInfo)
         setData(res.data.results)
+        setLoading(false)
     }
 
     const showCurrentPage = async (page = 1) => {
+        setLoading(true)
         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
             page: page,
             search: keyword,
@@ -96,6 +98,7 @@ const Product = () => {
         setShowCurrentPageButton(page)
         setPageInfo(res.data.pageInfo)
         setData(res.data.results)
+        setLoading(false)
     }
 
     const showFilter = () => {
