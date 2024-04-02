@@ -18,11 +18,13 @@ const Product = () => {
     const [pageInfo, setPageInfo] = React.useState(null)
     const [showPaginationButton, setShowPaginationButton] = React.useState([])
     const [showCurrentPageButton, setShowCurrentPageButton] = React.useState()
+    const [loading, setLoading] = React.useState(false)
     const [filterDisplay, setFilterDisplay] = React.useState('hidden')
     const [keyword, setKeyword] = React.useState('')
 
     const getProduct = async (page) => {
         let res
+        setLoading(true)
         if(page === 'previous'){
             res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`,{params: {
                 page: pageInfo.prevPage,
@@ -55,6 +57,7 @@ const Product = () => {
 
         setPageInfo(res.data.pageInfo)
         setData(res.data.results)
+        setLoading(false)
     }
 
     const getFilterData = async (e) => {
@@ -109,6 +112,7 @@ const Product = () => {
             left: 0,
             behavior: "smooth",
           });
+        setLoading(true)
         getProduct()
         showCurrentPage()
         getFilterData()
@@ -256,7 +260,7 @@ const Product = () => {
         
                             <div className="flex flex-col flex-1 gap-10 items-center">
                                 <div className="w-full grid grid-cols-2 gap-7 h-fit">
-                                    {data?.map((item) => <ProductCard key={item?.id} id={item?.id} image={item?.image} name={item?.name} description={item?.description} basePrice={item.basePrice} tag={item.tag} discount={item.discount} isBestSeller={item?.isBestSeller}/>) || <span className="loading loading-infinity loading-lg"></span>}
+                                    {loading ? <div className='flex flex-1 justify-center'><span className="loading loading-infinity loading-lg"></span></div> : data?.map((item) => <ProductCard key={item?.id} id={item?.id} image={item?.image} name={item?.name} description={item?.description} basePrice={item.basePrice} tag={item.tag} discount={item.discount} isBestSeller={item?.isBestSeller}/>)}
                                 </div>
 
                                 <div className="flex flex-row gap-4">
