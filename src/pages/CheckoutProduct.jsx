@@ -210,15 +210,15 @@ const CheckoutProduct = () => {
                                     <button type='button' onClick={()=>{
                                         setShipping('Dine In');
                                         setShippingPrice(0);
-                                    }} className={`flex flex-1 justify-center items-center h-10 border ${shipping === 'Dine In' ? 'border-green-700' : 'border-gray-500'} rounded-md hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer`}>Dine In</button>
+                                    }} className={`flex flex-1 justify-center items-center h-10 border ${shipping === 'Dine In' ? 'border-green-700' : 'border-gray-500'} rounded-md hover:border hover:border-green-700 active:scale-95 transition:all duration-300 cursor-pointer`}>Dine In</button>
                                     <button type='button' onClick={() => {
                                         setShipping('Door Delivery');
                                         setShippingPrice(10000);
-                                    }} className={`flex flex-1 justify-center items-center h-10 border ${shipping === 'Door Delivery' ? 'border-green-700' : 'border-gray-500'} rounded-md hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer`}>Door Delivery</button>
+                                    }} className={`flex flex-1 justify-center items-center h-10 border ${shipping === 'Door Delivery' ? 'border-green-700' : 'border-gray-500'} rounded-md hover:border hover:border-green-700 active:scale-95 transition:all duration-300 cursor-pointer`}>Door Delivery</button>
                                     <button type='button' onClick={() => {
                                         setShipping('Pick Up');
                                         setShippingPrice(0);
-                                    }} className={`flex flex-1 justify-center items-center h-10 border ${shipping === 'Pick Up' ? 'border-green-700' : 'border-gray-500'} rounded-md hover:border hover:border-orange-500 active:scale-95 transition:all duration-300 cursor-pointer`}>Pick Up</button>
+                                    }} className={`flex flex-1 justify-center items-center h-10 border ${shipping === 'Pick Up' ? 'border-green-700' : 'border-gray-500'} rounded-md hover:border hover:border-green-700 active:scale-95 transition:all duration-300 cursor-pointer`}>Pick Up</button>
                                 </div>
                             </div>
                             {shipping === 'Choose Delivery Option' ? (<div className='text-red-800 text-sm'>{shipping}!</div>) : ''}
