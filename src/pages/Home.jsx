@@ -10,22 +10,30 @@ import { FaCircleCheck } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa6";
 import { FaCircleChevronLeft } from "react-icons/fa6"
 import { FaCircleChevronRight } from "react-icons/fa6"
+import CovLogo from '../assets/icon/cov-black.svg';
 
 
-export const getBestSellerProduct = async (cb, data) => {
-    const {data: response} = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`,{
-        params: {
-            isRecommended: true,
-            limit: data?.limit
-        }
-    })
-    if(response.results){
-        cb(response.results)
+export const getBestSellerProduct = async (cb, data, setState) => {
+    try {
+        setState(true)
+        const {data: response} = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`,{
+            params: {
+                isRecommended: true,
+                limit: data?.limit
+            }
+        })
+        if(response.results){
+            cb(response.results)
+        }    
+        setState(false)
+    } catch (error) {
+        console.log(error)
     }
+    
 }
 
 const Home = () => {
-
+    const [loading, setLoading] = React.useState(false)
     const [data, setData] = React.useState([])
 
     React.useEffect(()=>{
@@ -34,12 +42,13 @@ const Home = () => {
             left: 0,
             behavior: "smooth",
           });
-        getBestSellerProduct(setData, {limit: 4})
+        getBestSellerProduct(setData, {limit: 4}, setLoading)
     },[])
 
     return(
         <>
             <Navbar className="bg-[#00000033]"/>
+            {loading ? <div className='flex justify-center w-screen h-screen'><img className='w-16 animate-pulse' src={CovLogo} alt="" /></div> :
             <main className="flex flex-col w-screen h-fit bg-white">
                 {/* column 1 */}
                 <div className="flex flex-col md:flex-row h-screen w-full">
@@ -141,6 +150,7 @@ const Home = () => {
                     </div>
                 </div>
             </main>
+            }
             <Footer />
         </>
     );
