@@ -150,7 +150,7 @@ const DetailProduct = () => {
 
                             <div className="flex flex-row items-center h-10 gap-8">
                                 {detailProduct?.sizes?.map(item => (
-                                        <button onClick={()=>setLocalSelector({...localSelector, size: item})} type="button" key={`size_${item.id}`} className={`flex flex-1 h-full text-sm tracking-wide justify-center items-center border ${localSelector.size.id === item.id ? 'border-[#1A4D2E]':'border-gray-300'} hover:border hover:border-[#1A4D2E] hover:bg-[#1A4D2E] hover:text-white active:scale-95 transition:all duration-300 cursor-pointer`}>
+                                        <button onClick={()=>setLocalSelector({...localSelector, size: item})} type="button" key={`size_${item.id}`} className={`flex flex-1 h-full text-sm tracking-wide justify-center items-center border ${localSelector.size.id === item.id ? 'border-[#1A4D2E]':'border-gray-300'} rounded-md hover:border hover:border-[#1A4D2E] hover:bg-[#1A4D2E] hover:text-white active:scale-95 transition:all duration-300 cursor-pointer`}>
                                         {item.size}
                                     </button>
                                 ))}
@@ -161,7 +161,7 @@ const DetailProduct = () => {
                             <span className="font-semibold">Choose Variant</span>
                             <div className="flex flex-row items-center h-10 gap-8">
                                 {detailProduct?.variants?.map(item => (
-                                    <button onClick={()=>setLocalSelector({...localSelector, variant: item})} type="button" key={`variant_${item.id}`} className={`flex flex-1 h-full text-sm tracking-wide text-black justify-center items-center border ${localSelector.variant.id === item.id ? 'border-[#1A4D2E]':'border-gray-300'} hover:border hover:border-[#1A4D2E] hover:bg-[#1A4D2E] hover:text-white active:scale-95 transition:all duration-300 cursor-pointer`}>
+                                    <button onClick={()=>setLocalSelector({...localSelector, variant: item})} type="button" key={`variant_${item.id}`} className={`flex flex-1 h-full text-sm tracking-wide text-black justify-center items-center border ${localSelector.variant.id === item.id ? 'border-[#1A4D2E]':'border-gray-300'} rounded-md hover:border hover:border-[#1A4D2E] hover:bg-[#1A4D2E] hover:text-white active:scale-95 transition:all duration-300 cursor-pointer`}>
                                         {item.variant}
                                     </button>
                                 ))}
