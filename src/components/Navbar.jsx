@@ -118,7 +118,7 @@ function Navbar (props) {
                     <li className="md:hidden flex text-white text-sm items-center border-b-2 border-b-transparent hover:border-b-[#0f8b40] py-1"><Link to='/'>Home</Link></li>
                     {token ? 
                     <li className='flex flex-col items-center md:relative gap-3'>
-                        {user?.pictures !== null & user?.pictures !== '' ? <img onClick={accountButton} id={user?.id} src={`${import.meta.env.VITE_BACKEND_URL}/uploads/users/${user?.pictures}`} className='bg-white w-7 h-7 cursor-pointer rounded-full' /> : <FiUser onClick={accountButton} className='text-xl text-white cursor-pointer'/>}
+                        {user?.pictures !== null & user?.pictures !== '' ? <img onClick={accountButton} id={user?.id} src={user?.pictures} className='bg-white w-7 h-7 cursor-pointer rounded-full' /> : <FiUser onClick={accountButton} className='text-xl text-white cursor-pointer'/>}
                         <Button onClick={onProfile} text='Profile' className={`md:${showProfile} md:absolute -bottom-14 border border-orange-500 bg-orange-500 text-xs  py-1 px-2 md:left-1/2 md:-translate-x-1/2`}/>
                         <Button onClick={onLogout} text='Logout' className={`md:${showLogout} md:absolute -bottom-24 border border-white md:border-orange-500 text-xs text-white md:text-orange-500 py-1 px-2 md:left-1/2 md:-translate-x-1/2`}/>
                     </li> : 

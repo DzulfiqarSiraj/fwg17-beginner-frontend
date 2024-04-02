@@ -60,7 +60,7 @@ const Profile = () => {
             }
         })
         console.log(form)
-        const {data} = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/profile`, form, {
+        const {data} = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/customer/profile`, form, {
             headers: {
                 'Content-Type' : 'multipart/form-data',
                 'Authorization': `Bearer ${token}`
@@ -83,7 +83,7 @@ const Profile = () => {
             if(file){
                 const form = new FormData()
                 form.append('pictures',file)
-                const {data: res} = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/profile`, form, {
+                const {data: res} = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/customer/profile`, form, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         "Content-Type" : 'multipart/form-data'
@@ -133,7 +133,7 @@ const Profile = () => {
                             <form onSubmit={uploadPhoto} className='flex flex-col items-center justify-center'>
                                 <label className='flex rounded-full overflow-hidden mb-2 cursor-pointer relative'>
                                     {(!preview && !user?.pictures) && <FiUser className='text-9xl'/>}
-                                    {(!preview && user?.pictures) && <img src={`${import.meta.env.VITE_BACKEND_URL}/uploads/users/${user?.pictures}`} className='max-w-[9rem] w-full h-full object-cover'/>}
+                                    {(!preview && user?.pictures) && <img src={user.pictures} className='max-w-[9rem] w-full h-full object-cover'/>}
                                     {preview && <img src={preview} className='max-w-[9rem] w-full h-full object-cover'/>}
 
                                     {preview && <div className='absolute w-full h-full bg-[rgba(0,0,0,0.5)]'></div>}
