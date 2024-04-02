@@ -93,17 +93,12 @@ const CheckoutProduct = () => {
             if(data){
                 setTimeout(()=>{
                     setLoading(false)
-                },2000)
-                setTimeout(()=>{
                     setSuccessMesage('')
                 },2000)
-                setTimeout(() => {
-                    setSuccessMesage('hidden')
-                }, 2000)
                 setTimeout(()=>{
                     dispatch(emptyCartAction())
                     navigate('/history-order')
-                },2000)
+                },5000)
             }
             
         } catch (error) {
@@ -266,8 +261,10 @@ const CheckoutProduct = () => {
                                     <span className="font-semibold text-gray-800">Sub Total</span>
                                     <span className="font-semibold">IDR {((Number(totalOrder) + (Number(totalOrder) * 0.05)) + Number(shippingPrice)).toLocaleString('id')},-</span>
                                 </div>
-                                {loading && <div className='flex flex-1 justify-center'><span className="loading loading-infinity loading-lg"></span></div>}
-                                {<div className={`flex flex-1 ${successMessage} text-green-700`}>Checkout Process Successfully</div>}
+                                <div className='flex flex-1 justify-center'>
+                                    {loading && <span className="loading loading-infinity loading-lg"></span>}
+                                    {<div className={`${successMessage} text-green-700`}>Checkout Process Successfully</div>}
+                                </div>
                                 <button type='button' onClick={checkoutProcess} className='flex flex-1 text-sm justify-center items-center border border-[#1A4D2E] bg-[#1A4D2E] rounded-md hover:border-[#1A4D2E] text-white active:scale-95 transition:all duration-300 cursor-pointer py-2'>Checkout</button>
 
                                 <span className="font-thin text-sm tracking-wide">We Accept</span>
