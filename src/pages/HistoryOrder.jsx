@@ -47,6 +47,7 @@ const HistoryOrder = () => {
             <Navbar className="bg-black"/>
 
             {/* <!-- main --> */}
+            {loading ? <div className='flex justify-center w-screen h-screen'><span className="loading loading-infinity w-20"></span></div> :
             <main className="flex flex-col h-fit px-24 pt-24">
                 <div className="flex flex-row items-center py-10 gap-5">
                     <h1 className="text-4xl font-medium text-gray-900 tracking-wide">History Order</h1>
@@ -69,7 +70,7 @@ const HistoryOrder = () => {
                         </div>
                         
                         {/* <!-- product-card-1 --> */}
-                        {loading ? <div className='flex flex-1 justify-center'><span className="loading loading-infinity loading-lg"></span></div> : listOrder?.map((item) => (
+                        {listOrder?.map((item) => (
                             <div key={item?.id} className="flex flex-row h-fit bg-gray-100 gap-2 py-2 pl-2 pr-4 justify-between">
                             <div className="flex bg-[url('../assets/fav-img-1.jpg')] h-28 aspect-square bg-cover bg-center"></div>
                             <div className="flex flex-col self-start gap-2 pt-2">
@@ -128,6 +129,7 @@ const HistoryOrder = () => {
                 </div>
 
             </main>
+            }
             {/* <!-- /main --> */}
 
             <Footer />
