@@ -16,6 +16,7 @@ const DetailProduct = () => {
     
     const [detailProduct, setDetailProduct] = React.useState({})
     const [bestSeller, setBestSeller] = React.useState([])
+    const [loading, setLoading] = React.useState(false)
     let [qty, setQty] = React.useState(0)
         const [localSelector, setLocalSelector] = React.useState({
         product: null,
@@ -52,6 +53,7 @@ const DetailProduct = () => {
     }
 
     const getDetailProduct = async (id) => {
+        setLoading(true)
         const {data} = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products/${id}`)
         if(data.success){
             setDetailProduct(data.results)
@@ -63,6 +65,7 @@ const DetailProduct = () => {
                 quantity : qty
             })
         }
+        setLoading(false)
     }
 
     React.useEffect(()=>{
@@ -95,6 +98,7 @@ const DetailProduct = () => {
         <>
             <Navbar className="bg-black"/>
             {/* <!-- main --> */}
+            {loading ? <div className='flex justify-center w-screen h-screen'><span className="loading loading-infinity w-20"></span></div> :
             <main className="flex flex-col w-screen items-center justify-center pt-32 px-24 gap-10">
                 {/* <!-- column-1 --> */}
                 <div className="flex w-full flex-row gap-5"> {/*<!-- left--> */}
@@ -192,6 +196,7 @@ const DetailProduct = () => {
                     </div>
                 </div>
             </main>
+            }
             {/* <!-- /main --> */}
             <Footer />
         </>
