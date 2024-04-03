@@ -25,8 +25,6 @@ const HistoryOrder = () => {
         try {
             let res
             setStatusOrder(statusKeyword)
-            console.log(statusKeyword)
-            console.log(statusOrder)
             setLoading(true)
             if(statusKeyword === statusOrder){
                 res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
@@ -48,7 +46,6 @@ const HistoryOrder = () => {
             }
 
             setListOrder(res.data.results)
-            console.log(listOrder)
             setLoading(false)
         } catch (error){
             console.log(error)
