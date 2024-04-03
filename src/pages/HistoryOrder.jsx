@@ -32,7 +32,8 @@ const HistoryOrder = () => {
                 },
                 params : {
                     userId : user.id,
-                    status : statusOrder
+                    status : statusOrder,
+                    limit : 4
                 }});
     
             } else {
@@ -41,7 +42,8 @@ const HistoryOrder = () => {
                 },
                 params : {
                     userId : user.id,
-                    status : statusOrder
+                    status : statusOrder,
+                    limit : 4
                 }});
             }
 
