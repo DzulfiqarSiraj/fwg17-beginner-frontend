@@ -19,18 +19,71 @@ const HistoryOrder = () => {
     const [loading, setLoading] = React.useState(false)
     const token = useSelector(state => state.auth.token)
     const user = useSelector(state => state.profile.data)
+    const [statusOrder, setStatusOrder] = React.useState('')
 
-    const getOrder = async () => {
-        setLoading(true)
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
-            'Authorization' : `Bearer ${token}`
-        },
-        params : {
-            userId : user.id
-        }});
-
-        setListOrder(res.data.results)
-        setLoading(false)
+    const getOrder = async (statusKeyword) => {
+        try {
+            let res
+            setStatusOrder(statusKeyword)
+            setLoading(true)
+            if(statusKeyword === 'Awaiting Payment'){
+                res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
+                    'Authorization' : `Bearer ${token}`
+                },
+                params : {
+                    userId : user.id,
+                    status : statusOrder
+                }});
+    
+            } else if(statusKeyword === 'On Process'){
+                res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
+                    'Authorization' : `Bearer ${token}`
+                },
+                params : {
+                    userId : user.id,
+                    status : statusOrder
+                }});
+    
+            } else if(statusKeyword === 'Delivered'){
+                res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
+                    'Authorization' : `Bearer ${token}`
+                },
+                params : {
+                    userId : user.id,
+                    status : statusOrder
+                }});
+    
+            } else if(statusKeyword === 'Ready to Pick'){
+                res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
+                    'Authorization' : `Bearer ${token}`
+                },
+                params : {
+                    userId : user.id,
+                    status : statusOrder
+                }});
+    
+            } else if(statusKeyword === 'Canceled'){
+                res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
+                    'Authorization' : `Bearer ${token}`
+                },
+                params : {
+                    userId : user.id,
+                    status : statusOrder
+                }});
+            } else {
+                res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
+                    'Authorization' : `Bearer ${token}`
+                },
+                params : {
+                    userId : user.id
+                }});
+            }
+    
+            setListOrder(res.data.results)
+            setLoading(false)
+        } catch (error){
+            console.log(error)
+        }
        
     }
 
@@ -41,8 +94,8 @@ const HistoryOrder = () => {
             behavior: "smooth",
           });
 
-          getOrder()
-    },[])
+          getOrder(statusOrder)
+    },[statusOrder])
     return (
         <>
             <Navbar className="bg-black"/>
@@ -59,9 +112,11 @@ const HistoryOrder = () => {
                     <div className="flex flex-col flex-1 gap-4">
                         <div className="flex flex-row justify-between items-center gap-4 mb-4">
                             <div className="flex flex-row flex-1 items-center bg-gray-300 h-14 box-border p-2 gap-4">
-                                <div className="flex flex-1 justify-center items-center h-full hover:bg-white text-sm tracking-wide cursor-pointer">On Progress</div>
-                                <div className="flex flex-1 justify-center items-center h-full hover:bg-white text-sm tracking-wide cursor-pointer">Sending Goods</div>
-                                <div className="flex flex-1 justify-center items-center h-full hover:bg-white text-sm tracking-wide cursor-pointer">Finish Order</div>
+                                <button type='button' onClick={() => {getOrder('Awaiting Payment')}} className={`flex flex-1 justify-center items-center h-full ${statusOrder === 'Awaiting Payment' ? 'bg-white' : ''} hover:bg-white text-xs tracking-wide cursor-pointer transition-all duration-300`}>Awaiting Payment</button>
+                                <button type='button' onClick={() => {getOrder('On Process')}} className={`flex flex-1 justify-center items-center h-full ${statusOrder === 'On Process' ? 'bg-white' : ''} hover:bg-white text-xs tracking-wide cursor-pointer transition-all duration-300`}>On Process</button>
+                                <button type='button' onClick={() => {getOrder('Delivered')}} className={`flex flex-1 justify-center items-center h-full ${statusOrder === 'Delivered' ? 'bg-white' : ''} hover:bg-white text-xs tracking-wide cursor-pointer transition-all duration-300`}>Delivered</button>
+                                <button type='button' onClick={() => {getOrder('Ready to Pick')}} className={`flex flex-1 justify-center items-center h-full ${statusOrder === 'Ready to Pick' ? 'bg-white' : ''} hover:bg-white text-xs tracking-wide cursor-pointer transition-all duration-300`}>Ready to Pick</button>
+                                <button type='button' onClick={() => {getOrder('Canceled')}} className={`flex flex-1 justify-center items-center h-full ${statusOrder === 'Canceled' ? 'bg-white' : ''} hover:bg-white text-xs tracking-wide cursor-pointer transition-all duration-300`}>Canceled</button>
                             </div>
                             <div className="flex flex-row items-center bg-gray-300 h-14 box-border p-2 gap-1">
                                 <div><FiCalendar className="w-5"/></div>
