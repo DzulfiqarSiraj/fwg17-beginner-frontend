@@ -25,8 +25,10 @@ const HistoryOrder = () => {
         try {
             let res
             setStatusOrder(statusKeyword)
+            console.log(statusKeyword)
+            console.log(statusOrder)
             setLoading(true)
-            if(statusKeyword === 'Awaiting Payment'){
+            if(statusKeyword === statusOrder){
                 res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
                     'Authorization' : `Bearer ${token}`
                 },
@@ -35,56 +37,22 @@ const HistoryOrder = () => {
                     status : statusOrder
                 }});
     
-            } else if(statusKeyword === 'On Process'){
-                res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
-                    'Authorization' : `Bearer ${token}`
-                },
-                params : {
-                    userId : user.id,
-                    status : statusOrder
-                }});
-    
-            } else if(statusKeyword === 'Delivered'){
-                res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
-                    'Authorization' : `Bearer ${token}`
-                },
-                params : {
-                    userId : user.id,
-                    status : statusOrder
-                }});
-    
-            } else if(statusKeyword === 'Ready to Pick'){
-                res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
-                    'Authorization' : `Bearer ${token}`
-                },
-                params : {
-                    userId : user.id,
-                    status : statusOrder
-                }});
-    
-            } else if(statusKeyword === 'Canceled'){
-                res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
-                    'Authorization' : `Bearer ${token}`
-                },
-                params : {
-                    userId : user.id,
-                    status : statusOrder
-                }});
             } else {
                 res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
                     'Authorization' : `Bearer ${token}`
                 },
                 params : {
-                    userId : user.id
+                    userId : user.id,
+                    status : statusOrder
                 }});
             }
-    
+
             setListOrder(res.data.results)
+            console.log(listOrder)
             setLoading(false)
         } catch (error){
             console.log(error)
         }
-       
     }
 
     React.useEffect(()=>{
