@@ -18,6 +18,7 @@ const DetailOrder = () => {
     const [loading, setLoading] = React.useState(false)
     const {orderId} = useParams()
     const token = useSelector(state => state.auth.token)
+    const userProfile = useSelector(state => state.profile.data)
 
     const getOrderDetail = async () => {
         try {
@@ -111,7 +112,7 @@ const DetailOrder = () => {
                                         <div><FiPhoneCall /></div>
                                         <span className="font-medium text-gray-800">Phone</span>
                                     </div>
-                                    <span className="font-semibold">082116304338</span>
+                                    <span className="font-semibold">{userProfile.phoneNumber}</span>
                                 </div>
                                 <hr />
                                 <div className="flex flex-row justify-between">
