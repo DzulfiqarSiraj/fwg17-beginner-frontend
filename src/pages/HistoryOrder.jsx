@@ -29,35 +29,51 @@ const HistoryOrder = () => {
     const getOrder = async (statusKeyword) => {
         try {
             let res
-            setStatusOrder(statusKeyword)
             setLoading(true)
-            if(statusKeyword === statusOrder){
-                res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
-                    'Authorization' : `Bearer ${token}`
-                },
-                params : {
-                    userId : user.id,
-                    status : statusOrder,
-                    limit : 4
-                }});
-    
-            } else {
-                res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
-                    'Authorization' : `Bearer ${token}`
-                },
-                params : {
-                    userId : user.id,
-                    status : statusOrder,
-                    limit : 4
-                }});
+            if(statusOrder !== statusKeyword){
+                setStatusOrder(statusKeyword)
+                    res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
+                        'Authorization' : `Bearer ${token}`
+                    },
+                    params : {
+                        userId : user.id,
+                        status : statusKeyword,
+                        limit : 4
+                    }});
+                
+                setListOrder(res.data.results)
             }
 
-            setListOrder(res.data.results)
             setLoading(false)
         } catch (error){
             console.log(error)
+            setLoading(false)
         }
     }
+
+    React.useEffect(() => {
+        const initOrderData = async () => {
+            try {
+                let res
+                setLoading(true)
+                res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {headers : {
+                    'Authorization' : `Bearer ${token}`
+                },
+                params : {
+                    userId : user.id,
+                    limit : 4
+                }});
+                    
+                setListOrder(res.data.results)
+    
+                setLoading(false)
+            } catch (error){
+                console.log(error)
+                setLoading(false)
+            }
+        }
+        initOrderData()
+    },[token, user.id])
 
     React.useEffect(()=>{
         window.scrollTo({
@@ -65,9 +81,7 @@ const HistoryOrder = () => {
             left: 0,
             behavior: "smooth",
           });
-
-          getOrder(statusOrder)
-    },[statusOrder])
+    },[])
     return (
         <>
             <Navbar className="bg-black"/>
@@ -98,8 +112,8 @@ const HistoryOrder = () => {
                         </div>
                         
                         {/* <!-- product-card-1 --> */}
-                        {listOrder?.map((item) => (
-                            <div key={item?.id} className="flex flex-row h-fit bg-gray-100 gap-2 py-2 pl-2 pr-4 justify-between">
+                        {listOrder?.map((item, index) => (
+                            <div key={index} className="flex flex-row h-fit bg-gray-100 gap-2 py-2 pl-2 pr-4 justify-between">
                             <div className="flex bg-[url('../assets/fav-img-1.jpg')] h-28 aspect-square bg-cover bg-center"></div>
                             <div className="flex flex-col self-start gap-2 pt-2">
                                 <div className="flex flex-row gap-2 items-center">
