@@ -265,7 +265,7 @@ const CheckoutProduct = () => {
                                     {loading && <span className="loading loading-infinity loading-lg"></span>}
                                     {<div className={`${successMessage} text-green-700`}>Checkout Process Successfully</div>}
                                 </div>
-                                <button type='button' onClick={checkoutProcess} className='flex flex-1 text-sm justify-center items-center border border-[#1A4D2E] bg-[#1A4D2E] rounded-md hover:border-[#1A4D2E] text-white active:scale-95 transition:all duration-300 cursor-pointer py-2'>Checkout</button>
+                                <button disabled={cart.length === 0 ? true : false} type='button' onClick={checkoutProcess} className={`flex flex-1 text-sm justify-center items-center border ${cart.length == 0 ? 'border-slate-500 bg-slate-500' : 'border-[#1A4D2E] bg-[#1A4D2E] hover:border-[#1A4D2E]'} rounded-md text-white active:scale-95 transition:all duration-300 cursor-pointer py-2`}>Checkout</button>
 
                                 <span className="font-thin text-sm tracking-wide">We Accept</span>
                                 <div className="flex flex-row">
