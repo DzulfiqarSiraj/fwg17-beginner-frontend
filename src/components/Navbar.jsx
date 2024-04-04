@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Link, useNavigate} from 'react-router-dom'
 import CoffeeShopLogo from '../assets/icon/cov-white.svg';
 import {FiSearch,FiShoppingCart} from 'react-icons/fi'
+import { LuFileClock } from "react-icons/lu";
 import Button from './Button';
 import { TbMenu2 } from "react-icons/tb";
 import { FiUser } from "react-icons/fi";
@@ -113,6 +114,7 @@ function Navbar (props) {
                             <input className="flex-1 outline-none placeholder:text-sm placeholder:text-gray-500 bg-transparent" id="search" type="text" name="search" placeholder="Search" autoComplete="on"/>
                         </div>
                         <button type='button' onClick={onCart} className="hover:border-b-2 hover:border-b-[#0f8b40] hover:pb-1.5"><FiShoppingCart className='text-lg text-white'/></button>
+                        <Link to={'/history-order'}><div className="hover:border-b-2 hover:border-b-[#0f8b40] hover:pb-1.5"><LuFileClock className='text-lg text-white'/></div></Link>
                     </li>
                     <li className="md:hidden flex text-white text-sm items-center border-b-2 border-b-transparent hover:border-b-[#0f8b40] py-1"><Link to='/products'>Product</Link></li>
                     <li className="md:hidden flex text-white text-sm items-center border-b-2 border-b-transparent hover:border-b-[#0f8b40] py-1"><Link to='/'>Home</Link></li>
