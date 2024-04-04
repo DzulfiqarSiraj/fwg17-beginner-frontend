@@ -136,7 +136,11 @@ const DetailOrder = () => {
                                         <div><FiLoader /></div>
                                         <span className="font-medium text-gray-800">Status</span>
                                     </div>
-                                    <span className="text-sm font-semibold bg-green-100 text-green-600 px-3 py-1 box-border rounded-full">{orderDetail[0]?.status}</span>
+                                    {orderDetail[0]?.status === 'Awaiting Payment' && <span className={`text-sm font-semibold bg-orange-100 text-orange-600 px-3 py-1 box-border rounded-full`}>{orderDetail[0]?.status}</span>}
+                                    {orderDetail[0]?.status === 'On Process' && <span className={`text-sm font-semibold bg-blue-100 text-blue-600 px-3 py-1 box-border rounded-full`}>{orderDetail[0]?.status}</span>}
+                                    {orderDetail[0]?.status === 'Ready to Pick' && <span className={`text-sm font-semibold bg-green-100 text-green-600 px-3 py-1 box-border rounded-full`}>{orderDetail[0]?.status}</span>}
+                                    {orderDetail[0]?.status === 'Delivered' && <span className={`text-sm font-semibold bg-green-100 text-green-600 px-3 py-1 box-border rounded-full`}>{orderDetail[0]?.status}</span>}
+                                    {orderDetail[0]?.status === 'Canceled' && <span className={`text-sm font-semibold bg-red-100 text-red-600 px-3 py-1 box-border rounded-full`}>{orderDetail[0]?.status}</span>}
                                 </div>
                                 <hr />
                                 <div className="flex flex-row justify-between">

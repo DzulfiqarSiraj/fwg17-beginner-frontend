@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import { FaCircleChevronRight } from "react-icons/fa6"
 import { FiCalendar } from "react-icons/fi";
-import { FiChevronDown } from "react-icons/fi";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { FaMugHot } from "react-icons/fa6";
 import { FaCalendar } from "react-icons/fa6";
 import { FaRepeat } from "react-icons/fa6";
@@ -20,6 +20,11 @@ const HistoryOrder = () => {
     const token = useSelector(state => state.auth.token)
     const user = useSelector(state => state.profile.data)
     const [statusOrder, setStatusOrder] = React.useState('')
+    const [open, setOpen] = React.useState(false)
+
+    const dropdownHandle = () => {
+        setOpen(!open)
+    }
 
     const getOrder = async (statusKeyword) => {
         try {
@@ -88,7 +93,7 @@ const HistoryOrder = () => {
                             <div className="flex flex-row items-center bg-gray-300 h-14 box-border p-2 gap-1">
                                 <div><FiCalendar className="w-5"/></div>
                                 <div className="text-sm tracking-wide">January 2023</div>
-                                <div><FiChevronDown className="w-5" /></div>
+                                {open ? <button type='button' onClick={dropdownHandle}><FiChevronUp className="w-5" /></button> : <button type='button' onClick={dropdownHandle}><FiChevronDown className="w-5" /></button>}
                             </div>
                         </div>
                         
@@ -123,7 +128,11 @@ const HistoryOrder = () => {
                                     <div><FaArrowsSpin className="text-gray-500" /></div>
                                     <span className="text-gray-500">Status</span>
                                 </div>
-                                <span className="w-fit text-sm font-semibold bg-orange-200 text-orange-600 px-3 py-1 box-border rounded-full">{item?.status}</span>
+                                {item?.status === 'Awaiting Payment' && <span className="w-fit text-sm font-semibold bg-orange-100 text-orange-600 px-3 py-1 box-border rounded-full">{item?.status}</span>}
+                                {item?.status === 'On Process' && <span className="w-fit text-sm font-semibold bg-blue-100 text-blue-600 px-3 py-1 box-border rounded-full">{item?.status}</span>}
+                                {item?.status === 'Delivered' && <span className="w-fit text-sm font-semibold bg-green-100 text-green-600 px-3 py-1 box-border rounded-full">{item?.status}</span>}
+                                {item?.status === 'Ready to Pick' && <span className="w-fit text-sm font-semibold bg-green-100 text-green-600 px-3 py-1 box-border rounded-full">{item?.status}</span>}
+                                {item?.status === 'Canceled' && <span className="w-fit text-sm font-semibold bg-red-100 text-red-600 px-3 py-1 box-border rounded-full">{item?.status}</span>}
                             </div>
                         </div>                            
                         ))}
