@@ -67,6 +67,7 @@ const DetailProduct = () => {
             })
         }
         setLoading(false)
+        console.log(bestSeller)
     }
 
     React.useEffect(()=>{
@@ -76,8 +77,7 @@ const DetailProduct = () => {
             behavior: "smooth",
           });
         getDetailProduct(id)
-        getBestSellerProduct(setBestSeller, {limit: 3})
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        getBestSellerProduct(setBestSeller, {limit: 3}, setLoading)
     },[id])
 
     const dispatch = useDispatch()
@@ -185,7 +185,7 @@ const DetailProduct = () => {
                 <div className="flex flex-col w-full gap-5">
                     <h1 className="text-4xl font-medium text-gray-900 tracking-wide">Recommendation <span className="text-yellow-900">For You</span></h1>
                     <div className="flex flex-row w-full justify-center gap-5">
-                        {bestSeller.map((item) => <ProductCard key={item.id} id={item.id} image={item.image} name={item.name} description={item.description} basePrice={item.basePrice} tag={item.tag} discount={item.discount}/>)}
+                        {bestSeller?.map((item, index) => <ProductCard key={index} id={item?.id} image={item?.image} name={item?.name} description={item?.description} basePrice={item?.basePrice} tag={item?.tag} discount={item?.discount}/>)}
                     </div>
         
                     <div className="flex flex-row gap-4 self-center items-center pt-5 pb-10">
