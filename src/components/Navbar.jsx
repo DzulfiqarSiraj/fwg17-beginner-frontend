@@ -19,6 +19,7 @@ function Navbar (props) {
     const {className} = props;
     // const [user, setUser] = React.useState({})
     const user = useSelector(state => state.profile.data)
+    const cart = useSelector(state => state.cart.data)
     const navigate = useNavigate()
     const [top, setTop] = React.useState('-top-[500px]')
     const [searchDisplay, setSearchDisplay] = React.useState('hidden')
@@ -113,7 +114,7 @@ function Navbar (props) {
                         <div className={`${searchDisplay} flex-row items-center border h-10 border-gray-300 rounded-lg px-4 gap-4`}>
                             <input className="flex-1 outline-none placeholder:text-sm placeholder:text-gray-500 bg-transparent" id="search" type="text" name="search" placeholder="Search" autoComplete="on"/>
                         </div>
-                        <button type='button' onClick={onCart} className="hover:border-b-2 hover:border-b-[#0f8b40] hover:pb-1.5"><FiShoppingCart className='text-lg text-white'/></button>
+                        <button type='button' onClick={onCart} className="hover:border-b-2 hover:border-b-[#0f8b40] hover:pb-1.5 relative"><FiShoppingCart className='text-lg text-white'/>{cart?.length !== 0 ? <div className='rounded-full bg-red-500 w-4 h-4 text-[0.7rem] text-black absolute -top-2 -right-2 text-center font-bold'>{cart?.length}</div> : ''}</button>
                         <Link to={'/history-order'}><div className="hover:border-b-2 hover:border-b-[#0f8b40] hover:pb-1.5"><LuFileClock className='text-lg text-white'/></div></Link>
                     </li>
                     <li className="md:hidden flex text-white text-sm items-center border-b-2 border-b-transparent hover:border-b-[#0f8b40] py-1"><Link to='/products'>Product</Link></li>
