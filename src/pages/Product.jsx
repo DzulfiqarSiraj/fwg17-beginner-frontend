@@ -19,9 +19,16 @@ const Product = () => {
     const [pageInfo, setPageInfo] = React.useState(null)
     const [showPaginationButton, setShowPaginationButton] = React.useState([])
     const [showCurrentPageButton, setShowCurrentPageButton] = React.useState()
+    const [categories, setCategories] = React.useState([])
     const [loading, setLoading] = React.useState(false)
     const [filterDisplay, setFilterDisplay] = React.useState('hidden')
     const [keyword, setKeyword] = React.useState('')
+    const [categoryChecked, setCategoryChecked] = React.useState({
+        'favorite product' : false,
+        'coffee' : false,
+        'non-coffee' : false,
+        'foods' : false
+    })
 
     const getProduct = async (page) => {
         let res
@@ -30,22 +37,24 @@ const Product = () => {
             res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`,{params: {
                 page: pageInfo.prevPage,
                 search: keyword,
+                category: categories,
                 limit: 6
             }})
         }else if(page === 'next'){
             res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`,{params: {
                 page: pageInfo.nextPage,
                 search: keyword,
+                category: categories,
                 limit: 6
             }})
         }else{
             res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`,{params: {
                 search: keyword,
+                category: categories,
                 limit: 6
             }})
         }
 
-        console.log(res.data.results)
 
         let arrayPage = []
         for(let i = 1; i <= (res.data.pageInfo.totalPage); i++){
@@ -61,31 +70,66 @@ const Product = () => {
         setLoading(false)
     }
 
+    const getCategory = async (category) => {
+        if(categories.includes(category)){
+            setCategories(categories.filter((cat => cat !== category)))
+        }
+         else {
+            setCategories([...categories, category])
+         }
+    }
+
+    const getCatgeoryChecked = (cat) => {
+        if(categoryChecked[cat]){
+            setCategoryChecked({...categoryChecked, [cat] : false})
+        } else {
+            setCategoryChecked({...categoryChecked, [cat] : true})
+        }
+    }
+
     const getFilterData = async (e) => {
-        e.preventDefault()
-        const {value: keyword} = e.target.keyword
-        // const form = new URLSearchParams()
-        // form.append('search', search)
-
-        setKeyword(keyword)
-        setLoading(true)
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
-            keyword: keyword,
-            limit : 6
-        }})
-
-        let arrayPage = []
-        for(let i = 1; i <= (res.data.pageInfo.totalPage); i++){
-            arrayPage.push(i)
+        try {
+            e.preventDefault()
+            const {value: keyword} = e.target.keyword
+            // const form = new URLSearchParams()
+            // form.append('search', search)
+    
+            setKeyword(keyword)
+            setLoading(true)
+            const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
+                keyword: keyword,
+                category: categories,
+                limit : 6
+            }})
+    
+            let arrayPage = []
+            for(let i = 1; i <= (res.data.pageInfo.totalPage); i++){
+                arrayPage.push(i)
+            }
+            
+            setShowPaginationButton(arrayPage)
+    
+            setShowCurrentPageButton(res.data.pageInfo.currentPage)
+    
+            setPageInfo(res.data.pageInfo)
+            setData(res.data.results)
+            setLoading(false)    
+        } catch (error) {
+            setData([])
+            setLoading(false)
         }
         
-        setShowPaginationButton(arrayPage)
+    }
 
-        setShowCurrentPageButton(res.data.pageInfo.currentPage)
-
-        setPageInfo(res.data.pageInfo)
-        setData(res.data.results)
-        setLoading(false)
+    const filterReset = () => {
+        setKeyword('')
+        setCategories([])
+        setCategoryChecked({
+            'favorite product' : false,
+            'coffee' : false,
+            'non-coffee' : false,
+            'foods' : false
+        })
     }
 
     const showCurrentPage = async (page = 1) => {
@@ -93,6 +137,7 @@ const Product = () => {
         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
             page: page,
             search: keyword,
+            category: categories,
             limit: 6
         }})
 
@@ -202,35 +247,31 @@ const Product = () => {
                                 <form onSubmit={getFilterData} className={`flex flex-col w-full gap-6`}>
                                     <div className="flex justify-between">
                                         <span className="text-white font-bold tracking-wide">Filter</span>
-                                        <span className="text-white font-bold tracking-wide text-sm"><button type='reset'>Reset Filter</button></span>
+                                        <span className="text-white font-bold tracking-wide text-sm"><button type='reset' onClick={() => filterReset()}>Reset Filter</button></span>
                                     </div>
         
                                     <div className="flex flex-col gap-2">
                                         <label htmlFor="keyword" className="text-white font-bold tracking-wide text-sm">Search</label>
-                                        <input id="keyword" name='keyword' type="text" placeholder="Search Your Product" className="h-12 p-5 placeholder:text-sm rounded-md" />
+                                        <input id="keyword" name='keyword' type="text" placeholder={keyword === '' ? "Search Your Product" : keyword} className="h-12 p-5 placeholder:text-sm rounded-md" />
                                     </div>
         
                                     <div className="flex flex-col gap-4">
                                         <span className="text-white font-bold tracking-wide text-sm">Category</span>
                                         <div className="flex flex-row gap-3">
-                                            <input type="checkbox" id="favorite-product" name="category" value="favorite product" className="" />
+                                            <input onChange={() => {getCatgeoryChecked('favorite product')}} checked={categoryChecked['favorite product']} onClick={() => {getCategory('favorite product')}} type="checkbox" id="favorite-product" name="category" value="favorite product" className="" />
                                             <label htmlFor="favorite-product" className="text-white text-xs md:text-base">Favorite Product</label>
                                         </div>
                                         <div className="flex flex-row gap-3">
-                                            <input type="checkbox" id="coffee" name="category" value="coffee" />
+                                            <input onChange={() => {getCatgeoryChecked('coffee')}} checked={categoryChecked['coffee']} onClick={() => {getCategory('coffee')}} type="checkbox" id="coffee" name="category" value="coffee" />
                                             <label htmlFor="coffee" className="text-white text-xs md:text-base">Coffee</label>
                                         </div>
                                         <div className="flex flex-row gap-3">
-                                            <input type="checkbox" id="non-coffee" name="category" value="non coffee" />
+                                            <input onChange={() => {getCatgeoryChecked('non-coffee')}} checked={categoryChecked['non-coffee']} onClick={()=>{getCategory('non-coffee')}} type="checkbox" id="non-coffee" name="category" value="non coffee" />
                                             <label htmlFor="non-coffee" className="text-white text-xs md:text-base">Non Coffee</label>
                                         </div>
                                         <div className="flex flex-row gap-3">
-                                            <input type="checkbox" id="foods" name="category" value="foods" />
+                                            <input onChange={() => {getCatgeoryChecked('foods')}} checked={categoryChecked['foods']} onClick={()=>{getCategory('food')}} type="checkbox" id="foods" name="category" value="foods" />
                                             <label htmlFor="foods" className="text-white text-xs md:text-base">Foods</label>
-                                        </div>
-                                        <div className="flex flex-row gap-3">
-                                            <input type="checkbox" id="add-on" name="category" value="add on" />
-                                            <label htmlFor="add-on" className="text-white text-xs md:text-base">Add On</label>
                                         </div>
                                     </div>
         
@@ -264,9 +305,11 @@ const Product = () => {
                             </aside>
         
                             <div className="flex flex-col flex-1 gap-10 items-center">
+                                {data?.length === 0 ? <p className='self-center'>Product Not Found</p> : 
                                 <div className="w-full grid grid-cols-2 gap-7 h-fit">
                                     {data?.map((item) => <ProductCard key={item?.id} id={item?.id} image={item?.image} name={item?.name} description={item?.description} basePrice={item.basePrice} tag={item.tag} discount={item.discount} isBestSeller={item?.isBestSeller}/>)}
                                 </div>
+                                }
 
                                 <div className="flex flex-row gap-4">
                                     <button disabled={!pageInfo?.prevPage? true : false} type='button' onClick={() => {
@@ -276,7 +319,7 @@ const Product = () => {
                                             top: 600,
                                             behavior: "smooth",});
                                         }}><FaCircleChevronLeft className={`fa-solid fa-circle-chevron-right w-6 h-6 md:w-9 md:h-9 text-xs md:text-4xl hover:opacity-90 ${!pageInfo?.prevPage? 'text-slate-300' : 'active:scale-95 text-[#FF9F29]'} transition:all duration-300 cursor-pointer`}/></button>
-                                    {showPaginationButton.map((item) => <PaginationButton onClick={()=>{
+                                    {data?.length === 0 ? '' : showPaginationButton.map((item) => <PaginationButton onClick={()=>{
                                         showCurrentPage(item); 
                                         window.scrollTo({
                                         top: 600,
