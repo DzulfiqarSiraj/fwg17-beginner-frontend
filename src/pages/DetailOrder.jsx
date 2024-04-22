@@ -20,7 +20,7 @@ const DetailOrder = () => {
     const token = useSelector(state => state.auth.token)
     const userProfile = useSelector(state => state.profile.data)
 
-    const getOrderDetail = async () => {
+    const getOrderDetail = React.useCallback(async () => {
         try {
             setLoading(true)
             const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/order-details`,{
@@ -39,7 +39,7 @@ const DetailOrder = () => {
             console.log(error)
         }
         
-    }
+    }, [orderId, token])
 
     React.useEffect(() => {
         window.scrollTo({
@@ -49,7 +49,7 @@ const DetailOrder = () => {
           });
 
           getOrderDetail()
-    },[])
+    },[getOrderDetail])
     return (
         <>
             <Navbar className='bg-black' />

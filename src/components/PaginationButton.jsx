@@ -1,4 +1,3 @@
-// eslint-disable-next-line react/prop-types
 const PaginationButton = (props) => {
     // eslint-disable-next-line react/prop-types
     const {className,text, onClick} = props

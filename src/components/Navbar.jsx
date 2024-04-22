@@ -12,7 +12,6 @@ import { logout as logoutAction } from '../redux/reducers/auth';
 import { setProfile as setProfileAction } from '../redux/reducers/profile';
 
 
-// eslint-disable-next-line react/prop-types
 function Navbar (props) {
 
     // eslint-disable-next-line react/prop-types

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,7 +13,7 @@ import { getBestSellerProduct } from "./Home";
 import { useDispatch } from "react-redux";
 import { addToCart as addToCartAction } from "../redux/reducers/cart";
 
-// eslint-disable-next-line react/prop-types
+
 const DetailProduct = () => {
     const [detailProduct, setDetailProduct] = React.useState({});
     const [bestSeller, setBestSeller] = React.useState([]);
