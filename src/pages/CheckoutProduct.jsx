@@ -55,7 +55,6 @@ const CheckoutProduct = () => {
 
     const customerFormHandler = (e) => {
         setCustomerData({...customerData, [e.target.name] : e.target.value})
-        console.log(customerData)
     }
 
     const checkoutProcess = async () => {
@@ -86,7 +85,7 @@ const CheckoutProduct = () => {
             
             const data = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, dataReq, {
                 headers : {
-                    'Authorization' : `Bearer ${token}`
+                    'Authorization' : `Bearer ${token}`,
                 }
             });
             
@@ -132,35 +131,35 @@ const CheckoutProduct = () => {
     return (
         <>
             <Navbar className="bg-black"/>
-            <main className="flex flex-col h-fit px-24 mb-16 pt-24">
-                <h1 className="text-4xl font-medium text-gray-900 tracking-wide py-10">Payment <span className="text-yellow-900">Details</span></h1>
+            <main className="flex flex-col px-24 pt-24 mb-16 h-fit">
+                <h1 className="py-10 text-4xl font-medium tracking-wide text-gray-900">Payment <span className="text-yellow-900">Details</span></h1>
                 {/* <!-- column-1 --> */}
-                <div className="flex flex-1 h-fit flex-row gap-3">
+                <div className="flex flex-row flex-1 gap-3 h-fit">
                     <div className="flex flex-col flex-1 gap-4">
-                        <div className="flex flex-row justify-between items-center">
+                        <div className="flex flex-row items-center justify-between">
                             <span className="text-xl font-semibold tracking-wide">Your Order</span>
-                            <button type="button" onClick={() => navigate('/products')} className="flex flex-row h-10 text-sm justify-center items-center gap-2 border border-orange-500 bg-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">
-                                <div className="flex pl-2 items-center"><FiPlus className='w-4' /></div>
-                                <div className="flex flex-1 pr-2 items-center"><span>Add Menu</span></div>
+                            <button type="button" onClick={() => navigate('/products')} className="flex flex-row items-center justify-center h-10 gap-2 text-sm duration-300 bg-orange-500 border border-orange-500 rounded-md cursor-pointer hover:borde-orange-500 active:scale-95 transition:all">
+                                <div className="flex items-center pl-2"><FiPlus className='w-4' /></div>
+                                <div className="flex items-center flex-1 pr-2"><span>Add Menu</span></div>
                             </button>
                         </div>
                         {/* <!-- product-card-1 --> */}
                         {
                             cart.map(product => (
-                                <div key={`product_${product?.product?.id}`} className="flex flex-row h-fit bg-gray-100 gap-5">
-                                    <img src={product?.product?.image ? `${product?.product?.image}` : CoffeeBeanImage} className='h-48 aspect-square object-cover bg-center'/>
-                                    <div className="flex flex-col flex-1 self-center gap-3">
-                                        {product?.product?.tag === "Flash Sale" && <span className="w-fit text-xs text-white font-semibold bg-red-700 px-2 py-1 rounded-full">FLASH SALE!</span>}
-                                        {product?.product?.tag === "End Year Sale" && <span className="w-fit text-xs text-white font-semibold bg-orange-700 px-2 py-1 rounded-full">END YEAR SALE!</span>}
-                                        {product?.product?.tag === "Ramadhan Sale" && <span className="w-fit text-xs text-white font-semibold bg-green-700 px-2 py-1 rounded-full">RAMADHAN SALE!</span>}
+                                <div key={`product_${product?.product?.id}`} className="flex flex-row gap-5 bg-gray-100 h-fit">
+                                    <img src={product?.product?.image ? `${product?.product?.image}` : CoffeeBeanImage} className='object-cover h-48 bg-center aspect-square'/>
+                                    <div className="flex flex-col self-center flex-1 gap-3">
+                                        {product?.product?.tag === "Flash Sale" && <span className="px-2 py-1 text-xs font-semibold text-white bg-red-700 rounded-full w-fit">FLASH SALE!</span>}
+                                        {product?.product?.tag === "End Year Sale" && <span className="px-2 py-1 text-xs font-semibold text-white bg-orange-700 rounded-full w-fit">END YEAR SALE!</span>}
+                                        {product?.product?.tag === "Ramadhan Sale" && <span className="px-2 py-1 text-xs font-semibold text-white bg-green-700 rounded-full w-fit">RAMADHAN SALE!</span>}
                                         <span className="font-semibold tracking-wide">{product?.product?.name}</span>
                                         <div className="flex flex-row items-center gap-2 divide-x-2 divide-gray-300">
                                             <span className="text-sm text-gray-600">{product?.quantity} pcs</span>
-                                            <span className="text-sm text-gray-600 pl-2">{product?.size?.size}</span>
-                                            <span className="text-sm text-gray-600 pl-2">{product?.variant?.variant}</span>
-                                            <span className="text-sm text-gray-600 pl-2">{shipping}</span>
+                                            <span className="pl-2 text-sm text-gray-600">{product?.size?.size}</span>
+                                            <span className="pl-2 text-sm text-gray-600">{product?.variant?.variant}</span>
+                                            <span className="pl-2 text-sm text-gray-600">{shipping}</span>
                                         </div>
-                                        <div className="flex flex-row gap-3 items-center">
+                                        <div className="flex flex-row items-center gap-3">
                                             {product?.product?.discount && <span className="self-center text-xs text-red-700"><del>IDR {Number((
                                                 Number(product?.product?.basePrice) + Number(product?.variant?.additionalPrice) + Number(product?.size?.additionalPrice))*Number(product?.quantity)).toLocaleString('id')
                                                 },-</del></span>}
@@ -173,10 +172,10 @@ const CheckoutProduct = () => {
                                             },-</span>
                                         </div>
                                     </div>
-                                    <div className="flex w-fit justify-center items-center px-8">
+                                    <div className="flex items-center justify-center px-8 w-fit">
                                         <FiXCircle type='button' onClick={() => {
                                             dispatch(removeFromCartAction(product))
-                                        }} className='text-red-700 hover:text-slate-700 hover:cursor-pointer hover:scale-125 transition:all duration-300' />
+                                        }} className='text-red-700 duration-300 hover:text-slate-700 hover:cursor-pointer hover:scale-125 transition:all' />
                                     </div>
                                 </div>
                             ))
@@ -186,37 +185,37 @@ const CheckoutProduct = () => {
 
                         <form action="" className="flex flex-col gap-5">
                             <label htmlFor="email" className="flex flex-col gap-1">
-                                <span className="font-semibold text-lg">Email</span>
-                                <div className="flex flex-row items-center border h-10 border-black rounded px-2 gap-2">
+                                <span className="text-lg font-semibold">Email</span>
+                                <div className="flex flex-row items-center h-10 gap-2 px-2 border border-black rounded">
                                     <div>
                                         <FiMail />
                                     </div>
                                     <input className="flex-1 outline-none" id="email" type="email" name="email" value={customerData.email} onChange={customerFormHandler}/>
                                 </div>
                             </label>
-                            {emailInputMessage === 'Email Must Not Be Empty' ? (<div className='text-red-800 text-sm'>{emailInputMessage}!</div>) : ''}
+                            {emailInputMessage === 'Email Must Not Be Empty' ? (<div className='text-sm text-red-800'>{emailInputMessage}!</div>) : ''}
                             <label htmlFor="fullname" className="flex flex-col gap-1">
-                                <span className="font-semibold text-lg">Full Name</span>
-                                <div className="flex flex-row items-center border h-10 border-black rounded px-2 gap-2">
+                                <span className="text-lg font-semibold">Full Name</span>
+                                <div className="flex flex-row items-center h-10 gap-2 px-2 border border-black rounded">
                                     <div>
                                         <FiUser />
                                     </div>
-                                    <input className="flex-1  outline-none" id="fullname" type="text" name="fullname" value={customerData.fullname} onChange={customerFormHandler}/>
+                                    <input className="flex-1 outline-none" id="fullname" type="text" name="fullname" value={customerData.fullname} onChange={customerFormHandler}/>
                                 </div>
                             </label>
-                            {fullNameInputMessage === 'Name Must Not Be Empty' ? (<div className='text-red-800 text-sm'>{fullNameInputMessage}!</div>) : ''}
+                            {fullNameInputMessage === 'Name Must Not Be Empty' ? (<div className='text-sm text-red-800'>{fullNameInputMessage}!</div>) : ''}
                             <label htmlFor="address" className="flex flex-col gap-1">
-                                <span className="font-semibold text-lg">Address</span>
-                                <div className="flex flex-row items-center border h-10 border-black rounded px-2 gap-2">
+                                <span className="text-lg font-semibold">Address</span>
+                                <div className="flex flex-row items-center h-10 gap-2 px-2 border border-black rounded">
                                     <div>
                                         <FiMapPin />
                                     </div>
                                     <input className="flex-1 outline-none" id="address" type="address" name="address" value={customerData.address} onChange={customerFormHandler}/>
                                 </div>
                             </label>
-                            {addressInputMessage === 'Address Must Not Be Empty' ? (<div className='text-red-800 text-sm'>{addressInputMessage}!</div>) : ''}
+                            {addressInputMessage === 'Address Must Not Be Empty' ? (<div className='text-sm text-red-800'>{addressInputMessage}!</div>) : ''}
                             <div className="flex flex-col gap-1">
-                                <span className="font-semibold text-lg">Delivery</span>
+                                <span className="text-lg font-semibold">Delivery</span>
                                 <div className="flex flex-row items-center gap-8">
                                     <button type='button' onClick={()=>{
                                         setShipping('Dine In');
@@ -232,18 +231,18 @@ const CheckoutProduct = () => {
                                     }} className={`flex flex-1 justify-center items-center h-10 border ${shipping === 'Pick Up' ? 'border-green-700' : 'border-gray-500'} rounded-md hover:border hover:border-green-700 active:scale-95 transition:all duration-300 cursor-pointer`}>Pick Up</button>
                                 </div>
                             </div>
-                            {shipping === 'Choose Delivery Option' ? (<div className='text-red-800 text-sm'>{shipping}!</div>) : ''}
+                            {shipping === 'Choose Delivery Option' ? (<div className='text-sm text-red-800'>{shipping}!</div>) : ''}
 
                         </form>
 
                     </div>
 
                     <div className="flex flex-col flex-1 gap-4">
-                        <div className="flex h-10 items-center">
+                        <div className="flex items-center h-10">
                             <span className="text-xl font-semibold tracking-wide">Total</span>
                         </div>
-                        <div className="flex flex-col max-w-lg w-full bg-gray-100">
-                            <div className="flex flex-col p-3 gap-5">
+                        <div className="flex flex-col w-full max-w-lg bg-gray-100">
+                            <div className="flex flex-col gap-5 p-3">
                                 <div className="flex flex-row justify-between ">
                                     <span className="font-semibold text-gray-800">Order</span>
                                     <span className="font-semibold">IDR {Number(totalOrder).toLocaleString('id')},-</span>
@@ -261,22 +260,22 @@ const CheckoutProduct = () => {
                                     <span className="font-semibold text-gray-800">Sub Total</span>
                                     <span className="font-semibold">IDR {((Number(totalOrder) + (Number(totalOrder) * 0.05)) + Number(shippingPrice)).toLocaleString('id')},-</span>
                                 </div>
-                                <div className='flex flex-1 justify-center'>
+                                <div className='flex justify-center flex-1'>
                                     {loading && <span className="loading loading-infinity loading-lg"></span>}
                                     {<div className={`${successMessage} text-green-700`}>Checkout Process Successfully</div>}
                                 </div>
                                 <button disabled={cart.length === 0 ? true : false} type='button' onClick={checkoutProcess} className={`flex flex-1 text-sm justify-center items-center border ${cart.length == 0 ? 'border-slate-500 bg-slate-500' : 'border-[#1A4D2E] bg-[#1A4D2E] hover:border-[#1A4D2E]'} rounded-md text-white active:scale-95 transition:all duration-300 cursor-pointer py-2`}>Checkout</button>
 
-                                <span className="font-thin text-sm tracking-wide">We Accept</span>
+                                <span className="text-sm font-thin tracking-wide">We Accept</span>
                                 <div className="flex flex-row">
-                                    <div className="flex flex-1 justify-start items-center"><img src={BriImage} alt="" /></div>
-                                    <div className="flex flex-1 justify-center items-center"><img src={DanaImage} alt="" /></div>
-                                    <div className="flex flex-1 justify-center items-center"><img src={BcaImage} alt="" /></div>
-                                    <div className="flex flex-1 justify-center items-center"><img src={GopayImage} alt="" /></div>
-                                    <div className="flex flex-1 justify-center items-center"><img src={OvoImage} alt="" /></div>
-                                    <div className="flex flex-1 justify-end items-center"><img src={PaypalImage} alt="" /></div>
+                                    <div className="flex items-center justify-start flex-1"><img src={BriImage} alt="" /></div>
+                                    <div className="flex items-center justify-center flex-1"><img src={DanaImage} alt="" /></div>
+                                    <div className="flex items-center justify-center flex-1"><img src={BcaImage} alt="" /></div>
+                                    <div className="flex items-center justify-center flex-1"><img src={GopayImage} alt="" /></div>
+                                    <div className="flex items-center justify-center flex-1"><img src={OvoImage} alt="" /></div>
+                                    <div className="flex items-center justify-end flex-1"><img src={PaypalImage} alt="" /></div>
                                 </div>
-                                <span className="font-thin text-sm tracking-wide">*Get Discount if you pay with Bank Central Asia</span>
+                                <span className="text-sm font-thin tracking-wide">*Get Discount if you pay with Bank Central Asia</span>
 
                             </div>
                         </div>

@@ -58,6 +58,12 @@ const DetailProduct = () => {
         const { data } = await axios.get(
             `${import.meta.env.VITE_BACKEND_URL}/products/${id}`
         );
+
+        if(typeof data.results.sizes[0] === "string" || typeof data.results.variants[0] === "string"){
+            data.results.sizes = data.results.sizes.map((size) => JSON.parse(size))
+            data.results.variants = data.results.variants.map((variant) => JSON.parse(variant))
+        }
+        
         if (data.success) {
             setDetailProduct(data.results);
             setLocalSelector({
@@ -69,7 +75,6 @@ const DetailProduct = () => {
             });
         }
         setLoading(false);
-        console.log(bestSeller);
     };
 
     React.useEffect(() => {
@@ -114,12 +119,12 @@ const DetailProduct = () => {
                     <img className="w-16 animate-pulse" src={CovLogo} alt="" />
                 </div>
             ) : (
-                <main className="flex flex-col w-screen items-center justify-center pt-32 px-24 gap-10">
+                <main className="flex flex-col items-center justify-center w-screen gap-10 px-24 pt-32">
                     {/* <!-- column-1 --> */}
-                    <div className="flex w-full flex-row gap-5">
+                    <div className="flex flex-row w-full gap-5">
                         {" "}
                         {/*<!-- left--> */}
-                        <div className="flex w-2/4 flex-col gap-5">
+                        <div className="flex flex-col w-2/4 gap-5">
                             <div className="w-full">
                                 <img
                                     className="w-full"
@@ -172,28 +177,28 @@ const DetailProduct = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-col flex-1 bg-white gap-5">
+                        <div className="flex flex-col flex-1 gap-5 bg-white">
                             {" "}
                             {/*<!-- right --> */}
                             {detailProduct?.tag === "Flash Sale" && (
-                                <span className="text-sm text-white font-semibold tracking-wide bg-red-600 w-fit py-2 px-3 rounded-full">
+                                <span className="px-3 py-2 text-sm font-semibold tracking-wide text-white bg-red-600 rounded-full w-fit">
                                     FLASH SALE!
                                 </span>
                             )}
                             {detailProduct?.tag === "End Year Sale" && (
-                                <span className="text-sm text-white font-semibold tracking-wide bg-orange-600 w-fit py-2 px-3 rounded-full">
+                                <span className="px-3 py-2 text-sm font-semibold tracking-wide text-white bg-orange-600 rounded-full w-fit">
                                     END YEAR SALE!
                                 </span>
                             )}
                             {detailProduct?.tag === "Ramadhan Sale" && (
-                                <span className="text-sm text-white font-semibold tracking-wide bg-green-700 w-fit py-2 px-3 rounded-full">
+                                <span className="px-3 py-2 text-sm font-semibold tracking-wide text-white bg-green-700 rounded-full w-fit">
                                     RAMADHAN SALE!
                                 </span>
                             )}
-                            <h1 className="font-medium text-5xl tracking-wide">
+                            <h1 className="text-5xl font-medium tracking-wide">
                                 {detailProduct?.name}
                             </h1>
-                            <div className="flex flex-row gap-3 items-center">
+                            <div className="flex flex-row items-center gap-3">
                                 {Number(detailProduct?.discount) !== 0 ? (
                                     <span className="text-[0.6rem] md:text-xs font-bold text-red-500">
                                         <del>
@@ -218,36 +223,36 @@ const DetailProduct = () => {
                                     ,-
                                 </span>
                             </div>
-                            <div className="flex flex-row gap-3 items-center h-3 mb-2">
+                            <div className="flex flex-row items-center h-3 gap-3 mb-2">
                                 <FaStar className="text-[#FF9F29] text-sm" />
                                 <FaStar className="text-[#FF9F29] text-sm" />
                                 <FaStar className="text-[#FF9F29] text-sm" />
                                 <FaStar className="text-[#FF9F29] text-sm" />
                                 <FaStar className="text-[#FF9F29] text-sm" />
-                                <span className="text-gray-500 text-base">
+                                <span className="text-base text-gray-500">
                                     5.0
                                 </span>
                             </div>
-                            <div className="flex flex-row gap-4 items-start">
-                                <div className="flex flex-row divide-x-2 gap-4 divide-gray-600">
+                            <div className="flex flex-row items-start gap-4">
+                                <div className="flex flex-row gap-4 divide-x-2 divide-gray-600">
                                     <span className="text-gray-600">
                                         200+ Review
                                     </span>
                                     {detailProduct?.isBestSeller && (
-                                        <span className="text-gray-600 pl-4">
+                                        <span className="pl-4 text-gray-600">
                                             Recommendation
                                         </span>
                                     )}
                                 </div>
                                 <i
-                                    className="text-orange-500 w-5 self-start box-border pb-1"
+                                    className="box-border self-start w-5 pb-1 text-orange-500"
                                     data-feather="thumbs-up"
                                 ></i>
                             </div>
                             <p className="text-gray-600">
                                 {detailProduct?.description}
                             </p>
-                            <div className="h-9 w-fit flex flex-row border rounded-md border-gray-3">
+                            <div className="flex flex-row border rounded-md h-9 w-fit border-gray-3">
                                 <button
                                     type="button"
                                     disabled={qty <= 0 ? true : false}
@@ -263,7 +268,7 @@ const DetailProduct = () => {
                                 </button>
                                 <div
                                     id="qty-number"
-                                    className="flex w-10 text-lg font-semibold justify-center items-center"
+                                    className="flex items-center justify-center w-10 text-lg font-semibold"
                                 >
                                     {qty}
                                 </div>
@@ -331,7 +336,7 @@ const DetailProduct = () => {
                                     ))}
                                 </div>
                             </div>
-                            <div className="flex flex-row h-11 gap-5 mt-8">
+                            <div className="flex flex-row gap-5 mt-8 h-11">
                                 <button
                                     type="button"
                                     onClick={addBuy}
@@ -352,11 +357,11 @@ const DetailProduct = () => {
                     </div>
 
                     <div className="flex flex-col w-full gap-5">
-                        <h1 className="text-4xl font-medium text-gray-900 tracking-wide">
+                        <h1 className="text-4xl font-medium tracking-wide text-gray-900">
                             Recommendation{" "}
                             <span className="text-yellow-900">For You</span>
                         </h1>
-                        <div className="flex flex-row w-full justify-center gap-5">
+                        <div className="flex flex-row justify-center w-full gap-5">
                             {bestSeller?.map((item, index) => (
                                 <ProductCard
                                     key={index}
@@ -371,7 +376,7 @@ const DetailProduct = () => {
                             ))}
                         </div>
 
-                        <div className="flex flex-row gap-4 self-center items-center pt-5 pb-10">
+                        <div className="flex flex-row items-center self-center gap-4 pt-5 pb-10">
                             <div className="flex justify-center items-center text-base bg-[#FF9F29] w-9 h-9 rounded-full hover:opacity-90 active:scale-95 transition:all duration-300 cursor-pointer">
                                 1
                             </div>

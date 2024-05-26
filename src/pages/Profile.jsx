@@ -55,11 +55,10 @@ const Profile = () => {
         const fields = ['fullName','email','phoneNumber','password','address']
         fields.forEach((field) => {
             if(e.target[field]){
-                console.log(e.target[field].value)
                 form.append(field, e.target[field].value)
             }
         })
-        console.log(form)
+
         const {data} = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/customer/profile`, form, {
             headers: {
                 'Content-Type' : 'multipart/form-data',
@@ -86,19 +85,20 @@ const Profile = () => {
                 const {data: res} = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/customer/profile`, form, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
-                        "Content-Type" : 'multipart/form-data'
+                        'Content-Type' : 'multipart/form-data'
                     }
                 })
+
                 // setUser(res.results)
                 dispatch(setProfileAction(res.results))
                 setPreview(null)
-                setUploadSuccessMessage(<p className='text-green-500 text-xl self-center'>{res.message}</p>)
+                setUploadSuccessMessage(<p className='self-center text-xl text-green-500'>{res.message}</p>)
                 setTimeout(() => {
                     setUploadSuccessMessage('')
                 },2000)
             }
         } catch (err) {
-            setUploadSuccessMessage(<p className='text-red-500 text-xl self-center'>{err.message}</p>)
+            setUploadSuccessMessage(<p className='self-center text-xl text-red-500'>{err.message}</p>)
             setTimeout(() => {
                 setUploadSuccessMessage('')
             },2000)
@@ -109,29 +109,29 @@ const Profile = () => {
         <>
             <Navbar className='bg-black' />
             {/* <!-- main --> */}
-            <main className="flex flex-col h-fit p-6 pt-20 md:p-24 bg-white">
+            <main className="flex flex-col p-6 pt-20 bg-white h-fit md:p-24">
                 {uploadSuccessMessage}
-                <div className="flex flex-row self-center md:self-start py-10 gap-5">
-                    <h1 className="text-4xl font-medium text-gray-900 tracking-wide">Profile</h1>
+                <div className="flex flex-row self-center gap-5 py-10 md:self-start">
+                    <h1 className="text-4xl font-medium tracking-wide text-gray-900">Profile</h1>
                 </div>
                 {/* <!-- column-1 --> */}
-                <div className="flex flex-1 h-fit flex-col-reverse md:flex-row-reverse gap-3 ">
-                    <form onSubmit={updateProfileData} className="flex flex-col flex-1 gap-4 bg-white border border-gray-200 p-5 rounded-md">
+                <div className="flex flex-col-reverse flex-1 gap-3 h-fit md:flex-row-reverse ">
+                    <form onSubmit={updateProfileData} className="flex flex-col flex-1 gap-4 p-5 bg-white border border-gray-200 rounded-md">
                         <FullNameInput defaultValue={user.fullName} />
                         <EmailInput defaultValue={user.email} />
                         <PhoneNumberInput defaultValue={user.phoneNumber} />
                         <PasswordInput defaultValue={user.password} htmlFor={'password'} id={'password'} type={'password'} name={'password'} text='Password' placeholder='Enter Your Password'/>
                         <AddressInput defaultValue={user.address} />
-                        {successMessage && <div className='text-xl text-green-700 self-center'>{successMessage}</div>}
-                        <Button type='submit' text='Submit' className='bg-orange-500 py-3'/>
+                        {successMessage && <div className='self-center text-xl text-green-700'>{successMessage}</div>}
+                        <Button type='submit' text='Submit' className='py-3 bg-orange-500'/>
                     </form>
 
                     <div className="flex flex-col gap-4">
-                        <div className="flex flex-col items-center md:max-w-xs w-full bg-white border border-gray-200 p-5 gap-2 rounded-md">
-                            <span className="text-center text-3xl md:text-xl font-semibold tracking-wide">{user.fullName}</span>
+                        <div className="flex flex-col items-center w-full gap-2 p-5 bg-white border border-gray-200 rounded-md md:max-w-xs">
+                            <span className="text-3xl font-semibold tracking-wide text-center md:text-xl">{user.fullName}</span>
                             <span className='text-base md:text-xs'>{user.email}</span>
                             <form onSubmit={uploadPhoto} className='flex flex-col items-center justify-center'>
-                                <label className='flex rounded-full overflow-hidden mb-2 cursor-pointer relative'>
+                                <label className='relative flex mb-2 overflow-hidden rounded-full cursor-pointer'>
                                     {(!preview && !user?.pictures) && <FiUser className='text-9xl'/>}
                                     {(!preview && user?.pictures) && <img src={user?.pictures} className='max-w-[9rem] w-full h-full object-cover'/>}
                                     {preview && <img src={preview} className='max-w-[9rem] w-full h-full object-cover'/>}
@@ -140,7 +140,7 @@ const Profile = () => {
 
                                     <input multiple={false} onChange={changePicture} type="file" name='pictures' className='hidden'/>
                                 </label>
-                                <button className="flex h-10 text-xs px-10 justify-center items-center border border-orange-500 bg-orange-500 rounded-md hover:borde-orange-500 active:scale-95 transition:all duration-300 cursor-pointer">Upload New Photo</button>
+                                <button className="flex items-center justify-center h-10 px-10 text-xs duration-300 bg-orange-500 border border-orange-500 rounded-md cursor-pointer hover:borde-orange-500 active:scale-95 transition:all">Upload New Photo</button>
                             </form>
                             <span className='text-xs'>Since <strong>20 January 2022</strong></span>
                         </div>
